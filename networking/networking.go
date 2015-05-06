@@ -34,41 +34,41 @@ const (
 )
 
 // ForwardedPort describes a port that will be
-// forwarded (mapped) from the host to the pod
+// forwarded (mapped) from the host to the rkt
 type ForwardedPort struct {
 	Protocol string
 	HostPort uint
-	PodPort  uint
+	rktPort  uint
 }
 
-// Networking describes the networking details of a pod.
+// Networking describes the networking details of a rkt.
 type Networking struct {
-	podEnv
+	rktEnv
 
 	hostNS *os.File
 	nets   []activeNet
 }
 
 // Setup creates a new networking namespace and executes network plugins to
-// setup private networking. It returns in the new pod namespace
-func Setup(podRoot string, podID types.UUID, fps []ForwardedPort) (*Networking, error) {
-	// TODO(jonboulle): currently podRoot is _always_ ".", and behaviour in other
+// setup private networking. It returns in the new rkt namespace
+func Setup(rktRoot string, rktID types.UUID, fps []ForwardedPort) (*Networking, error) {
+	// TODO(jonboulle): currently rktRoot is _always_ ".", and behaviour in other
 	// circumstances is untested. This should be cleaned up.
 	n := Networking{
-		podEnv: podEnv{
-			podRoot: podRoot,
-			podID:   podID,
+		rktEnv: rktEnv{
+			rktRoot: rktRoot,
+			rktID:   rktID,
 		},
 	}
 
-	hostNS, podNS, err := basicNetNS()
+	hostNS, rktNS, err := basicNetNS()
 	if err != nil {
 		return nil, err
 	}
-	// we're in podNS!
+	// we're in rktNS!
 	n.hostNS = hostNS
 
-	nspath := n.podNSPath()
+	nspath := n.rktNSPath()
 
 	if err = bindMountFile(selfNetNS, nspath); err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ func Setup(podRoot string, podID types.UUID, fps []ForwardedPort) (*Networking, 
 		return nil, fmt.Errorf("error loading network definitions: %v", err)
 	}
 
-	err = withNetNS(podNS, hostNS, func() error {
+	err = withNetNS(rktNS, hostNS, func() error {
 		if err := n.setupNets(n.nets); err != nil {
 			return err
 		}
@@ -102,11 +102,11 @@ func Setup(podRoot string, podID types.UUID, fps []ForwardedPort) (*Networking, 
 
 // Load creates the Networking object from saved state.
 // Assumes the current netns is that of the host.
-func Load(podRoot string, podID *types.UUID) (*Networking, error) {
-	// the current directory is pod root
-	pdirfd, err := syscall.Open(podRoot, syscall.O_RDONLY|syscall.O_DIRECTORY, 0)
+func Load(rktRoot string, rktID *types.UUID) (*Networking, error) {
+	// the current directory is rkt root
+	pdirfd, err := syscall.Open(rktRoot, syscall.O_RDONLY|syscall.O_DIRECTORY, 0)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to open pod root directory (%v): %v", podRoot, err)
+		return nil, fmt.Errorf("Failed to open rkt root directory (%v): %v", rktRoot, err)
 	}
 	defer syscall.Close(pdirfd)
 
@@ -139,9 +139,9 @@ func Load(podRoot string, podID *types.UUID) (*Networking, error) {
 	}
 
 	return &Networking{
-		podEnv: podEnv{
-			podRoot: podRoot,
-			podID:   *podID,
+		rktEnv: rktEnv{
+			rktRoot: rktRoot,
+			rktID:   *rktID,
 		},
 		hostNS: hostNS,
 		nets:   nets,
@@ -178,26 +178,26 @@ func (n *Networking) Teardown() {
 
 	n.teardownNets(n.nets)
 
-	if err := syscall.Unmount(n.podNSPath(), 0); err != nil {
+	if err := syscall.Unmount(n.rktNSPath(), 0); err != nil {
 		// if already unmounted, umount(2) returns EINVAL
 		if !os.IsNotExist(err) && err != syscall.EINVAL {
-			log.Printf("Error unmounting %q: %v", n.podNSPath(), err)
+			log.Printf("Error unmounting %q: %v", n.rktNSPath(), err)
 		}
 	}
 }
 
 // sets up new netns with just lo
-func basicNetNS() (hostNS, podNS *os.File, err error) {
-	hostNS, podNS, err = newNetNS()
+func basicNetNS() (hostNS, rktNS *os.File, err error) {
+	hostNS, rktNS, err = newNetNS()
 	if err != nil {
 		err = fmt.Errorf("failed to create new netns: %v", err)
 		return
 	}
-	// we're in podNS!!
+	// we're in rktNS!!
 
 	if err = loUp(); err != nil {
 		hostNS.Close()
-		podNS.Close()
+		rktNS.Close()
 		return nil, nil, err
 	}
 
@@ -217,7 +217,7 @@ func (e *Networking) Save() error {
 		nis = append(nis, *n.runtime)
 	}
 
-	return netinfo.Save(e.podRoot, nis)
+	return netinfo.Save(e.rktRoot, nis)
 }
 
 func newNetNS() (hostNS, childNS *os.File, err error) {
