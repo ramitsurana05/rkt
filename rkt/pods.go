@@ -1,4 +1,4 @@
-// Copyright 2015 CoreOS, Inc.
+// Copyright 2015 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,24 +17,27 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sort"
+	"strconv"
+	"strings"
 	"syscall"
 	"time"
 
-	"github.com/coreos/rkt/Godeps/_workspace/src/code.google.com/p/go-uuid/uuid"
 	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/spec/schema"
 	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/spec/schema/types"
+	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/pborman/uuid"
 	"github.com/coreos/rkt/common"
 	"github.com/coreos/rkt/networking/netinfo"
 	"github.com/coreos/rkt/pkg/lock"
+	"github.com/coreos/rkt/pkg/sys"
 )
 
-// see Documentation/pod-lifecycle.md for some explanation
+// see Documentation/devel/pod-lifecycle.md for some explanation
 
 type pod struct {
 	*lock.FileLock
@@ -89,7 +92,7 @@ func initPods() error {
 	if !podsInitialized {
 		dirs := []string{embryoDir(), prepareDir(), preparedDir(), runDir(), exitedGarbageDir(), garbageDir()}
 		for _, d := range dirs {
-			if err := os.MkdirAll(d, 0700); err != nil {
+			if err := os.MkdirAll(d, 0750); err != nil {
 				return fmt.Errorf("error creating directory: %v", err)
 			}
 		}
@@ -111,7 +114,12 @@ func walkPods(include includeMask, f func(*pod)) error {
 	sort.Strings(ls)
 
 	for _, uuid := range ls {
-		p, err := getPod(uuid)
+		u, err := types.NewUUID(uuid)
+		if err != nil {
+			stderr("Skipping %q: %v", uuid, err)
+			continue
+		}
+		p, err := getPod(u)
 		if err != nil {
 			stderr("Skipping %q: %v", uuid, err)
 			continue
@@ -157,7 +165,7 @@ func newPod() (*pod, error) {
 		return nil, fmt.Errorf("error creating UUID: %v", err)
 	}
 
-	err = os.Mkdir(p.embryoPath(), 0700)
+	err = os.Mkdir(p.embryoPath(), 0750)
 	if err != nil {
 		return nil, err
 	}
@@ -182,18 +190,12 @@ func newPod() (*pod, error) {
 // getPod returns a pod struct representing the given pod.
 // The returned lock is always left in an open but unlocked state.
 // The pod must be closed using pod.Close()
-func getPod(uuid string) (*pod, error) {
+func getPod(uuid *types.UUID) (*pod, error) {
 	if err := initPods(); err != nil {
 		return nil, err
 	}
 
-	p := &pod{}
-
-	u, err := types.NewUUID(uuid)
-	if err != nil {
-		return nil, err
-	}
-	p.uuid = u
+	p := &pod{uuid: uuid}
 
 	// we try open the pod in all possible directories, in the same order the states occur
 	l, err := lock.NewLock(p.embryoPath(), lock.Dir)
@@ -270,10 +272,26 @@ func getPod(uuid string) (*pod, error) {
 			return nil, fmt.Errorf("error acquiring pod %v dir fd: %v", uuid, err)
 		}
 		p.nets, err = netinfo.LoadAt(cfd)
-		// ENOENT is ok -- assume running without --private-net
+		// ENOENT is ok -- assume running with --net=host
 		if err != nil && !os.IsNotExist(err) {
 			return nil, fmt.Errorf("error opening pod %v netinfo: %v", uuid, err)
 		}
+	}
+
+	return p, nil
+}
+
+// getPodFromUUIDString attempts to resolve the supplied UUID and return a pod.
+// The pod must be closed using pod.Close()
+func getPodFromUUIDString(uuid string) (*pod, error) {
+	podUUID, err := resolveUUID(uuid)
+	if err != nil {
+		return nil, fmt.Errorf("unable to resolve UUID: %v", err)
+	}
+
+	p, err := getPod(podUUID)
+	if err != nil {
+		return nil, fmt.Errorf("unable to get pod: %v", err)
 	}
 
 	return p, nil
@@ -347,6 +365,15 @@ func (p *pod) xToPreparing() error {
 		return err
 	}
 
+	df, err := os.Open(prepareDir())
+	if err != nil {
+		return err
+	}
+	defer df.Close()
+	if err := df.Sync(); err != nil {
+		return err
+	}
+
 	p.isEmbryo = false
 	p.isPreparing = true
 
@@ -367,8 +394,16 @@ func (p *pod) xToPrepared() error {
 	if err := os.Rename(p.path(), p.preparedPath()); err != nil {
 		return err
 	}
-
 	if err := p.Unlock(); err != nil {
+		return err
+	}
+
+	df, err := os.Open(preparedDir())
+	if err != nil {
+		return err
+	}
+	defer df.Close()
+	if err := df.Sync(); err != nil {
 		return err
 	}
 
@@ -398,6 +433,15 @@ func (p *pod) xToRun() error {
 		return err
 	}
 
+	df, err := os.Open(runDir())
+	if err != nil {
+		return err
+	}
+	defer df.Close()
+	if err := df.Sync(); err != nil {
+		return err
+	}
+
 	p.isPreparing = false
 	p.isPrepared = false
 
@@ -412,6 +456,15 @@ func (p *pod) xToExitedGarbage() error {
 
 	if err := os.Rename(p.runPath(), p.exitedGarbagePath()); err != nil {
 		// TODO(vc): another case where we could race with a concurrent xToExitedGarbage(), let caller deal with the error.
+		return err
+	}
+
+	df, err := os.Open(exitedGarbageDir())
+	if err != nil {
+		return err
+	}
+	defer df.Close()
+	if err := df.Sync(); err != nil {
 		return err
 	}
 
@@ -430,6 +483,15 @@ func (p *pod) xToGarbage() error {
 		return err
 	}
 
+	df, err := os.Open(garbageDir())
+	if err != nil {
+		return err
+	}
+	defer df.Close()
+	if err := df.Sync(); err != nil {
+		return err
+	}
+
 	p.isAbortedPrepare = false
 	p.isPrepared = false
 	p.isGarbage = true
@@ -440,7 +502,8 @@ func (p *pod) xToGarbage() error {
 // isRunning does the annoying tests to infer if a pod is in a running state
 func (p *pod) isRunning() bool {
 	// when none of these things, running!
-	return !p.isEmbryo && !p.isAbortedPrepare && !p.isPreparing && !p.isPrepared && !p.isExited && !p.isExitedGarbage && !p.isGarbage && !p.isGone
+	return !p.isEmbryo && !p.isAbortedPrepare && !p.isPreparing && !p.isPrepared &&
+		!p.isExited && !p.isExitedGarbage && !p.isExitedDeleting && !p.isGarbage && !p.isDeleting && !p.isGone
 }
 
 // listPods returns a list of pod uuids in string form.
@@ -657,7 +720,7 @@ func (p *pod) openFile(path string, flags int) (*os.File, error) {
 
 	fd, err := syscall.Openat(cdirfd, path, flags, 0)
 	if err != nil {
-		return nil, fmt.Errorf("unable to open file: %v", err)
+		return nil, err
 	}
 
 	return os.NewFile(uintptr(fd), path), nil
@@ -686,42 +749,226 @@ func (p *pod) getState() string {
 	return state
 }
 
-// getPID returns the pid of the pod.
-func (p *pod) getPID() (int, error) {
-	return p.readIntFromFile("pid")
+type ErrChildNotReady struct {
 }
 
-// getStage1Hash returns the hash of the stage1 image used in this pod
-func (p *pod) getStage1Hash() (*types.Hash, error) {
-	s1IDb, err := p.readFile(common.Stage1IDFilename)
-	if err != nil {
-		return nil, err
-	}
-	s1img, err := types.NewHash(string(s1IDb))
-	if err != nil {
-		return nil, err
+func (e ErrChildNotReady) Error() string {
+	return fmt.Sprintf("Child not ready")
+}
+
+// Returns the pid of the child, or ErrChildNotReady if not ready
+func getChildPID(ppid int) (int, error) {
+	var pid int
+
+	// If possible, get the child in O(1). Fallback on O(n) when the kernel does not have
+	// either CONFIG_PROC_CHILDREN or CONFIG_CHECKPOINT_RESTORE
+	_, err := os.Stat("/proc/1/task/1/children")
+	if err == nil {
+		b, err := ioutil.ReadFile(fmt.Sprintf("/proc/%d/task/%d/children", ppid, ppid))
+		if err == nil {
+			children := strings.SplitN(string(b), " ", 2)
+			if len(children) == 2 && children[1] != "" {
+				return -1, fmt.Errorf("too many children of pid %d", ppid)
+			}
+			if _, err := fmt.Sscanf(children[0], "%d ", &pid); err == nil {
+				return pid, nil
+			}
+		}
+		return -1, ErrChildNotReady{}
 	}
 
-	return s1img, nil
+	// Fallback on the slower method
+	fdir, err := os.Open(`/proc`)
+	if err != nil {
+		return -1, err
+	}
+	defer fdir.Close()
+
+	for {
+		fi, err := fdir.Readdir(1)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return -1, err
+		}
+		var pid64 int64
+		if pid64, err = strconv.ParseInt(fi[0].Name(), 10, 0); err != nil {
+			continue
+		}
+		filename := fmt.Sprintf("/proc/%d/stat", pid64)
+		statBytes, err := ioutil.ReadFile(filename)
+		if err != nil {
+			// The process just died? It's not the one we want then.
+			continue
+		}
+		statFields := strings.SplitN(string(statBytes), " ", 5)
+		if len(statFields) != 5 {
+			return -1, fmt.Errorf("incomplete file %q", filename)
+		}
+		if statFields[3] == fmt.Sprintf("%d", ppid) {
+			return int(pid64), nil
+		}
+	}
+
+	return -1, ErrChildNotReady{}
+}
+
+// getPID returns the pid of the stage1 process that started the pod.
+func (p *pod) getPID() (int, error) {
+	pid, err := p.readIntFromFile("ppid")
+	if err != nil {
+		return -1, err
+	}
+	return pid, nil
+}
+
+// getContainerPID1 returns the pid of the process with pid 1 in the pod.
+func (p *pod) getContainerPID1() (pid int, err error) {
+	// rkt supports two methods to find the container's PID 1:
+	// the pid file and the ppid file.
+	// See Documentation/devel/stage1-implementors-guide.md
+	for {
+		var ppid int
+
+		pid, err = p.readIntFromFile("pid")
+		if err == nil {
+			return
+		}
+
+		ppid, err = p.readIntFromFile("ppid")
+		if err == nil {
+			pid, err = getChildPID(ppid)
+			if err == nil {
+				return pid, nil
+			}
+			if _, ok := err.(ErrChildNotReady); ok {
+				err = nil
+			} else {
+				return -1, err
+			}
+		}
+
+		// There's a window between a pod transitioning to run and the pid file being created by stage1.
+		// The window shouldn't be large so we just delay and retry here.  If stage1 fails to reach the
+		// point of pid file creation, it will exit and p.isRunning() becomes false since we refreshState below.
+		time.Sleep(time.Millisecond * 100)
+
+		if err := p.refreshState(); err != nil {
+			return -1, err
+		}
+
+		if !os.IsNotExist(err) || !p.isRunning() {
+			return -1, err
+		}
+	}
+}
+
+// getStage1TreeStoreID returns the treeStoreID of the stage1 image used in
+// this pod
+func (p *pod) getStage1TreeStoreID() (string, error) {
+	s1IDb, err := p.readFile(common.Stage1TreeStoreIDFilename)
+	if err != nil {
+		return "", err
+	}
+	return string(s1IDb), nil
+}
+
+// getAppTreeStoreIDs returns the treeStoreIDs of the apps images used in
+// this pod
+func (p *pod) getAppsTreeStoreIDs() ([]string, error) {
+	var treeStoreIDs []string
+	apps, err := p.getApps()
+	if err != nil {
+		return nil, err
+	}
+	for _, a := range apps {
+		path, err := filepath.Rel("/", common.AppTreeStoreIDPath("", a.Name))
+		if err != nil {
+			return nil, err
+		}
+		treeStoreID, err := p.readFile(path)
+		if err != nil {
+			// When not using overlayfs, apps don't have a treeStoreID file
+			if os.IsNotExist(err) {
+				continue
+			}
+			return nil, err
+		}
+		treeStoreIDs = append(treeStoreIDs, string(treeStoreID))
+	}
+	return treeStoreIDs, nil
 }
 
 // getAppsHashes returns a list of the app hashes in the pod
 func (p *pod) getAppsHashes() ([]types.Hash, error) {
-	pmb, err := p.readFile("pod")
+	apps, err := p.getApps()
 	if err != nil {
 		return nil, err
 	}
-	var pm *schema.PodManifest
-	if err = json.Unmarshal(pmb, &pm); err != nil {
+
+	var hashes []types.Hash
+	for _, a := range apps {
+		hashes = append(hashes, a.Image.ID)
+	}
+
+	return hashes, nil
+}
+
+type AppsImageManifests map[types.ACName]*schema.ImageManifest
+
+// getAppsImageManifests returns a map of ImageManifests keyed to the
+// corresponding App name.
+func (p *pod) getAppsImageManifests() (AppsImageManifests, error) {
+	apps, err := p.getApps()
+	if err != nil {
 		return nil, err
 	}
 
-	var imgs []types.Hash
-	for _, app := range pm.Apps {
-		imgs = append(imgs, app.Image.ID)
+	aim := make(AppsImageManifests)
+	for _, a := range apps {
+		imb, err := ioutil.ReadFile(common.AppInfoImageManifestPath(p.path(), a.Name))
+		if err != nil {
+			return nil, err
+		}
+
+		im := &schema.ImageManifest{}
+		if err := im.UnmarshalJSON(imb); err != nil {
+			return nil, fmt.Errorf("invalid image manifest for app %q: %v", a.Name.String(), err)
+		}
+
+		aim[a.Name] = im
 	}
 
-	return imgs, nil
+	return aim, nil
+}
+
+// getManifest returns the PodManifest of the pod
+func (p *pod) getManifest() (*schema.PodManifest, error) {
+	pmb, err := p.readFile("pod")
+	if err != nil {
+		return nil, fmt.Errorf("error reading pod manifest: %v", err)
+	}
+	pm := &schema.PodManifest{}
+	if err = pm.UnmarshalJSON(pmb); err != nil {
+		return nil, fmt.Errorf("invalid pod manifest: %v", err)
+	}
+	return pm, nil
+}
+
+// getApps returns a list of apps in the pod
+func (p *pod) getApps() (schema.AppList, error) {
+	pm, err := p.getManifest()
+	if err != nil {
+		return nil, err
+	}
+	return pm.Apps, nil
+}
+
+// getAppCount returns the app count of a pod.
+func (p *pod) getAppCount() (int, error) {
+	apps, err := p.getApps()
+	return len(apps), err
 }
 
 // getDirNames returns the list of names from a pod's directory
@@ -740,36 +987,21 @@ func (p *pod) getDirNames(path string) ([]string, error) {
 	return ld, nil
 }
 
-// getAppCount returns the app count of a pod. It can only be called on prepared pods.
-func (p *pod) getAppCount() (int, error) {
-	if !p.isPrepared {
-		return -1, fmt.Errorf("error: only prepared pods can get their app count")
-	}
-
-	b, err := ioutil.ReadFile(common.PodManifestPath(p.path()))
-	if err != nil {
-		return -1, fmt.Errorf("error reading pod manifest: %v", err)
-	}
-
-	m := schema.PodManifest{}
-	if err = m.UnmarshalJSON(b); err != nil {
-		return -1, fmt.Errorf("unable to load manifest: %v", err)
-	}
-
-	return len(m.Apps), nil
+func (p *pod) usesOverlay() bool {
+	_, err := p.openFile(common.OverlayPreparedFilename, syscall.O_RDONLY)
+	return err == nil
 }
 
 func (p *pod) getStatusDir() (string, error) {
-	_, err := p.openFile(common.OverlayPreparedFilename, syscall.O_RDONLY)
-	if err == nil {
+	if p.usesOverlay() {
 		// the pod uses overlay. Since the mount is in another mount
 		// namespace (or gone), return the status directory from the overlay
 		// upper layer
-		stage1Hash, err := p.getStage1Hash()
+		stage1TreeStoreID, err := p.getStage1TreeStoreID()
 		if err != nil {
 			return "", err
 		}
-		overlayStatusDir := fmt.Sprintf(overlayStatusDirTemplate, stage1Hash.String())
+		overlayStatusDir := fmt.Sprintf(overlayStatusDirTemplate, stage1TreeStoreID)
 
 		return overlayStatusDir, nil
 	}
@@ -799,4 +1031,17 @@ func (p *pod) getExitStatuses() (map[string]int, error) {
 		stats[name] = s
 	}
 	return stats, nil
+}
+
+// sync syncs the pod data. By now it calls a syncfs on the filesystem
+// containing the pod's directory.
+func (p *pod) sync() error {
+	cfd, err := p.Fd()
+	if err != nil {
+		return fmt.Errorf("error acquiring pod %v dir fd: %v", p.uuid.String(), err)
+	}
+	if err := sys.Syncfs(cfd); err != nil {
+		return fmt.Errorf("failed to sync pod %v data: %v", p.uuid.String(), err)
+	}
+	return nil
 }

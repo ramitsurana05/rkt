@@ -1,4 +1,4 @@
-// Copyright 2014 CoreOS, Inc.
+// Copyright 2014 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,15 +15,19 @@
 package main
 
 import (
-	"flag"
 	"fmt"
-	"log"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
 	"text/tabwriter"
 
+	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/spf13/cobra"
+	"github.com/coreos/rkt/common"
 	"github.com/coreos/rkt/pkg/keystore"
+	"github.com/coreos/rkt/pkg/multicall"
+	"github.com/coreos/rkt/rkt/config"
+	rktflag "github.com/coreos/rkt/rkt/flag"
 )
 
 const (
@@ -33,83 +37,106 @@ const (
 	defaultDataDir = "/var/lib/rkt"
 )
 
+type absDir string
+
+func (d *absDir) String() string {
+	return (string)(*d)
+}
+
+func (d *absDir) Set(str string) error {
+	if str == "" {
+		return fmt.Errorf(`"" is not a valid directory`)
+	}
+
+	dir, err := filepath.Abs(str)
+	if err != nil {
+		return err
+	}
+	*d = (absDir)(dir)
+	return nil
+}
+
+func (d *absDir) Type() string {
+	return "absolute-directory"
+}
+
 var (
-	globalFlagset = flag.NewFlagSet(cliName, flag.ExitOnError)
-	tabOut        *tabwriter.Writer
-	commands      []*Command // Commands should register themselves by appending
-	globalFlags   = struct {
+	tabOut      *tabwriter.Writer
+	globalFlags = struct {
 		Dir                string
+		SystemConfigDir    string
+		LocalConfigDir     string
 		Debug              bool
 		Help               bool
-		InsecureSkipVerify bool
-	}{}
+		InsecureFlags      *rktflag.SecFlags
+		TrustKeysFromHttps bool
+	}{
+		Dir:             defaultDataDir,
+		SystemConfigDir: common.DefaultSystemConfigDir,
+		LocalConfigDir:  common.DefaultLocalConfigDir,
+	}
+
+	cachedConfig  *config.Config
+	cachedDataDir string
+	cmdExitCode   int
 )
 
-func init() {
-	globalFlagset.BoolVar(&globalFlags.Help, "help", false, "Print usage information and exit")
-	globalFlagset.BoolVar(&globalFlags.Debug, "debug", false, "Print out more debug information to stderr")
-	globalFlagset.StringVar(&globalFlags.Dir, "dir", defaultDataDir, "rkt data directory")
-	globalFlagset.BoolVar(&globalFlags.InsecureSkipVerify, "insecure-skip-verify", false, "skip image or key verification")
-}
-
-type Command struct {
-	Name                 string        // Name of the Command and the string to use to invoke it
-	Summary              string        // One-sentence summary of what the Command does
-	Usage                string        // Usage options/arguments
-	Description          string        // Detailed description of command
-	Flags                *flag.FlagSet // Set of flags associated with this command
-	WantsFlagsTerminator bool          // Include the potential "--" flags terminator in args for Run
-
-	Run func(args []string) int // Run a command with the given arguments, return exit status
-
+var cmdRkt = &cobra.Command{
+	Use:   "rkt [command]",
+	Short: cliDescription,
 }
 
 func init() {
-	tabOut = new(tabwriter.Writer)
-	tabOut.Init(os.Stdout, 0, 8, 1, '\t', 0)
+	sf, err := rktflag.NewSecFlags("none")
+	if err != nil {
+		stderr("rkt: problem initializing: %v", err)
+		os.Exit(1)
+	}
+
+	globalFlags.InsecureFlags = sf
+
+	cmdRkt.PersistentFlags().BoolVar(&globalFlags.Debug, "debug", false, "print out more debug information to stderr")
+	cmdRkt.PersistentFlags().Var((*absDir)(&globalFlags.Dir), "dir", "rkt data directory")
+	cmdRkt.PersistentFlags().Var((*absDir)(&globalFlags.SystemConfigDir), "system-config", "system configuration directory")
+	cmdRkt.PersistentFlags().Var((*absDir)(&globalFlags.LocalConfigDir), "local-config", "local configuration directory")
+	cmdRkt.PersistentFlags().Var(globalFlags.InsecureFlags, "insecure-options",
+		fmt.Sprintf("comma-separated list of security features to disable. Allowed values: %s",
+			globalFlags.InsecureFlags.PermissibleString()))
+	cmdRkt.PersistentFlags().BoolVar(&globalFlags.TrustKeysFromHttps, "trust-keys-from-https",
+		true, "automatically trust gpg keys fetched from https")
+
+	// TODO: Remove before 1.0
+	rktflag.InstallDeprecatedSkipVerify(cmdRkt.PersistentFlags(), sf)
+
+	cobra.EnablePrefixMatching = true
+}
+
+func getTabOutWithWriter(writer io.Writer) *tabwriter.Writer {
+	aTabOut := new(tabwriter.Writer)
+	aTabOut.Init(writer, 0, 8, 1, '\t', 0)
+	return aTabOut
+}
+
+// runWrapper return a func(cmd *cobra.Command, args []string) that internally
+// will add command function return code and the reinsertion of the "--" flag
+// terminator.
+func runWrapper(cf func(cmd *cobra.Command, args []string) (exit int)) func(cmd *cobra.Command, args []string) {
+	return func(cmd *cobra.Command, args []string) {
+		cmdExitCode = cf(cmd, args)
+	}
 }
 
 func main() {
-	// parse global arguments
-	globalFlagset.Parse(os.Args[1:])
-	args := globalFlagset.Args()
-	if len(args) < 1 || globalFlags.Help {
-		args = []string{"help"}
-	}
+	// check if rkt is executed with a multicall command
+	multicall.MaybeExec()
 
-	var cmd *Command
-	subArgs := args[1:]
+	cmdRkt.SetUsageFunc(usageFunc)
 
-	// determine which Command should be run
-	for _, c := range commands {
-		if c.Name == args[0] {
-			cmd = c
-			if err := c.Flags.Parse(subArgs); err != nil {
-				stderr("%v", err)
-				os.Exit(2)
-			}
-			break
-		}
-	}
+	// Make help just show the usage
+	cmdRkt.SetHelpTemplate(`{{.UsageString}}`)
 
-	if cmd == nil {
-		stderr("%v: unknown subcommand: %q", cliName, args[0])
-		stderr("Run '%v help' for usage.", cliName)
-		os.Exit(2)
-	}
-
-	if globalFlags.Debug {
-		log.SetOutput(os.Stderr)
-	}
-
-	// XXX(vc): Flags.Args() stops parsing at "--" but swallows it in doing so.
-	// This interferes with parseApps() so we detect that here and reclaim "--",
-	// passing it to the subcommand with the rest of the arguments.
-	subArgsConsumed := len(subArgs) - cmd.Flags.NArg()
-	if cmd.WantsFlagsTerminator && subArgsConsumed > 0 && subArgs[subArgsConsumed-1] == "--" {
-		subArgsConsumed--
-	}
-	os.Exit(cmd.Run(subArgs[subArgsConsumed:]))
+	cmdRkt.Execute()
+	os.Exit(cmdExitCode)
 }
 
 func stderr(format string, a ...interface{}) {
@@ -122,51 +149,87 @@ func stdout(format string, a ...interface{}) {
 	fmt.Fprintln(os.Stdout, strings.TrimSuffix(out, "\n"))
 }
 
-func getAllFlags() (flags []*flag.Flag) {
-	return getFlags(globalFlagset)
-}
-
-func getFlags(flagset *flag.FlagSet) (flags []*flag.Flag) {
-	flags = make([]*flag.Flag, 0)
-	flagset.VisitAll(func(f *flag.Flag) {
-		flags = append(flags, f)
-	})
-	return
-}
-
 // where pod directories are created and locked before moving to prepared
 func embryoDir() string {
-	return filepath.Join(globalFlags.Dir, "pods", "embryo")
+	return filepath.Join(getDataDir(), "pods", "embryo")
 }
 
 // where pod trees reside during (locked) and after failing to complete preparation (unlocked)
 func prepareDir() string {
-	return filepath.Join(globalFlags.Dir, "pods", "prepare")
+	return filepath.Join(getDataDir(), "pods", "prepare")
 }
 
 // where pod trees reside upon successful preparation
 func preparedDir() string {
-	return filepath.Join(globalFlags.Dir, "pods", "prepared")
+	return filepath.Join(getDataDir(), "pods", "prepared")
 }
 
 // where pod trees reside once run
 func runDir() string {
-	return filepath.Join(globalFlags.Dir, "pods", "run")
+	return filepath.Join(getDataDir(), "pods", "run")
 }
 
 // where pod trees reside once exited & marked as garbage by a gc pass
 func exitedGarbageDir() string {
-	return filepath.Join(globalFlags.Dir, "pods", "exited-garbage")
+	return filepath.Join(getDataDir(), "pods", "exited-garbage")
 }
 
 // where never-executed pod trees reside once marked as garbage by a gc pass (failed prepares, expired prepareds)
 func garbageDir() string {
-	return filepath.Join(globalFlags.Dir, "pods", "garbage")
+	return filepath.Join(getDataDir(), "pods", "garbage")
 }
 
 func getKeystore() *keystore.Keystore {
-	if globalFlags.InsecureSkipVerify {
+	if globalFlags.InsecureFlags.SkipImageCheck() {
 		return nil
 	}
-	return keystore.New(nil)
+	config := keystore.NewConfig(globalFlags.SystemConfigDir, globalFlags.LocalConfigDir)
+	return keystore.New(config)
+}
+
+func getDataDir() string {
+	if cachedDataDir == "" {
+		cachedDataDir = calculateDataDir()
+	}
+	return cachedDataDir
+}
+
+func calculateDataDir() string {
+	// If --dir parameter is passed, then use this value.
+	if dirFlag := cmdRkt.PersistentFlags().Lookup("dir"); dirFlag != nil {
+		if dirFlag.Changed {
+			return globalFlags.Dir
+		}
+	} else {
+		// should not happen
+		panic(`"--dir" flag not found`)
+	}
+
+	// If above fails, then try to get the value from configuration.
+	if config, err := getConfig(); err != nil {
+		stderr("rkt: cannot get configuration: %v", err)
+		os.Exit(1)
+	} else {
+		if config.Paths.DataDir != "" {
+			return config.Paths.DataDir
+		}
+	}
+
+	// If above fails, then use the default.
+	return defaultDataDir
+}
+
+func getConfig() (*config.Config, error) {
+	if cachedConfig == nil {
+		cfg, err := config.GetConfigFrom(globalFlags.SystemConfigDir, globalFlags.LocalConfigDir)
+		if err != nil {
+			return nil, err
+		}
+		cachedConfig = cfg
+	}
+	return cachedConfig, nil
+}
+
+func lockDir() string {
+	return filepath.Join(getDataDir(), "locks")
 }

@@ -1,4 +1,4 @@
-// Copyright 2014 CoreOS, Inc.
+// Copyright 2014 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,10 +17,14 @@
 package main
 
 import (
-	"flag"
+	"fmt"
 	"os"
 	"syscall"
 	"time"
+
+	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/spf13/cobra"
+	"github.com/coreos/rkt/stage0"
+	"github.com/coreos/rkt/store"
 )
 
 const (
@@ -29,25 +33,22 @@ const (
 )
 
 var (
-	cmdGC = &Command{
-		Name:    "gc",
-		Summary: "Garbage-collect rkt pods no longer in use",
-		Usage:   "[--grace-period=duration] [--expire-prepared=duration]",
-		Run:     runGC,
-		Flags:   &gcFlags,
+	cmdGC = &cobra.Command{
+		Use:   "gc [--grace-period=duration] [--expire-prepared=duration]",
+		Short: "Garbage-collect rkt pods no longer in use",
+		Run:   runWrapper(runGC),
 	}
-	gcFlags                flag.FlagSet
 	flagGracePeriod        time.Duration
 	flagPreparedExpiration time.Duration
 )
 
 func init() {
-	commands = append(commands, cmdGC)
-	gcFlags.DurationVar(&flagGracePeriod, "grace-period", defaultGracePeriod, "duration to wait before discarding inactive pods from garbage")
-	gcFlags.DurationVar(&flagPreparedExpiration, "expire-prepared", defaultPreparedExpiration, "duration to wait before expiring prepared pods")
+	cmdRkt.AddCommand(cmdGC)
+	cmdGC.Flags().DurationVar(&flagGracePeriod, "grace-period", defaultGracePeriod, "duration to wait before discarding inactive pods from garbage")
+	cmdGC.Flags().DurationVar(&flagPreparedExpiration, "expire-prepared", defaultPreparedExpiration, "duration to wait before expiring prepared pods")
 }
 
-func runGC(args []string) (exit int) {
+func runGC(cmd *cobra.Command, args []string) (exit int) {
 	if err := renameExited(); err != nil {
 		stderr("Failed to rename exited pods: %v", err)
 		return 1
@@ -80,7 +81,7 @@ func runGC(args []string) (exit int) {
 func renameExited() error {
 	if err := walkPods(includeRunDir, func(p *pod) {
 		if p.isExited {
-			stdout("Moving pod %q to garbage", p.uuid)
+			stderr("Moving pod %q to garbage", p.uuid)
 			if err := p.xToExitedGarbage(); err != nil && err != os.ErrNotExist {
 				stderr("Rename error: %v", err)
 			}
@@ -109,9 +110,10 @@ func emptyExitedGarbage(gracePeriod time.Duration) error {
 				return
 			}
 			stdout("Garbage collecting pod %q", p.uuid)
-			if err := os.RemoveAll(gp); err != nil {
-				stderr("Unable to remove pod %q: %v", p.uuid, err)
-			}
+
+			deletePod(p)
+		} else {
+			stderr("Pod %q not removed: still within grace period (%s)", p.uuid, gracePeriod)
 		}
 	}); err != nil {
 		return err
@@ -124,7 +126,7 @@ func emptyExitedGarbage(gracePeriod time.Duration) error {
 func renameAborted() error {
 	if err := walkPods(includePrepareDir, func(p *pod) {
 		if p.isAbortedPrepare {
-			stdout("Moving failed prepare %q to garbage", p.uuid)
+			stderr("Moving failed prepare %q to garbage", p.uuid)
 			if err := p.xToGarbage(); err != nil && err != os.ErrNotExist {
 				stderr("Rename error: %v", err)
 			}
@@ -148,7 +150,7 @@ func renameExpired(preparedExpiration time.Duration) error {
 		}
 
 		if expiration := time.Unix(st.Ctim.Unix()).Add(preparedExpiration); time.Now().After(expiration) {
-			stdout("Moving expired prepared pod %q to garbage", p.uuid)
+			stderr("Moving expired prepared pod %q to garbage", p.uuid)
 			if err := p.xToGarbage(); err != nil && err != os.ErrNotExist {
 				stderr("Rename error: %v", err)
 			}
@@ -166,12 +168,52 @@ func emptyGarbage() error {
 			return
 		}
 		stdout("Garbage collecting pod %q", p.uuid)
-		if err := os.RemoveAll(p.path()); err != nil {
-			stderr("Unable to remove pod %q: %v", p.uuid, err)
-		}
+
+		deletePod(p)
 	}); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+// deletePod cleans up files and resource associated with the pod
+// pod must be under exclusive lock and be in either ExitedGarbage
+// or Garbage state
+func deletePod(p *pod) {
+	if !p.isExitedGarbage && !p.isGarbage {
+		panic(fmt.Sprintf("Logic error: deletePod called with non-garbage pod %q (status %q)", p.uuid, p.getState()))
+	}
+
+	if p.isExitedGarbage {
+		s, err := store.NewStore(getDataDir())
+		if err != nil {
+			stderr("Cannot open store: %v", err)
+			return
+		}
+		defer s.Close()
+
+		// execute stage1's GC
+		stage1TreeStoreID, err := p.getStage1TreeStoreID()
+		if err != nil {
+			stderr("Error getting stage1 treeStoreID: %v", err)
+			stderr("Skipping stage1 GC")
+		} else {
+			stage1RootFS := s.GetTreeStoreRootFS(stage1TreeStoreID)
+			if err = stage0.GC(p.path(), p.uuid, stage1RootFS, globalFlags.Debug); err != nil {
+				stderr("Problem performing stage1 GC on %q: %v", p.uuid, err)
+			}
+		}
+
+		// unmount all leftover mounts
+		if err := stage0.MountGC(p.path(), p.uuid.String()); err != nil {
+			stderr("GC of leftover mounts for pod %q failed: %v\n", p.uuid, err)
+			return
+		}
+	}
+
+	if err := os.RemoveAll(p.path()); err != nil {
+		stderr("Unable to remove pod %q: %v", p.uuid, err)
+		os.Exit(1)
+	}
 }

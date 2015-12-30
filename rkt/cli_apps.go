@@ -1,4 +1,4 @@
-// Copyright 2015 CoreOS, Inc.
+// Copyright 2015 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,10 +17,16 @@
 package main
 
 import (
-	"flag"
 	"fmt"
+	"net/url"
+	"path/filepath"
+	"strings"
 
 	"github.com/coreos/rkt/common/apps"
+
+	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/spec/schema"
+	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/spec/schema/types"
+	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/spf13/pflag"
 )
 
 var (
@@ -31,7 +37,7 @@ var (
 // Between per-app argument lists flags.Parse() is called using the supplied FlagSet.
 // Anything not consumed by flags.Parse() and not found to be a per-app argument list is treated as an image.
 // allowAppArgs controls whether "--" prefixed per-app arguments will be accepted or not.
-func parseApps(al *apps.Apps, args []string, flags *flag.FlagSet, allowAppArgs bool) error {
+func parseApps(al *apps.Apps, args []string, flags *pflag.FlagSet, allowAppArgs bool) error {
 	nAppsLastAppArgs := al.Count()
 
 	// valid args here may either be:
@@ -97,16 +103,16 @@ func parseApps(al *apps.Apps, args []string, flags *flag.FlagSet, allowAppArgs b
 		}
 	}
 
-	return nil
+	return al.Validate()
 }
 
 // Value interface implementations for the various per-app fields we provide flags for
 
-// appAsc is for aci --signature overrides
+// appAsc is for aci --signature
 type appAsc apps.Apps
 
-func (al *appAsc) Set(s string) error {
-	app := (*apps.Apps)(al).Last()
+func (aa *appAsc) Set(s string) error {
+	app := (*apps.Apps)(aa).Last()
 	if app == nil {
 		return fmt.Errorf("--signature must follow an image")
 	}
@@ -118,12 +124,187 @@ func (al *appAsc) Set(s string) error {
 	return nil
 }
 
-func (al *appAsc) String() string {
-	app := (*apps.Apps)(al).Last()
+func (aa *appAsc) String() string {
+	app := (*apps.Apps)(aa).Last()
 	if app == nil {
 		return ""
 	}
 	return app.Asc
 }
 
-// TODO(vc): --mount, --set-env, etc.
+func (aa *appAsc) Type() string {
+	return "appAsc"
+}
+
+// appExec is for aci --exec overrides
+type appExec apps.Apps
+
+func (ae *appExec) Set(s string) error {
+	app := (*apps.Apps)(ae).Last()
+	if app == nil {
+		return fmt.Errorf("--exec must follow an image")
+	}
+	if !filepath.IsAbs(s) {
+		return fmt.Errorf("--exec must be absolute path")
+	}
+	if app.Exec != "" {
+		return fmt.Errorf("--exec specified multiple times for the same image")
+	}
+	app.Exec = s
+
+	return nil
+}
+
+// appMount is for --mount flags in the form of: --mount volume=VOLNAME,target=PATH
+type appMount apps.Apps
+
+func (al *appMount) Set(s string) error {
+	mount := schema.Mount{}
+
+	// this is intentionally made similar to types.VolumeFromString()
+	// TODO(iaguis) use MakeQueryString() when appc/spec#520 is merged
+	m, err := url.ParseQuery(strings.Replace(s, ",", "&", -1))
+	if err != nil {
+		return err
+	}
+
+	for key, val := range m {
+		if len(val) > 1 {
+			return fmt.Errorf("label %s with multiple values %q", key, val)
+		}
+		switch key {
+		case "volume":
+			mv, err := types.NewACName(val[0])
+			if err != nil {
+				return fmt.Errorf("invalid volume name %q in --mount flag %q: %v", val[0], s, err)
+			}
+			mount.Volume = *mv
+		case "target":
+			mount.Path = val[0]
+		default:
+			return fmt.Errorf("unknown mount parameter %q", key)
+		}
+	}
+
+	as := (*apps.Apps)(al)
+	if as.Count() == 0 {
+		as.Mounts = append(as.Mounts, mount)
+	} else {
+		app := as.Last()
+		app.Mounts = append(app.Mounts, mount)
+	}
+
+	return nil
+}
+
+func (ae *appExec) String() string {
+	app := (*apps.Apps)(ae).Last()
+	if app == nil {
+		return ""
+	}
+	return app.Exec
+}
+
+func (ae *appExec) Type() string {
+	return "appExec"
+}
+
+// TODO(vc): --set-env should also be per-app and should implement the flags.Value interface.
+func (al *appMount) String() string {
+	var ms []string
+	for _, m := range ((*apps.Apps)(al)).Mounts {
+		ms = append(ms, m.Volume.String(), ":", m.Path)
+	}
+	return strings.Join(ms, " ")
+}
+
+func (al *appMount) Type() string {
+	return "appMount"
+}
+
+// appsVolume is for --volume flags in the form name,kind=host,source=/tmp,readOnly=true (defined by appc)
+type appsVolume apps.Apps
+
+func (al *appsVolume) Set(s string) error {
+	vol, err := types.VolumeFromString(s)
+	if err != nil {
+		return fmt.Errorf("invalid value in --volume flag %q: %v", s, err)
+	}
+
+	(*apps.Apps)(al).Volumes = append((*apps.Apps)(al).Volumes, *vol)
+	return nil
+}
+
+func (al *appsVolume) Type() string {
+	return "appsVolume"
+}
+
+func (al *appsVolume) String() string {
+	var vs []string
+	for _, v := range (*apps.Apps)(al).Volumes {
+		vs = append(vs, v.String())
+	}
+	return strings.Join(vs, " ")
+}
+
+// appMemoryLimit is for --memory flags in the form of: --memory=128M
+type appMemoryLimit apps.Apps
+
+func (aml *appMemoryLimit) Set(s string) error {
+	app := (*apps.Apps)(aml).Last()
+	if app == nil {
+		return fmt.Errorf("--memory must follow an image")
+	}
+	isolator, err := types.NewResourceMemoryIsolator(s, s)
+	if err != nil {
+		return err
+	}
+	// Just don't accept anything less than 4Ki. It's not reasonable and
+	// it's most likely a mistake from the user, such as passing
+	// --memory=16m (milli-bytes!) instead of --memory=16M (megabytes).
+	if isolator.Limit().Value() < 4096 {
+		return fmt.Errorf("memory limit of %d bytes too low. Try a reasonable value, such as --memory=16M", isolator.Limit().Value())
+	}
+	app.MemoryLimit = isolator
+	return nil
+}
+
+func (aml *appMemoryLimit) String() string {
+	app := (*apps.Apps)(aml).Last()
+	if app == nil {
+		return ""
+	}
+	return app.MemoryLimit.String()
+}
+
+func (aml *appMemoryLimit) Type() string {
+	return "appMemoryLimit"
+}
+
+// appCPULimit is for --cpu flags in the form of: --cpu=500m
+type appCPULimit apps.Apps
+
+func (aml *appCPULimit) Set(s string) error {
+	app := (*apps.Apps)(aml).Last()
+	if app == nil {
+		return fmt.Errorf("--cpu must follow an image")
+	}
+	isolator, err := types.NewResourceCPUIsolator(s, s)
+	if err != nil {
+		return err
+	}
+	app.CPULimit = isolator
+	return nil
+}
+
+func (aml *appCPULimit) String() string {
+	app := (*apps.Apps)(aml).Last()
+	if app == nil {
+		return ""
+	}
+	return app.CPULimit.String()
+}
+
+func (aml *appCPULimit) Type() string {
+	return "appCPULimit"
+}

@@ -1,4 +1,4 @@
-// Copyright 2014 CoreOS, Inc.
+// Copyright 2014 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // Package keystoretest provides utilities for ACI keystore testing.
-//go:generate go run keygen.go
+//go:generate go run ./keygen/keygen.go
 package keystoretest
 
 import (
@@ -33,7 +33,7 @@ type KeyDetails struct {
 
 // NewMessageAndSignature generates a new random message signed by the given entity.
 // NewMessageAndSignature returns message, signature and an error if any.
-func NewMessageAndSignature(armoredPrivateKey string) (io.Reader, io.Reader, error) {
+func NewMessageAndSignature(armoredPrivateKey string) (io.ReadSeeker, io.ReadSeeker, error) {
 	entityList, err := openpgp.ReadArmoredKeyRing(bytes.NewBufferString(armoredPrivateKey))
 	if err != nil {
 		return nil, nil, err
@@ -46,5 +46,5 @@ func NewMessageAndSignature(armoredPrivateKey string) (io.Reader, io.Reader, err
 	if err := openpgp.ArmoredDetachSign(signature, entityList[0], bytes.NewReader(message), nil); err != nil {
 		return nil, nil, err
 	}
-	return bytes.NewBuffer(message), signature, nil
+	return bytes.NewReader(message), bytes.NewReader(signature.Bytes()), nil
 }

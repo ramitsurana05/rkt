@@ -1,4 +1,4 @@
-// Copyright 2015 CoreOS, Inc.
+// Copyright 2015 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
 	"strings"
 
 	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/spec/schema/types"
@@ -64,4 +66,18 @@ func resolveUUID(uuid string) (*types.UUID, error) {
 	}
 
 	return u, nil
+}
+
+func readUUIDFromFile(path string) (*types.UUID, error) {
+	uuid, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	uuid = bytes.TrimSpace(uuid)
+
+	return types.NewUUID(string(uuid))
+}
+
+func writeUUIDToFile(uuid *types.UUID, path string) error {
+	return ioutil.WriteFile(path, []byte(uuid.String()), 0644)
 }

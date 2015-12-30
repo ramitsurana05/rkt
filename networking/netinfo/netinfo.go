@@ -1,4 +1,4 @@
-// Copyright 2015 CoreOS, Inc.
+// Copyright 2015 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,17 +16,25 @@ package netinfo
 
 import (
 	"encoding/json"
+	"net"
 	"os"
 	"path/filepath"
 	"syscall"
+
+	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/cni/pkg/types"
 )
 
 const filename = "net-info.json"
 
 type NetInfo struct {
-	NetName string `json:"netName"`
-	IfName  string `json:"ifName"`
-	IP      string `json:"ip"`
+	NetName  string          `json:"netName"`
+	ConfPath string          `json:"netConf"`
+	IfName   string          `json:"ifName"`
+	IP       net.IP          `json:"ip"`
+	Args     string          `json:"args"`
+	Mask     net.IP          `json:"mask"` // we used IP instead of IPMask because support for json serialization (we don't need specifc functionalities
+	HostIP   net.IP          `json:"-"`
+	IP4      *types.IPConfig `json:"-"`
 }
 
 func LoadAt(cdirfd int) ([]NetInfo, error) {
@@ -37,7 +45,7 @@ func LoadAt(cdirfd int) ([]NetInfo, error) {
 
 	f := os.NewFile(uintptr(fd), filename)
 
-	info := []NetInfo{}
+	var info []NetInfo
 	err = json.NewDecoder(f).Decode(&info)
 	return info, err
 }

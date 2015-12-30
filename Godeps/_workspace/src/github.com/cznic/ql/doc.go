@@ -3,17 +3,55 @@
 // license that can be found in the LICENSE file.
 
 //MAYBE set operations
-//MAYBE IN ( SELECT ... )
 //MAYBE +=, -=, ...
 
 //TODO verify there's a graceful failure for a 2G+ blob on a 32 bit machine.
 
-// Package ql is a pure Go embedded (S)QL database.
+// Package ql implements a pure Go embedded SQL database engine.
 //
-// QL is a SQL-like language. It is less complex and less powerful than SQL
-// (whichever specification SQL is considered to be).
+// QL is a member of the SQL family of languages. It is less complex and less
+// powerful than SQL (whichever specification SQL is considered to be).
 //
 // Change list
+//
+// 2015-06-15: To improve compatibility with other SQL implementations, the
+// count built-in aggregate function now accepts * as its argument.
+//
+// 2015-05-29: The execution planner was rewritten from scratch. It should use
+// indices in all places where they were used before plus in some additional
+// situations.  It is possible to investigate the plan using the newly added
+// EXPLAIN statement.  The QL tool is handy for such analysis. If the planner
+// would have used an index, but no such exists, the plan includes hints in
+// form of copy/paste ready CREATE INDEX statements.
+//
+// The planner is still quite simple and a lot of work on it is yet ahead. You
+// can help this process by filling an issue with a schema and query which
+// fails to use an index or indices when it should, in your opinion. Bonus
+// points for including output of `ql 'explain <query>'`.
+//
+// 2015-05-09: The grammar of the CREATE INDEX statement now accepts an
+// expression list instead of a single expression, which was further limited to
+// just a column name or the built-in id().  As a side effect, composite
+// indices are now functional. However, the values in the expression-list style
+// index are not yet used by other statements or the statement/query planner.
+// The composite index is useful while having UNIQUE clause to check for
+// semantically duplicate rows before they get added to the table or when such
+// a row is mutated using the UPDATE statement and the expression-list style
+// index tuple of the row is thus recomputed.
+//
+// 2015-05-02: The Schema field of table __Table now correctly reflects any
+// column constraints and/or defaults. Also, the (*DB).Info method now has that
+// information provided in new ColumInfo fields NotNull, Constraint and
+// Default.
+//
+// 2015-04-20: Added support for {LEFT,RIGHT,FULL} [OUTER] JOIN.
+//
+// 2015-04-18: Column definitions can now have constraints and defaults.
+// Details are discussed in the "Constraints and defaults" chapter below the
+// CREATE TABLE statement documentation.
+//
+// 2015-03-06: New built-in functions formatFloat and formatInt. Thanks
+// urandom! (https://github.com/urandom)
 //
 // 2015-02-16: IN predicate now accepts a SELECT statement. See the updated
 // "Predicates" section.
@@ -72,6 +110,24 @@
 // 2014-04-10: Introduction of query rewriting.
 //
 // 2014-04-07: Introduction of indices.
+//
+// Building non CGO QL
+//
+// QL imports zappy[8], a block-based compressor, which speeds up its
+// performance by using a C version of the compression/decompression
+// algorithms.  If a CGO-free (pure Go) version of QL, or an app using QL, is
+// required, please include 'purego' in the -tags option of go
+// {build,get,install}. For example:
+//
+//	$ go get -tags purego github.com/cznic/ql
+//
+// If zappy was installed before installing QL, it might be necessary to
+// rebuild zappy first (or rebuild QL with all its dependencies using the -a
+// option):
+//
+//	$ touch "$GOPATH"/src/github.com/cznic/zappy/*.go
+//	$ go install -tags purego github.com/cznic/zappy
+//	$ go install github.com/cznic/ql
 //
 // Notation
 //
@@ -188,6 +244,7 @@
 // avoid using any identifiers starting with two underscores. For example
 //
 //	__Column
+//	__Column2
 //	__Index
 //	__Table
 //
@@ -195,17 +252,18 @@
 //
 // The following keywords are reserved and may not be used as identifiers.
 //
-//	ADD      BY          duration  INDEX   NULL    TRUNCATE
-//	ALTER    byte        EXISTS    INSERT  OFFSET  uint
-//	AND      COLUMN      false     int     ON      uint16
-//	AS       complex128  float     int16   ORDER   uint32
-//	ASC      complex64   float32   int32   SELECT  uint64
-//	BETWEEN  CREATE      float64   int64   SET     uint8
-//	bigint   DELETE      FROM      int8    string  UNIQUE
-//	bigrat   DESC        GROUP     INTO    TABLE   UPDATE
-//	blob     DISTINCT    IF        LIMIT   time    VALUES
-//	bool     DROP        IN        LIKE    true    WHERE
-//	                               NOT     OR
+//	ADD      COLUMN      false     int32   ORDER     uint16
+//	ALTER    complex128  float     int64   OUTER     uint32
+//	AND      complex64   float32   int8    RIGHT     uint64
+//	AS       CREATE      float64   INTO    SELECT    uint8
+//	ASC      DEFAULT     FROM      JOIN    SET       UNIQUE
+//	BETWEEN  DELETE      GROUP     LEFT    string    UPDATE
+//	bigint   DESC        IF        LIMIT   TABLE     VALUES
+//	bigrat   DISTINCT    IN        LIKE    time      WHERE
+//	blob     DROP        INDEX     NOT     true
+//	bool     duration    INSERT    NULL    OR
+//	BY       EXISTS      int       OFFSET  TRUNCATE
+//	byte     EXPLAIN     int16     ON      uint
 //
 // Keywords are not case sensitive.
 //
@@ -565,13 +623,13 @@
 //
 // The following functions are implicitly declared
 //
-//	avg          complex     contains   count      date
-//	day          formatTime  hasPrefix  hasSuffix  hour
-//	hours        id          imag       len        max
-//	min          minute      minutes    month      nanosecond
-//	nanoseconds  now         parseTime  real       second
-//	seconds      since       sum        timeIn     weekday
-//	year         yearDay
+//	avg          complex     contains    count       date
+//	day          formatTime  formatFloat formatInt
+//	hasPrefix    hasSuffix   hour        hours       id
+//	imag         len         max         min         minute
+//	minutes      month       nanosecond  nanoseconds now
+//	parseTime    real        second      seconds     since
+//	sum          timeIn      weekday     year        yearDay
 //
 // Expressions
 //
@@ -610,7 +668,7 @@
 //              | PrimaryExpression Slice
 //              | PrimaryExpression Call .
 //
-//  Call  = "(" [ ExpressionList ] ")" .
+//  Call  = "(" [ "*" | ExpressionList ] ")" . // * only in count(*).
 //  Index = "[" Expression "]" .
 //  Slice = "[" [ Expression ] ":" [ Expression ] "]" .
 //
@@ -804,7 +862,7 @@
 //  Predicate = (
 //  			[ "NOT" ] (
 //  			  "IN" "(" ExpressionList ")"
-//  			| "IN" "(" SelectStmt ")"
+//  			| "IN" "(" SelectStmt [ ";" ] ")"
 //  			| "BETWEEN" PrimaryFactor "AND" PrimaryFactor
 //  			)
 //              |       "IS" [ "NOT" ] "NULL"
@@ -1209,7 +1267,7 @@
 //  Statement =  EmptyStmt | AlterTableStmt | BeginTransactionStmt | CommitStmt
 //  	| CreateIndexStmt | CreateTableStmt | DeleteFromStmt | DropIndexStmt
 //  	| DropTableStmt | InsertIntoStmt | RollbackStmt | SelectStmt
-//  	| TruncateTableStmt | UpdateStmt .
+//  	| TruncateTableStmt | UpdateStmt | ExplainStmt.
 //
 //  StatementList = Statement { ";" Statement } .
 //
@@ -1235,6 +1293,10 @@
 // 		ALTER TABLE Stock ADD Qty int;
 // 		ALTER TABLE Income DROP COLUMN Taxes;
 //	COMMIT;
+//
+// When adding a column to a table with existing data, the constraint clause of
+// the ColumnDef cannot be used. Adding a constrained column to an empty table
+// is fine.
 //
 // BEGIN TRANSACTION
 //
@@ -1304,7 +1366,7 @@
 // column name of the table the index is on.
 //
 //  CreateIndexStmt = "CREATE" [ "UNIQUE" ] "INDEX" [ "IF" "NOT" "EXISTS" ]
-//  	IndexName "ON" TableName "(" ( ColumnName | "id" Call ) ")" .
+//  	IndexName "ON" TableName "(" ExpressionList ")" .
 //
 // For example
 //
@@ -1321,10 +1383,25 @@
 // indices might be used to improve the performance when the ORDER BY clause is
 // present.
 //
-// The UNIQUE modifier requires the indexed values to be unique or NULL.
+// The UNIQUE modifier requires the indexed values tuple to be index-wise
+// unique or have all values NULL.
 //
 // The optional IF NOT EXISTS clause makes the statement a no operation if the
 // index already exists.
+//
+// Simple index
+//
+// A simple index consists of only one expression which must be either a column
+// name or the built-in id().
+//
+// Expression list index
+//
+// A more complex and more general index is one that consists of more than one
+// expression or its single expression does not qualify as a simple index. In
+// this case the type of all expressions in the list must be one of the non
+// blob-like types.
+//
+// Note: Blob-like types are blob, bigint, bigrat, time and duration.
 //
 // CREATE TABLE
 //
@@ -1335,7 +1412,7 @@
 //  CreateTableStmt = "CREATE" "TABLE" [ "IF" "NOT" "EXISTS" ] TableName
 //  	"(" ColumnDef { "," ColumnDef } [ "," ] ")" .
 //
-//  ColumnDef = ColumnName Type .
+//  ColumnDef = ColumnName Type [ "NOT" "NULL" | Expression ] [ "DEFAULT" Expression ] .
 //  ColumnName = identifier .
 //  TableName = identifier .
 //
@@ -1354,6 +1431,81 @@
 //
 // The optional IF NOT EXISTS clause makes the statement a no operation if the
 // table already exists.
+//
+// The optional constraint clause has two forms. The first one is found in many
+// SQL dialects.
+//
+//	BEGIN TRANSACTION;
+// 		CREATE TABLE department (
+// 			DepartmentID   int,
+// 			DepartmentName string NOT NULL,
+// 		);
+//	COMMIT;
+//
+// This form prevents the data in column DepartmentName to be NULL.
+//
+// The second form allows an arbitrary boolean expression to be used to
+// validate the column. If the value of the expression is true then the
+// validation succeeded. If the value of the expression is false or NULL then
+// the validation fails. If the value of the expression is not of type bool an
+// error occurs.
+//
+//	BEGIN TRANSACTION;
+// 		CREATE TABLE department (
+// 			DepartmentID   int,
+// 			DepartmentName string DepartmentName IN ("HQ", "R/D", "Lab", "HR"),
+// 		);
+//	COMMIT;
+//
+//	BEGIN TRANSACTION;
+// 		CREATE TABLE t (
+//			TimeStamp time TimeStamp < now() && since(TimeStamp) < duration("10s"),
+//			Event string Event != "" && Event like "[0-9]+:[ \t]+.*",
+//		);
+//	COMMIT;
+//
+// The optional DEFAULT clause is an expression which, if present, is
+// substituted instead of a NULL value when the colum is assigned a value.
+//
+//	BEGIN TRANSACTION;
+// 		CREATE TABLE department (
+// 			DepartmentID   int,
+// 			DepartmentName string DepartmentName IN ("HQ", "R/D", "Lab", "HR") DEFAULT "HQ",
+// 		);
+//	COMMIT;
+//
+// Note that the constraint and/or default expressions may refer to other
+// columns by name:
+//
+//	BEGIN TRANSACTION;
+//		CREATE TABLE t (
+//			a int,
+//			b int b > a && b < c DEFAULT (a+c)/2,
+//			c int,
+//	);
+//	COMMIT;
+//
+//
+// Constraints and defaults
+//
+// When a table row is inserted by the INSERT INTO statement or when a table
+// row is updated by the UPDATE statement, the order of operations is as
+// follows:
+//
+// 1. The new values of the affected columns are set and the values of all the
+// row columns become the named values which can be referred to in default
+// expressions evaluated in step 2.
+//
+// 2. If any row column value is NULL and the DEFAULT clause is present in the
+// column's definition, the default expression is evaluated and its value is
+// set as the respective column value.
+//
+// 3. The values, potentially updated, of row columns become the named values
+// which can be referred to in constraint expressions evaluated during step 4.
+//
+// 4. All row columns which definition has the constraint clause present will
+// have that constraint checked. If any constraint violation is detected, the
+// overall operation fails and no changes to the table are made.
 //
 // DELETE FROM
 //
@@ -1447,6 +1599,73 @@
 //		FROM department;
 //	COMMIT;
 //
+// If any of the columns of the table were defined using the optional
+// constraints clause or the optional defaults clause then those are processed
+// on a per row basis. The details are discussed in the "Constraints and
+// defaults" chapter below the CREATE TABLE statement documentation.
+//
+// Explain statement
+//
+// Explain statement produces a recordset consisting of lines of text which
+// describe the execution plan of a statement, if any.
+//
+//  ExplainStmt = "EXPLAIN" Statement .
+//
+// For example, the QL tool treats the explain statement specially and outputs
+// the joined lines:
+//
+//	$ ql 'create table t(i int); create table u(j int)'
+//	$ ql 'explain select * from t, u where t.i > 42 && u.j < 314'
+//	┌Compute Cartesian product of
+//	│   ┌Iterate all rows of table "t"
+//	│   └Output field names ["i"]
+//	│   ┌Iterate all rows of table "u"
+//	│   └Output field names ["j"]
+//	└Output field names ["t.i" "u.j"]
+//	┌Filter on t.i > 42 && u.j < 314
+//	│Possibly useful indices
+//	│CREATE INDEX xt_i ON t(i);
+//	│CREATE INDEX xu_j ON u(j);
+//	└Output field names ["t.i" "u.j"]
+//	$ ql 'CREATE INDEX xt_i ON t(i); CREATE INDEX xu_j ON u(j);'
+//	$ ql 'explain select * from t, u where t.i > 42 && u.j < 314'
+//	┌Compute Cartesian product of
+//	│   ┌Iterate all rows of table "t" using index "xt_i" where i > 42
+//	│   └Output field names ["i"]
+//	│   ┌Iterate all rows of table "u" using index "xu_j" where j < 314
+//	│   └Output field names ["j"]
+//	└Output field names ["t.i" "u.j"]
+//	$ ql 'explain select * from t where i > 12 and i between 10 and 20 and i < 42'
+//	┌Iterate all rows of table "t" using index "xt_i" where i > 12 && i <= 20
+//	└Output field names ["i"]
+//	$
+//
+// The explanation may aid in uderstanding how a statement/query would be
+// executed and if indices are used as expected - or which indices may possibly
+// improve the statement performance.  The create index statements above were
+// directly copy/pasted in the terminal from the suggestions provided by the
+// filter recordset pipeline part returned by the explain statement.
+//
+// If the statement has nothing special in its plan, the result is the original
+// statement.
+//
+//	$ ql 'explain delete from t where 42 < i'
+//	DELETE FROM t WHERE i > 42;
+//	$
+//
+// To get an explanation of the select statement of the IN predicate, use the EXPLAIN
+// statement with that particular select statement.
+//
+//	$ ql 'explain select * from t where i in (select j from u where j > 0)'
+//	┌Iterate all rows of table "t"
+//	└Output field names ["i"]
+//	┌Filter on i IN (SELECT j FROM u WHERE j > 0;)
+//	└Output field names ["i"]
+//	$ ql 'explain select j from u where j > 0'
+//	┌Iterate all rows of table "u" using index "xu_j" where j > 0
+//	└Output field names ["j"]
+//	$
+//
 // ROLLBACK
 //
 // The rollback statement closes the innermost transaction nesting level
@@ -1485,7 +1704,9 @@
 // clause.
 //
 //  SelectStmt = "SELECT" [ "DISTINCT" ] ( "*" | FieldList ) "FROM" RecordSetList
-//  	[ WhereClause ] [ GroupByClause ] [ OrderBy ] [ Limit ] [ Offset ].
+//  	[ JoinClause ] [ WhereClause ] [ GroupByClause ] [ OrderBy ] [ Limit ] [ Offset ].
+//
+//  JoinClause = ( "LEFT" | "RIGHT" | "FULL" ) [ "OUTER" ] "JOIN" RecordSet "ON" Expression .
 //
 //  RecordSet = ( TableName | "(" SelectStmt [ ";" ] ")" ) [ "AS" identifier ] .
 //  RecordSetList = RecordSet { "," RecordSet } [ "," ] .
@@ -1561,6 +1782,29 @@
 //
 //	SELECT * FROM employee AS e, ( SELECT * FROM department) AS d;
 //	// Fields are []string{"e.LastName", "e.DepartmentID", "d.DepartmentID", "d.DepartmentName"
+//
+// Outer joins
+//
+// The optional JOIN clause, for example
+//
+//	SELECT *
+//	FROM a
+//	LEFT OUTER JOIN b ON expr;
+//
+// is mostly equal to
+//
+//	SELECT *
+//	FROM a, b
+//	WHERE expr;
+//
+// except that the rows from a which, when they appear in the cross join, never
+// made expr to evaluate to true, are combined with a virtual row from b,
+// containing all nulls, and added to the result set. For the RIGHT JOIN
+// variant the discussed rules are used for rows from b not satisfying expr ==
+// true and the virtual, all-null row "comes" from a. The FULL JOIN adds the
+// respective rows which would be otherwise provided by the separate executions
+// of the LEFT JOIN and RIGHT JOIN variants. For more thorough OUTER JOIN
+// discussion please see the Wikipedia article at [10].
 //
 // Recordset ordering
 //
@@ -1668,26 +1912,30 @@
 // 1. The FROM clause is evaluated, producing a Cartesian product of its source
 // record sets (tables or nested SELECT statements).
 //
-// 2. If present, the WHERE clause is evaluated on the result set of the
+// 2. If present, the JOIN cluase is evaluated on the result set of the
+// previous evaluation and the recordset specified by the JOIN clause. (...
+// JOIN Recordset ON ...)
+//
+// 3. If present, the WHERE clause is evaluated on the result set of the
 // previous evaluation.
 //
-// 3. If present, the GROUP BY clause is evaluated on the result set of the
+// 4. If present, the GROUP BY clause is evaluated on the result set of the
 // previous evaluation(s).
 //
-// 4. The SELECT field expressions are evaluated on the result set of the
+// 5. The SELECT field expressions are evaluated on the result set of the
 // previous evaluation(s).
 //
-// 5. If present, the DISTINCT modifier is evaluated on the result set of the
+// 6. If present, the DISTINCT modifier is evaluated on the result set of the
 // previous evaluation(s).
 //
-// 6. If present, the ORDER BY clause is evaluated on the result set of the
+// 7. If present, the ORDER BY clause is evaluated on the result set of the
 // previous evaluation(s).
 //
-// 7. If present, the OFFSET clause is evaluated on the result set of the
+// 8. If present, the OFFSET clause is evaluated on the result set of the
 // previous evaluation(s). The offset expression is evaluated once for the
 // first record produced by the previous evaluations.
 //
-// 8. If present, the LIMIT clause is evaluated on the result set of the
+// 9. If present, the LIMIT clause is evaluated on the result set of the
 // previous evaluation(s). The limit expression is evaluated once for the first
 // record produced by the previous evaluations.
 //
@@ -1725,13 +1973,18 @@
 //
 // Note: The SET clause is optional.
 //
+// If any of the columns of the table were defined using the optional
+// constraints clause or the optional defaults clause then those are processed
+// on a per row basis. The details are discussed in the "Constraints and
+// defaults" chapter below the CREATE TABLE statement documentation.
+//
 // System Tables
 //
-// To allow to query for DB meta data, there exist specially named virtual
-// tables.
+// To allow to query for DB meta data, there exist specially named tables, some
+// of them being virtual.
 //
-// Note: System tables have fake table-wise unique but meaningless and unstable
-// record IDs. Do not apply the built-in id() to any system table.
+// Note: Virtual system tables may have fake table-wise unique but meaningless
+// and unstable record IDs. Do not apply the built-in id() to any system table.
 //
 // Tables Table
 //
@@ -1739,7 +1992,8 @@
 //
 //	CREATE TABLE __Table (Name string, Schema string);
 //
-// The Schema column returns the statement to (re)create table Name.
+// The Schema column returns the statement to (re)create table Name. This table
+// is virtual.
 //
 // Columns Table
 //
@@ -1748,6 +2002,28 @@
 //	CREATE TABLE __Column (TableName string, Ordinal int, Name string, Type string);
 //
 // The Ordinal column defines the 1-based index of the column in the record.
+// This table is virtual.
+//
+// Columns2 Table
+//
+// The table __Colum2 lists all columns of all tables in the DB which have the
+// constraint NOT NULL or which have a constraint expression defined or which
+// have a default expression defined. The schema is
+//
+//	CREATE TABLE __Column2 (TableName string, Name string, NotNull bool, ConstraintExpr string, DefaultExpr string)
+//
+// It's possible to obtain a consolidated recordset for all properties of all
+// DB columns using
+//
+//	SELECT
+//		__Column.TableName, __Column.Ordinal, __Column.Name, __Column.Type,
+//		__Column2.NotNull, __Column2.ConstraintExpr, __Column2.DefaultExpr,
+//	FROM __Column
+//	LEFT JOIN __Column2
+//	ON __Column.TableName == __Column2.TableName && __Column.Name == __Column2.Name
+//	ORDER BY __Column.TableName, __Column.Ordinal;
+//
+// The Name column is the column name in TableName.
 //
 // Indices table
 //
@@ -1756,7 +2032,7 @@
 //	CREATE TABLE __Index (TableName string, ColumnName string, Name string, IsUnique bool);
 //
 // The IsUnique columns reflects if the index was created using the optional
-// UNIQUE clause.
+// UNIQUE clause. This table is virtual.
 //
 // Built-in functions
 //
@@ -1789,11 +2065,14 @@
 // returns 0 for an empty record set.
 //
 //	func count() int             // The number of rows in a record set.
+//	func count(*) int            // Equivalent to count().
 // 	func count(e expression) int // The number of cases where the expression value is not NULL.
 //
 // For example
 //
 //	SELECT count() FROM department; // # of rows
+//
+//	SELECT count(*) FROM department; // # of rows
 //
 //	SELECT count(DepartmentID) FROM department; // # of records with non NULL field DepartmentID
 //
@@ -1874,6 +2153,35 @@
 //
 // on a machine in the ACDT zone. The time value is in both cases the same so
 // its ordering and comparing is correct. Only the display value can differ.
+//
+// Format numbers
+//
+// The built-in functions formatFloat and formatInt format numbers
+// to strings using go's number format functions in the `strconv` package. For
+// all three functions, only the first argument is mandatory. The default values
+// of the rest are shown in the examples. If the first argument is NULL, the
+// result is NULL.
+//
+//	formatFloat(43.2[, 'g', -1, 64]) string
+//
+// returns
+//
+//	"43.2"
+//
+//	formatInt(-42[, 10]) string
+//
+// returns
+//
+//	"-42"
+//
+//	formatInt(uint32(42)[, 10]) string
+//
+// returns
+//
+//	"42"
+//
+// Unlike the `strconv` equivalent, the formatInt function handles all integer
+// types, both signed and unsigned.
 //
 // HasPrefix
 //
@@ -2216,6 +2524,9 @@
 //	[5]: http://golang.org/LICENSE
 //	[6]: http://golang.org/pkg/regexp/#Regexp.MatchString
 //	[7]: http://developer.mimer.com/validator/sql-reserved-words.tml
+//	[8]: http://godoc.org/github.com/cznic/zappy
+//	[9]: http://www.w3schools.com/sql/sql_default.asp
+//	[10]: http://en.wikipedia.org/wiki/Join_(SQL)#Outer_join
 //
 // Implementation details
 //

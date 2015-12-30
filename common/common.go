@@ -1,4 +1,4 @@
-// Copyright 2014 CoreOS, Inc.
+// Copyright 2014 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,21 +24,34 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/spec/aci"
 	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/spec/schema/types"
 )
 
 const (
-	stage1Dir = "/stage1"
-	stage2Dir = "/opt/stage2"
+	sharedVolumesDir = "/sharedVolumes"
+	stage1Dir        = "/stage1"
+	stage2Dir        = "/opt/stage2"
+	AppsInfoDir      = "/appsinfo"
 
-	EnvLockFd               = "RKT_LOCK_FD"
-	Stage1IDFilename        = "stage1ID"
-	OverlayPreparedFilename = "overlay-prepared"
+	EnvLockFd                    = "RKT_LOCK_FD"
+	EnvSELinuxContext            = "RKT_SELINUX_CONTEXT"
+	Stage1TreeStoreIDFilename    = "stage1TreeStoreID"
+	AppTreeStoreIDFilename       = "treeStoreID"
+	OverlayPreparedFilename      = "overlay-prepared"
+	PrivateUsersPreparedFilename = "private-users-prepared"
 
-	MetadataServicePort    = 2375
+	PrepareLock = "prepareLock"
+
+	MetadataServicePort    = 18112
 	MetadataServiceRegSock = "/run/rkt/metadata-svc.sock"
+
+	APIServiceListenClientURL = "localhost:15441"
+
+	DefaultLocalConfigDir  = "/etc/rkt"
+	DefaultSystemConfigDir = "/usr/lib/rkt"
 )
 
 // Stage1ImagePath returns the path where the stage1 app image (unpacked ACI) is rooted,
@@ -62,44 +75,64 @@ func PodManifestPath(root string) string {
 	return filepath.Join(root, "pod")
 }
 
-// AppImagesPath returns the path where the app images live
-func AppImagesPath(root string) string {
+// AppsPath returns the path where the apps within a pod live.
+func AppsPath(root string) string {
 	return filepath.Join(Stage1RootfsPath(root), stage2Dir)
 }
 
-// AppImagePath returns the path where an app image (i.e. unpacked ACI) is rooted (i.e.
-// where its contents are extracted during stage0), based on the app image ID.
-func AppImagePath(root string, imageID types.Hash) string {
-	return filepath.Join(AppImagesPath(root), types.ShortHash(imageID.String()))
+// AppPath returns the path to an app's rootfs.
+func AppPath(root string, appName types.ACName) string {
+	return filepath.Join(AppsPath(root), appName.String())
 }
 
 // AppRootfsPath returns the path to an app's rootfs.
-// imageID should be the app image ID.
-func AppRootfsPath(root string, imageID types.Hash) string {
-	return filepath.Join(AppImagePath(root, imageID), aci.RootfsDir)
+func AppRootfsPath(root string, appName types.ACName) string {
+	return filepath.Join(AppPath(root, appName), aci.RootfsDir)
 }
 
-// RelAppImagePath returns the path of an application image relative to the
-// stage1 chroot
-func RelAppImagePath(imageID types.Hash) string {
-	return filepath.Join(stage2Dir, types.ShortHash(imageID.String()))
+// RelAppPath returns the path of an app relative to the stage1 chroot.
+func RelAppPath(appName types.ACName) string {
+	return filepath.Join(stage2Dir, appName.String())
 }
 
-// RelAppImagePath returns the path of an application's rootfs relative to the
-// stage1 chroot
-func RelAppRootfsPath(imageID types.Hash) string {
-	return filepath.Join(RelAppImagePath(imageID), aci.RootfsDir)
+// RelAppRootfsPath returns the path of an app's rootfs relative to the stage1 chroot.
+func RelAppRootfsPath(appName types.ACName) string {
+	return filepath.Join(RelAppPath(appName), aci.RootfsDir)
 }
 
-// ImageManifestPath returns the path to the app's manifest file inside the expanded ACI.
-// id should be the app image ID.
-func ImageManifestPath(root string, imageID types.Hash) string {
-	return filepath.Join(AppImagePath(root, imageID), aci.ManifestFile)
+// ImageManifestPath returns the path to the app's manifest file of a pod.
+func ImageManifestPath(root string, appName types.ACName) string {
+	return filepath.Join(AppPath(root, appName), aci.ManifestFile)
+}
+
+// AppsInfoPath returns the path to the appsinfo directory of a pod.
+func AppsInfoPath(root string) string {
+	return filepath.Join(root, AppsInfoDir)
+}
+
+// AppInfoPath returns the path to the app's appsinfo directory of a pod.
+func AppInfoPath(root string, appName types.ACName) string {
+	return filepath.Join(AppsInfoPath(root), appName.String())
+}
+
+// AppTreeStoreIDPath returns the path to the app's treeStoreID file of a pod.
+func AppTreeStoreIDPath(root string, appName types.ACName) string {
+	return filepath.Join(AppInfoPath(root, appName), AppTreeStoreIDFilename)
+}
+
+// AppImageManifestPath returns the path to the app's ImageManifest file
+func AppInfoImageManifestPath(root string, appName types.ACName) string {
+	return filepath.Join(AppInfoPath(root, appName), aci.ManifestFile)
+}
+
+// SharedVolumesPath returns the path to the shared (empty) volumes of a pod.
+func SharedVolumesPath(root string) string {
+	return filepath.Join(root, sharedVolumesDir)
 }
 
 // MetadataServicePublicURL returns the public URL used to host the metadata service
-func MetadataServicePublicURL(ip net.IP) string {
-	return fmt.Sprintf("http://%v:%v", ip, MetadataServicePort)
+func MetadataServicePublicURL(ip net.IP, token string) string {
+	return fmt.Sprintf("http://%v:%v/%v", ip, MetadataServicePort, token)
 }
 
 func GetRktLockFD() (int, error) {
@@ -131,4 +164,113 @@ func SupportsOverlay() bool {
 		}
 	}
 	return false
+}
+
+// SupportsUserNS returns whether the kernel has CONFIG_USER_NS set
+func SupportsUserNS() bool {
+	if _, err := os.Stat("/proc/self/uid_map"); err == nil {
+		return true
+	}
+
+	return false
+}
+
+// NetList implements the flag.Value interface to allow specification of --net with and without values
+// Example: --net="all,net1:k1=v1;k2=v2,net2:l1=w1"
+type NetList struct {
+	mapping map[string]string
+}
+
+func (l *NetList) String() string {
+	return strings.Join(l.Strings(), ",")
+}
+
+func (l *NetList) Set(value string) error {
+	if l.mapping == nil {
+		l.mapping = make(map[string]string)
+	}
+	for _, s := range strings.Split(value, ",") {
+		netArgsPair := strings.Split(s, ":")
+		netName := netArgsPair[0]
+
+		if netName == "" {
+			return fmt.Errorf("netname must not be empty")
+		}
+
+		if _, duplicate := l.mapping[netName]; duplicate {
+			return fmt.Errorf("found duplicate netname %q", netName)
+		}
+
+		switch {
+		case len(netArgsPair) == 1:
+			l.mapping[netName] = ""
+		case len(netArgsPair) == 2:
+			if netName == "all" ||
+				netName == "host" {
+				return fmt.Errorf("arguments are not supported by special netname %q", netName)
+			}
+			l.mapping[netName] = netArgsPair[1]
+		case len(netArgsPair) > 2:
+			return fmt.Errorf("network %q provided with invalid arguments: %v", netName, netArgsPair[1:])
+		default:
+			return fmt.Errorf("unexpected case when processing network %q", s)
+		}
+	}
+	return nil
+}
+
+func (l *NetList) Type() string {
+	return "netList"
+}
+
+func (l *NetList) Strings() []string {
+	if len(l.mapping) == 0 {
+		return []string{"default"}
+	}
+
+	var list []string
+	for k, v := range l.mapping {
+		if v == "" {
+			list = append(list, k)
+		} else {
+			list = append(list, fmt.Sprintf("%s:%s", k, v))
+		}
+	}
+	return list
+}
+
+func (l *NetList) StringsOnlyNames() []string {
+	var list []string
+	for k, _ := range l.mapping {
+		list = append(list, k)
+	}
+	return list
+}
+
+// Check if host networking has been requested
+func (l *NetList) Host() bool {
+	return l.Specific("host")
+}
+
+// Check if 'none' (loopback only) networking has been requested
+func (l *NetList) None() bool {
+	return l.Specific("none")
+}
+
+// Check if the container needs to be put in a separate network namespace
+func (l *NetList) Contained() bool {
+	return !l.Host() && len(l.mapping) > 0
+}
+
+func (l *NetList) Specific(net string) bool {
+	_, exists := l.mapping[net]
+	return exists
+}
+
+func (l *NetList) SpecificArgs(net string) string {
+	return l.mapping[net]
+}
+
+func (l *NetList) All() bool {
+	return l.Specific("all")
 }

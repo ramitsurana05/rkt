@@ -1,12 +1,21 @@
+// Copyright 2015 The appc Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package main
 
 import (
-	"archive/tar"
-	"compress/bzip2"
-	"compress/gzip"
-	"errors"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -30,7 +39,7 @@ var (
 		Usage:       "[--type=TYPE] FILE...",
 		Run:         runValidate,
 	}
-	types = []string{
+	validateTypes = []string{
 		typeAppImage,
 		typeImageLayout,
 		typeManifest,
@@ -39,7 +48,7 @@ var (
 
 func init() {
 	cmdValidate.Flags.StringVar(&valType, "type", "",
-		fmt.Sprintf(`Type of file to validate. If unset, actool will try to detect the type. One of "%s"`, strings.Join(types, ",")))
+		fmt.Sprintf(`Type of file to validate. If unset, actool will try to detect the type. One of "%s"`, strings.Join(validateTypes, ",")))
 }
 
 func runValidate(args []string) (exit int) {
@@ -93,17 +102,21 @@ func runValidate(args []string) (exit int) {
 				stderr("%s: valid image layout", path)
 			}
 		case typeAppImage:
-			fr, err := maybeDecompress(fh)
+			tr, err := aci.NewCompressedTarReader(fh)
 			if err != nil {
 				stderr("%s: error decompressing file: %v", path, err)
 				return 1
 			}
-			tr := tar.NewReader(fr)
-			err = aci.ValidateArchive(tr)
+			err = aci.ValidateArchive(tr.Reader)
+			tr.Close()
 			fh.Close()
 			if err != nil {
-				stderr("%s: error validating: %v", path, err)
-				exit = 1
+				if e, ok := err.(aci.ErrOldVersion); ok {
+					stderr("%s: warning: %v", path, e)
+				} else {
+					stderr("%s: error validating: %v", path, err)
+					exit = 1
+				}
 			} else if globalFlags.Debug {
 				stderr("%s: valid app container image", path)
 			}
@@ -161,35 +174,4 @@ func detectValType(file *os.File) (string, error) {
 	default:
 		return "", nil
 	}
-}
-
-func maybeDecompress(rs io.ReadSeeker) (io.Reader, error) {
-	// TODO(jonboulle): this is a bit redundant with detectValType
-	typ, err := aci.DetectFileType(rs)
-	if err != nil {
-		return nil, err
-	}
-	if _, err := rs.Seek(0, 0); err != nil {
-		return nil, err
-	}
-	var r io.Reader
-	switch typ {
-	case aci.TypeGzip:
-		r, err = gzip.NewReader(rs)
-		if err != nil {
-			return nil, fmt.Errorf("error reading gzip: %v", err)
-		}
-	case aci.TypeBzip2:
-		r = bzip2.NewReader(rs)
-	case aci.TypeXz:
-		r = aci.XzReader(rs)
-	case aci.TypeTar:
-		r = rs
-	case aci.TypeUnknown:
-		return nil, errors.New("unknown filetype")
-	default:
-		// should never happen
-		panic(fmt.Sprintf("bad type returned from DetectFileType: %v", typ))
-	}
-	return r, nil
 }

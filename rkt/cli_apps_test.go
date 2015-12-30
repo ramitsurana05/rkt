@@ -1,4 +1,4 @@
-// Copyright 2014 CoreOS, Inc.
+// Copyright 2014 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,14 +15,17 @@
 package main
 
 import (
-	"flag"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/spec/schema/types"
+	flag "github.com/coreos/rkt/Godeps/_workspace/src/github.com/spf13/pflag"
 )
 
 func TestParseAppArgs(t *testing.T) {
 	flags := flag.NewFlagSet("test", flag.ExitOnError)
+	flags.SetInterspersed(false)
 	tests := []struct {
 		in     string
 		images []string
@@ -77,4 +80,61 @@ func TestParseAppArgs(t *testing.T) {
 		}
 	}
 
+}
+
+func TestParsePortFlag(t *testing.T) {
+	tests := []struct {
+		in  string
+		ex  types.ExposedPort
+		err bool
+	}{
+		{
+			in: "foo:123",
+			ex: types.ExposedPort{
+				Name:     "foo",
+				HostPort: 123,
+			},
+			err: false,
+		},
+		{
+			in:  "f$o:123",
+			ex:  types.ExposedPort{},
+			err: true,
+		},
+		{
+			in:  "foo:12345",
+			ex:  types.ExposedPort{},
+			err: true,
+		},
+	}
+
+	for _, tt := range tests {
+		pl := portList{}
+		err := pl.Set(tt.in)
+
+		if err != nil {
+			if !tt.err {
+				t.Errorf("%q failed to parse: %v", tt.in, err)
+			}
+			return
+		}
+
+		if tt.err {
+			t.Errorf("%q unexpectedly parsed", tt.in)
+			return
+		}
+
+		if len(pl) == 0 {
+			t.Errorf("%q parsed into a empty list", tt.in)
+			return
+		}
+
+		if pl[0].Name != tt.ex.Name {
+			t.Errorf("%q parsed but Name mismatch: got %v, expected %v", tt.in, pl[0].Name, tt.ex.Name)
+		}
+
+		if pl[0].HostPort != tt.ex.HostPort {
+			t.Errorf("%q parsed but HostPort mismatch: got %v, expected %v", tt.in, pl[0].HostPort, tt.ex.HostPort)
+		}
+	}
 }

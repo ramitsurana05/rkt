@@ -1,4 +1,4 @@
-// Copyright 2015 CoreOS, Inc.
+// Copyright 2015 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,12 +17,10 @@
 package main
 
 import (
-	"flag"
-	"io/ioutil"
-	"log"
-
-	"github.com/coreos/rkt/cas"
+	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/spf13/cobra"
+	"github.com/coreos/rkt/common"
 	"github.com/coreos/rkt/stage0"
+	"github.com/coreos/rkt/store"
 )
 
 const (
@@ -30,60 +28,44 @@ const (
 )
 
 var (
-	cmdRunPrepared = &Command{
-		Name:        cmdRunPreparedName,
-		Summary:     "Run a prepared application pod in rkt",
-		Usage:       "UUID",
-		Description: "UUID must have been acquired via `rkt prepare`",
-		Run:         runRunPrepared,
-		Flags:       &runPreparedFlags,
+	cmdRunPrepared = &cobra.Command{
+		Use:   "run-prepared UUID",
+		Short: "Run a prepared application pod in rkt",
+		Long:  "UUID must have been acquired via `rkt prepare`",
+		Run:   runWrapper(runRunPrepared),
 	}
-	runPreparedFlags flag.FlagSet
 )
 
 func init() {
-	commands = append(commands, cmdRunPrepared)
-	runPreparedFlags.BoolVar(&flagPrivateNet, "private-net", false, "give pod a private network")
-	runPreparedFlags.BoolVar(&flagSpawnMetadataService, "spawn-metadata-svc", false, "launch metadata svc if not running")
-	runPreparedFlags.BoolVar(&flagInteractive, "interactive", false, "the pod is interactive")
+	cmdRkt.AddCommand(cmdRunPrepared)
+
+	cmdRunPrepared.Flags().Var(&flagNet, "net", "configure the pod's networking. optionally pass a list of user-configured networks to load and arguments to pass to them. syntax: --net[=n[:args]][,]")
+	cmdRunPrepared.Flags().Lookup("net").NoOptDefVal = "default"
+	cmdRunPrepared.Flags().BoolVar(&flagInteractive, "interactive", false, "the pod is interactive")
+	cmdRunPrepared.Flags().BoolVar(&flagMDSRegister, "mds-register", false, "register pod with metadata service")
 }
 
-func runRunPrepared(args []string) (exit int) {
+func runRunPrepared(cmd *cobra.Command, args []string) (exit int) {
 	if len(args) != 1 {
-		printCommandUsageByName(cmdRunPreparedName)
+		cmd.Usage()
 		return 1
 	}
 
-	podUUID, err := resolveUUID(args[0])
+	p, err := getPodFromUUIDString(args[0])
 	if err != nil {
-		stderr("Unable to resolve UUID: %v", err)
+		stderr("prepared-run: problem retrieving pod: %v", err)
 		return 1
 	}
+	defer p.Close()
 
-	if globalFlags.Dir == "" {
-		log.Printf("dir unset - using temporary directory")
-		var err error
-		globalFlags.Dir, err = ioutil.TempDir("", "rkt")
-		if err != nil {
-			stderr("error creating temporary directory: %v", err)
-			return 1
-		}
-	}
-
-	ds, err := cas.NewStore(globalFlags.Dir)
+	s, err := store.NewStore(getDataDir())
 	if err != nil {
 		stderr("prepared-run: cannot open store: %v", err)
 		return 1
 	}
 
-	p, err := getPod(podUUID.String())
-	if err != nil {
-		stderr("prepared-run: cannot get pod: %v", err)
-		return 1
-	}
-
 	if !p.isPrepared {
-		stderr("prepared-run: pod %q is not prepared", podUUID.String())
+		stderr("prepared-run: pod %q is not prepared", p.uuid)
 		return 1
 	}
 
@@ -99,6 +81,16 @@ func runRunPrepared(args []string) (exit int) {
 		}
 	}
 
+	// Make sure we have a metadata service available before we move to
+	// run state so that the user can rerun the command without needing
+	// to prepare the image again.
+	if flagMDSRegister {
+		if err := stage0.CheckMdsAvailability(); err != nil {
+			stderr("prepare-run: %v", err)
+			return 1
+		}
+	}
+
 	if err := p.xToRun(); err != nil {
 		stderr("prepared-run: cannot transition to run: %v", err)
 		return 1
@@ -110,31 +102,34 @@ func runRunPrepared(args []string) (exit int) {
 		return 1
 	}
 
-	s1img, err := p.getStage1Hash()
+	apps, err := p.getApps()
 	if err != nil {
-		stderr("prepared-run: unable to get stage1 Hash: %v", err)
+		stderr("prepared-run: unable to get app list: %v", err)
 		return 1
 	}
 
-	imgs, err := p.getAppsHashes()
+	rktgid, err := common.LookupGid(common.RktGroup)
 	if err != nil {
-		stderr("prepared-run: unable to get apps hashes: %v", err)
-		return 1
+		stderr("prepared-run: group %q not found, will use default gid when rendering images", common.RktGroup)
+		rktgid = -1
 	}
 
 	rcfg := stage0.RunConfig{
-		CommonConfig: stage0.CommonConfig{
-			Store:       ds,
-			Stage1Image: *s1img,
-			UUID:        p.uuid,
-			Debug:       globalFlags.Debug,
+		CommonConfig: &stage0.CommonConfig{
+			Store: s,
+			UUID:  p.uuid,
+			Debug: globalFlags.Debug,
 		},
-		PrivateNet:           flagPrivateNet,
-		SpawnMetadataService: flagSpawnMetadataService,
-		LockFd:               lfd,
-		Interactive:          flagInteractive,
-		Images:               imgs,
+		Net:         flagNet,
+		LockFd:      lfd,
+		Interactive: flagInteractive,
+		MDSRegister: flagMDSRegister,
+		Apps:        apps,
+		RktGid:      rktgid,
 	}
-	stage0.Run(rcfg, p.path()) // execs, never returns
+	if globalFlags.Debug {
+		stage0.InitDebug()
+	}
+	stage0.Run(rcfg, p.path(), getDataDir()) // execs, never returns
 	return 1
 }

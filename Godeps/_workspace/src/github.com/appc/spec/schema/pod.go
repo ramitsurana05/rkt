@@ -1,11 +1,28 @@
+// Copyright 2015 The appc Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package schema
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 
 	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/spec/schema/types"
+
+	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/camlistore/camlistore/pkg/errorutil"
 )
 
 const PodManifestKind = types.ACKind("PodManifest")
@@ -32,6 +49,10 @@ func (pm *PodManifest) UnmarshalJSON(data []byte) error {
 	p := podManifest(*pm)
 	err := json.Unmarshal(data, &p)
 	if err != nil {
+		if serr, ok := err.(*json.SyntaxError); ok {
+			line, col, highlight := errorutil.HighlightBytePosition(bytes.NewReader(data), serr.Offset)
+			return fmt.Errorf("\nError at line %d, column %d\n%s%v", line, col, highlight, err)
+		}
 		return err
 	}
 	npm := PodManifest(p)
@@ -112,19 +133,19 @@ func (al AppList) Get(name types.ACName) *RuntimeApp {
 	return nil
 }
 
-// Mount describes the mapping between a volume and an apps
-// MountPoint that will be fulfilled at runtime.
+// Mount describes the mapping between a volume and the path it is mounted
+// inside of an app's filesystem.
 type Mount struct {
-	Volume     types.ACName `json:"volume"`
-	MountPoint types.ACName `json:"mountPoint"`
+	Volume types.ACName `json:"volume"`
+	Path   string       `json:"path"`
 }
 
 func (r Mount) assertValid() error {
 	if r.Volume.Empty() {
 		return errors.New("volume must be set")
 	}
-	if r.MountPoint.Empty() {
-		return errors.New("mountPoint must be set")
+	if r.Path == "" {
+		return errors.New("path must be set")
 	}
 	return nil
 }
@@ -140,7 +161,7 @@ type RuntimeApp struct {
 
 // RuntimeImage describes an image referenced in a RuntimeApp
 type RuntimeImage struct {
-	Name   *types.ACName `json:"name,omitempty"`
-	ID     types.Hash    `json:"id"`
-	Labels types.Labels  `json:"labels,omitempty"`
+	Name   *types.ACIdentifier `json:"name,omitempty"`
+	ID     types.Hash          `json:"id"`
+	Labels types.Labels        `json:"labels,omitempty"`
 }

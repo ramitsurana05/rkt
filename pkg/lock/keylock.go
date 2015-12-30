@@ -1,4 +1,4 @@
-// Copyright 2015 CoreOS, Inc.
+// Copyright 2015 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -144,6 +144,7 @@ func createAndLock(lockDir string, key string, mode keyLockMode) (*KeyLock, erro
 	}
 	err = keyLock.lock(mode, defaultLockRetries)
 	if err != nil {
+		keyLock.Close()
 		return nil, err
 	}
 	return keyLock, nil
@@ -206,10 +207,11 @@ func (l *KeyLock) lock(mode keyLockMode, maxRetries int) error {
 		if err != nil {
 			return err
 		}
-		err = syscall.Fstat(fd, &curStat)
-		if err != nil {
+		if err := syscall.Fstat(fd, &curStat); err != nil {
+			syscall.Close(fd)
 			return err
 		}
+		syscall.Close(fd)
 		if lockStat.Ino == curStat.Ino && lockStat.Dev == curStat.Dev {
 			return nil
 		}

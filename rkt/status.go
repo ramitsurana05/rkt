@@ -1,4 +1,4 @@
-// Copyright 2014 CoreOS, Inc.
+// Copyright 2014 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,20 +16,15 @@
 
 package main
 
-import (
-	"flag"
-)
+import "github.com/coreos/rkt/Godeps/_workspace/src/github.com/spf13/cobra"
 
 var (
-	cmdStatus = &Command{
-		Name:    cmdStatusName,
-		Summary: "Check the status of a rkt pod",
-		Usage:   "[--wait] UUID",
-		Run:     runStatus,
-		Flags:   &statusFlags,
+	cmdStatus = &cobra.Command{
+		Use:   "status [--wait] UUID",
+		Short: "Check the status of a rkt pod",
+		Run:   runWrapper(runStatus),
 	}
-	statusFlags flag.FlagSet
-	flagWait    bool
+	flagWait bool
 )
 
 const (
@@ -39,25 +34,19 @@ const (
 )
 
 func init() {
-	commands = append(commands, cmdStatus)
-	statusFlags.BoolVar(&flagWait, "wait", false, "toggle waiting for the pod to exit")
+	cmdRkt.AddCommand(cmdStatus)
+	cmdStatus.Flags().BoolVar(&flagWait, "wait", false, "toggle waiting for the pod to exit")
 }
 
-func runStatus(args []string) (exit int) {
+func runStatus(cmd *cobra.Command, args []string) (exit int) {
 	if len(args) != 1 {
-		printCommandUsageByName(cmdStatusName)
+		cmd.Usage()
 		return 1
 	}
 
-	podUUID, err := resolveUUID(args[0])
+	p, err := getPodFromUUIDString(args[0])
 	if err != nil {
-		stderr("Unable to resolve UUID: %v", err)
-		return 1
-	}
-
-	p, err := getPod(podUUID.String())
-	if err != nil {
-		stderr("Unable to get pod: %v", err)
+		stderr("Problem retrieving pod: %v", err)
 		return 1
 	}
 	defer p.Close()
@@ -98,7 +87,7 @@ func printStatus(p *pod) error {
 
 		stdout("pid=%d\nexited=%t", pid, p.isExited)
 		for app, stat := range stats {
-			stdout("%s=%d", app, stat)
+			stdout("app-%s=%d", app, stat)
 		}
 	}
 	return nil

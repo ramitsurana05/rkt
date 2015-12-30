@@ -1,4 +1,4 @@
-// Copyright 2014 CoreOS, Inc.
+// Copyright 2014 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package stage0
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"syscall"
 
 	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/spec/schema/types"
@@ -26,17 +27,22 @@ import (
 
 // Enter enters the pod/app by exec()ing the stage1's /enter similar to /init
 // /enter can expect to have its CWD set to the app root.
-// imageID and command are supplied to /enter on argv followed by any arguments.
-// enterPath is the path of the enter binary
-func Enter(cdir string, imageID *types.Hash, enterPath string, cmdline []string) error {
+// appName and command are supplied to /enter on argv followed by any arguments.
+// stage1Path is the path of the stage1 rootfs
+func Enter(cdir string, podPID int, appName types.ACName, stage1Path string, cmdline []string) error {
 	if err := os.Chdir(cdir); err != nil {
 		return fmt.Errorf("error changing to dir: %v", err)
 	}
 
-	id := types.ShortHash(imageID.String())
+	ep, err := getStage1Entrypoint(cdir, enterEntrypoint)
+	if err != nil {
+		return fmt.Errorf("error determining 'enter' entrypoint: %v", err)
+	}
 
-	argv := []string{enterPath}
-	argv = append(argv, id)
+	argv := []string{filepath.Join(stage1Path, ep)}
+	argv = append(argv, fmt.Sprintf("--pid=%d", podPID))
+	argv = append(argv, fmt.Sprintf("--appname=%s", appName.String()))
+	argv = append(argv, "--")
 	argv = append(argv, cmdline...)
 	if err := syscall.Exec(argv[0], argv, os.Environ()); err != nil {
 		return fmt.Errorf("error execing enter: %v", err)

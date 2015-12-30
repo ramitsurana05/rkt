@@ -2,18 +2,20 @@
 
 language: go
 
-go:
- - 1.3
+matrix:
+ include:
+  - go: 1.4.3
+    install:
+     - go get golang.org/x/tools/cmd/cover
+     - go get golang.org/x/tools/cmd/vet
+  - go: 1.5.2
 
 before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -y cpio realpath squashfs-tools
-
-install:
- - go get code.google.com/p/go.tools/cmd/cover
- - go get code.google.com/p/go.tools/cmd/vet
- - go get github.com/appc/spec/...
+ - sudo apt-get install -y build-essential
 
 script:
- - ./test
-
+ - ./autogen.sh
+ - ./configure --with-stage1-default-name="example.com/some-stage1-for-rkt" --with-stage1-default-version="0.0.1"
+ - make unit-check

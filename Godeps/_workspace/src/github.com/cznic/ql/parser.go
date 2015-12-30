@@ -1,3 +1,5 @@
+// CAUTION: Generated file - DO NOT EDIT.
+
 // Copyright (c) 2014 The ql Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -6,9 +8,6 @@
 // at 2013-10-04 23:10:47.861401015 +0200 CEST
 //
 //  $ ebnf2y -o ql.y -oe ql.ebnf -start StatementList -pkg ql -p _
-//
-// CAUTION: If this file is a Go source file (*.go), it was generated
-// automatically by '$ goyacc' from a *.y file - DO NOT EDIT in that case!
 //
 //   [1]: http://github.com/cznic/ebnf2y
 
@@ -35,311 +34,322 @@ type yyXError struct {
 }
 
 const (
-	yyDefault      = 57429
-	yyEOFCode      = 57344
-	add            = 57346
-	alter          = 57347
-	and            = 57348
-	andand         = 57349
-	andnot         = 57350
-	as             = 57351
-	asc            = 57352
-	begin          = 57353
-	between        = 57354
-	bigIntType     = 57355
-	bigRatType     = 57356
-	blobType       = 57357
-	boolType       = 57358
-	by             = 57359
-	byteType       = 57360
-	column         = 57361
-	commit         = 57362
-	complex128Type = 57363
-	complex64Type  = 57364
-	create         = 57365
-	deleteKwd      = 57366
-	desc           = 57367
-	distinct       = 57368
-	drop           = 57369
-	durationType   = 57370
-	eq             = 57371
-	yyErrCode      = 57345
-	exists         = 57372
-	falseKwd       = 57373
-	float32Type    = 57375
-	float64Type    = 57376
-	floatLit       = 57377
-	floatType      = 57374
-	from           = 57378
-	ge             = 57379
-	group          = 57380
-	identifier     = 57381
-	ifKwd          = 57382
-	imaginaryLit   = 57383
-	in             = 57384
-	index          = 57385
-	insert         = 57386
-	int16Type      = 57388
-	int32Type      = 57389
-	int64Type      = 57390
-	int8Type       = 57391
-	intLit         = 57393
-	intType        = 57387
-	into           = 57392
-	is             = 57394
-	le             = 57395
-	like           = 57396
-	limit          = 57397
-	lsh            = 57398
-	neq            = 57399
-	not            = 57400
-	null           = 57401
-	offset         = 57402
-	on             = 57403
-	or             = 57404
-	order          = 57405
-	oror           = 57406
-	qlParam        = 57407
-	rollback       = 57408
-	rsh            = 57409
-	runeType       = 57410
-	selectKwd      = 57411
-	set            = 57412
-	stringLit      = 57414
-	stringType     = 57413
-	tableKwd       = 57415
-	timeType       = 57416
-	transaction    = 57417
-	trueKwd        = 57418
-	truncate       = 57419
-	uint16Type     = 57421
-	uint32Type     = 57422
-	uint64Type     = 57423
-	uint8Type      = 57424
-	uintType       = 57420
-	unique         = 57425
-	update         = 57426
-	values         = 57427
-	where          = 57428
+	yyDefault       = 57437
+	yyEOFCode       = 57344
+	add             = 57352
+	alter           = 57353
+	and             = 57354
+	andand          = 57355
+	andnot          = 57356
+	as              = 57357
+	asc             = 57358
+	begin           = 57359
+	between         = 57360
+	bigIntType      = 57361
+	bigRatType      = 57362
+	blobType        = 57363
+	boolType        = 57364
+	by              = 57365
+	byteType        = 57366
+	column          = 57367
+	commit          = 57368
+	complex128Type  = 57369
+	complex64Type   = 57370
+	create          = 57371
+	defaultKwd      = 57372
+	deleteKwd       = 57373
+	desc            = 57374
+	distinct        = 57375
+	drop            = 57376
+	durationType    = 57377
+	eq              = 57378
+	yyErrCode       = 57345
+	exists          = 57379
+	explain         = 57380
+	falseKwd        = 57381
+	float32Type     = 57383
+	float64Type     = 57384
+	floatLit        = 57346
+	floatType       = 57382
+	from            = 57385
+	full            = 57386
+	ge              = 57387
+	group           = 57388
+	identifier      = 57347
+	ifKwd           = 57389
+	imaginaryLit    = 57348
+	in              = 57390
+	index           = 57391
+	insert          = 57392
+	int16Type       = 57394
+	int32Type       = 57395
+	int64Type       = 57396
+	int8Type        = 57397
+	intLit          = 57349
+	intType         = 57393
+	into            = 57398
+	is              = 57399
+	join            = 57400
+	le              = 57401
+	left            = 57402
+	like            = 57403
+	limit           = 57404
+	lsh             = 57405
+	neq             = 57406
+	not             = 57407
+	null            = 57408
+	offset          = 57409
+	on              = 57410
+	or              = 57411
+	order           = 57412
+	oror            = 57413
+	outer           = 57414
+	parseExpression = 57436
+	qlParam         = 57350
+	right           = 57415
+	rollback        = 57416
+	rsh             = 57417
+	runeType        = 57418
+	selectKwd       = 57419
+	set             = 57420
+	stringLit       = 57351
+	stringType      = 57421
+	tableKwd        = 57422
+	timeType        = 57423
+	transaction     = 57424
+	trueKwd         = 57425
+	truncate        = 57426
+	uint16Type      = 57428
+	uint32Type      = 57429
+	uint64Type      = 57430
+	uint8Type       = 57431
+	uintType        = 57427
+	unique          = 57432
+	update          = 57433
+	values          = 57434
+	where           = 57435
 
 	yyMaxDepth = 200
-	yyTabOfs   = -206
+	yyTabOfs   = -216
 )
 
 var (
 	yyXLAT = map[int]int{
-		59:    0,   // ';' (181x)
-		57344: 1,   // $end (180x)
-		41:    2,   // ')' (156x)
-		44:    3,   // ',' (122x)
-		40:    4,   // '(' (119x)
-		43:    5,   // '+' (103x)
-		45:    6,   // '-' (103x)
-		94:    7,   // '^' (103x)
-		57402: 8,   // offset (102x)
-		57397: 9,   // limit (99x)
-		57381: 10,  // identifier (87x)
-		57405: 11,  // order (87x)
-		57428: 12,  // where (82x)
-		57380: 13,  // group (77x)
-		57404: 14,  // or (76x)
-		57406: 15,  // oror (76x)
-		57378: 16,  // from (74x)
-		57352: 17,  // asc (70x)
-		57367: 18,  // desc (70x)
-		93:    19,  // ']' (69x)
-		57351: 20,  // as (68x)
-		58:    21,  // ':' (66x)
-		57348: 22,  // and (66x)
-		57349: 23,  // andand (64x)
-		124:   24,  // '|' (55x)
-		57400: 25,  // not (55x)
-		57355: 26,  // bigIntType (54x)
-		57356: 27,  // bigRatType (54x)
-		57357: 28,  // blobType (54x)
-		57358: 29,  // boolType (54x)
-		57360: 30,  // byteType (54x)
-		57363: 31,  // complex128Type (54x)
-		57364: 32,  // complex64Type (54x)
-		57370: 33,  // durationType (54x)
-		57375: 34,  // float32Type (54x)
-		57376: 35,  // float64Type (54x)
-		57374: 36,  // floatType (54x)
-		57388: 37,  // int16Type (54x)
-		57389: 38,  // int32Type (54x)
-		57390: 39,  // int64Type (54x)
-		57391: 40,  // int8Type (54x)
-		57387: 41,  // intType (54x)
-		57401: 42,  // null (54x)
-		57410: 43,  // runeType (54x)
-		57413: 44,  // stringType (54x)
-		57416: 45,  // timeType (54x)
-		57421: 46,  // uint16Type (54x)
-		57422: 47,  // uint32Type (54x)
-		57423: 48,  // uint64Type (54x)
-		57424: 49,  // uint8Type (54x)
-		57420: 50,  // uintType (54x)
-		57354: 51,  // between (53x)
-		57384: 52,  // in (53x)
-		60:    53,  // '<' (52x)
-		62:    54,  // '>' (52x)
-		57371: 55,  // eq (52x)
-		57373: 56,  // falseKwd (52x)
-		57377: 57,  // floatLit (52x)
-		57379: 58,  // ge (52x)
-		57383: 59,  // imaginaryLit (52x)
-		57393: 60,  // intLit (52x)
-		57394: 61,  // is (52x)
-		57395: 62,  // le (52x)
-		57396: 63,  // like (52x)
-		57399: 64,  // neq (52x)
-		57407: 65,  // qlParam (52x)
-		57414: 66,  // stringLit (52x)
-		57418: 67,  // trueKwd (52x)
-		33:    68,  // '!' (48x)
-		57499: 69,  // Type (47x)
-		42:    70,  // '*' (46x)
-		57444: 71,  // Conversion (46x)
-		57471: 72,  // Literal (46x)
-		57472: 73,  // Operand (46x)
-		57475: 74,  // PrimaryExpression (46x)
-		57478: 75,  // QualifiedIdent (46x)
-		37:    76,  // '%' (43x)
-		38:    77,  // '&' (43x)
-		47:    78,  // '/' (43x)
-		57350: 79,  // andnot (43x)
-		57398: 80,  // lsh (43x)
-		57409: 81,  // rsh (43x)
-		57500: 82,  // UnaryExpr (42x)
-		57477: 83,  // PrimaryTerm (35x)
-		57476: 84,  // PrimaryFactor (31x)
-		91:    85,  // '[' (30x)
-		57460: 86,  // Factor (20x)
-		57461: 87,  // Factor1 (20x)
-		57497: 88,  // Term (19x)
-		57456: 89,  // Expression (18x)
-		57505: 90,  // logOr (12x)
-		57439: 91,  // ColumnName (10x)
-		57411: 92,  // selectKwd (9x)
-		57496: 93,  // TableName (9x)
-		57457: 94,  // ExpressionList (6x)
-		57485: 95,  // SelectStmt (6x)
-		57436: 96,  // Call (5x)
-		57466: 97,  // Index (5x)
-		57493: 98,  // Slice (5x)
-		57438: 99,  // ColumnDef (4x)
-		57369: 100, // drop (4x)
-		57372: 101, // exists (4x)
-		57382: 102, // ifKwd (4x)
-		57385: 103, // index (4x)
-		57415: 104, // tableKwd (4x)
-		57427: 105, // values (4x)
-		57503: 106, // WhereClause (4x)
-		61:    107, // '=' (2x)
-		57346: 108, // add (2x)
-		57347: 109, // alter (2x)
-		57430: 110, // AlterTableStmt (2x)
-		57431: 111, // Assignment (2x)
-		57353: 112, // begin (2x)
-		57435: 113, // BeginTransactionStmt (2x)
-		57359: 114, // by (2x)
-		57440: 115, // ColumnNameList (2x)
-		57362: 116, // commit (2x)
-		57443: 117, // CommitStmt (2x)
-		57365: 118, // create (2x)
-		57446: 119, // CreateIndexStmt (2x)
-		57448: 120, // CreateTableStmt (2x)
-		57449: 121, // CreateTableStmt1 (2x)
-		57450: 122, // CreateTableStmt2 (2x)
-		57451: 123, // DeleteFromStmt (2x)
-		57366: 124, // deleteKwd (2x)
-		57453: 125, // DropIndexStmt (2x)
-		57454: 126, // DropTableStmt (2x)
-		57455: 127, // EmptyStmt (2x)
-		57462: 128, // Field (2x)
-		57465: 129, // GroupByClause (2x)
-		57386: 130, // insert (2x)
-		57467: 131, // InsertIntoStmt (2x)
-		57504: 132, // logAnd (2x)
-		57473: 133, // OrderBy (2x)
-		57479: 134, // RecordSet (2x)
-		57480: 135, // RecordSet1 (2x)
-		57408: 136, // rollback (2x)
-		57484: 137, // RollbackStmt (2x)
-		57488: 138, // SelectStmtGroup (2x)
-		57489: 139, // SelectStmtLimit (2x)
-		57490: 140, // SelectStmtOffset (2x)
-		57491: 141, // SelectStmtOrder (2x)
-		57492: 142, // SelectStmtWhere (2x)
-		57412: 143, // set (2x)
-		57494: 144, // Statement (2x)
-		57419: 145, // truncate (2x)
-		57498: 146, // TruncateTableStmt (2x)
-		57426: 147, // update (2x)
-		57501: 148, // UpdateStmt (2x)
-		46:    149, // '.' (1x)
-		57432: 150, // AssignmentList (1x)
-		57433: 151, // AssignmentList1 (1x)
-		57434: 152, // AssignmentList2 (1x)
-		57437: 153, // Call1 (1x)
-		57361: 154, // column (1x)
-		57441: 155, // ColumnNameList1 (1x)
-		57442: 156, // ColumnNameList2 (1x)
-		57445: 157, // CreateIndexIfNotExists (1x)
-		57447: 158, // CreateIndexStmtUnique (1x)
-		57368: 159, // distinct (1x)
-		57452: 160, // DropIndexIfExists (1x)
-		57458: 161, // ExpressionList1 (1x)
-		57459: 162, // ExpressionList2 (1x)
-		57463: 163, // Field1 (1x)
-		57464: 164, // FieldList (1x)
-		57468: 165, // InsertIntoStmt1 (1x)
-		57469: 166, // InsertIntoStmt2 (1x)
-		57470: 167, // InsertIntoStmt3 (1x)
-		57392: 168, // into (1x)
-		57403: 169, // on (1x)
-		57474: 170, // OrderBy1 (1x)
-		57506: 171, // oSet (1x)
-		57481: 172, // RecordSet11 (1x)
-		57482: 173, // RecordSet2 (1x)
-		57483: 174, // RecordSetList (1x)
-		57486: 175, // SelectStmtDistinct (1x)
-		57487: 176, // SelectStmtFieldList (1x)
-		57495: 177, // StatementList (1x)
-		57417: 178, // transaction (1x)
-		57425: 179, // unique (1x)
-		57502: 180, // UpdateStmt1 (1x)
-		57429: 181, // $default (0x)
-		57345: 182, // error (0x)
+		59:    0,   // ';' (192x)
+		57344: 1,   // $end (191x)
+		41:    2,   // ')' (164x)
+		43:    3,   // '+' (133x)
+		45:    4,   // '-' (133x)
+		94:    5,   // '^' (133x)
+		44:    6,   // ',' (130x)
+		40:    7,   // '(' (125x)
+		57347: 8,   // identifier (116x)
+		57409: 9,   // offset (103x)
+		57404: 10,  // limit (101x)
+		57372: 11,  // defaultKwd (94x)
+		57412: 12,  // order (90x)
+		57435: 13,  // where (87x)
+		57408: 14,  // null (84x)
+		57361: 15,  // bigIntType (83x)
+		57362: 16,  // bigRatType (83x)
+		57363: 17,  // blobType (83x)
+		57364: 18,  // boolType (83x)
+		57366: 19,  // byteType (83x)
+		57369: 20,  // complex128Type (83x)
+		57370: 21,  // complex64Type (83x)
+		57377: 22,  // durationType (83x)
+		57383: 23,  // float32Type (83x)
+		57384: 24,  // float64Type (83x)
+		57382: 25,  // floatType (83x)
+		57394: 26,  // int16Type (83x)
+		57395: 27,  // int32Type (83x)
+		57396: 28,  // int64Type (83x)
+		57397: 29,  // int8Type (83x)
+		57393: 30,  // intType (83x)
+		57418: 31,  // runeType (83x)
+		57421: 32,  // stringType (83x)
+		57423: 33,  // timeType (83x)
+		57428: 34,  // uint16Type (83x)
+		57429: 35,  // uint32Type (83x)
+		57430: 36,  // uint64Type (83x)
+		57431: 37,  // uint8Type (83x)
+		57427: 38,  // uintType (83x)
+		57381: 39,  // falseKwd (81x)
+		57346: 40,  // floatLit (81x)
+		57388: 41,  // group (81x)
+		57348: 42,  // imaginaryLit (81x)
+		57349: 43,  // intLit (81x)
+		57407: 44,  // not (81x)
+		57411: 45,  // or (81x)
+		57413: 46,  // oror (81x)
+		57350: 47,  // qlParam (81x)
+		57351: 48,  // stringLit (81x)
+		57425: 49,  // trueKwd (81x)
+		33:    50,  // '!' (77x)
+		57385: 51,  // from (75x)
+		57358: 52,  // asc (71x)
+		57374: 53,  // desc (71x)
+		93:    54,  // ']' (70x)
+		57357: 55,  // as (69x)
+		58:    56,  // ':' (67x)
+		57354: 57,  // and (67x)
+		57355: 58,  // andand (65x)
+		124:   59,  // '|' (56x)
+		57360: 60,  // between (54x)
+		57390: 61,  // in (54x)
+		60:    62,  // '<' (53x)
+		62:    63,  // '>' (53x)
+		57378: 64,  // eq (53x)
+		57387: 65,  // ge (53x)
+		57399: 66,  // is (53x)
+		57401: 67,  // le (53x)
+		57403: 68,  // like (53x)
+		57406: 69,  // neq (53x)
+		57513: 70,  // Type (52x)
+		57453: 71,  // Conversion (51x)
+		57483: 72,  // Literal (51x)
+		57484: 73,  // Operand (51x)
+		57488: 74,  // PrimaryExpression (51x)
+		57491: 75,  // QualifiedIdent (51x)
+		42:    76,  // '*' (48x)
+		57514: 77,  // UnaryExpr (47x)
+		37:    78,  // '%' (44x)
+		38:    79,  // '&' (44x)
+		47:    80,  // '/' (44x)
+		57356: 81,  // andnot (44x)
+		57405: 82,  // lsh (44x)
+		57417: 83,  // rsh (44x)
+		57490: 84,  // PrimaryTerm (40x)
+		57489: 85,  // PrimaryFactor (36x)
+		91:    86,  // '[' (31x)
+		57470: 87,  // Factor (25x)
+		57471: 88,  // Factor1 (25x)
+		57511: 89,  // Term (24x)
+		57467: 90,  // Expression (23x)
+		57519: 91,  // logOr (16x)
+		57446: 92,  // ColumnName (10x)
+		57386: 93,  // full (10x)
+		57402: 94,  // left (10x)
+		57415: 95,  // right (10x)
+		57419: 96,  // selectKwd (10x)
+		57510: 97,  // TableName (9x)
+		57449: 98,  // CommaOpt (7x)
+		57468: 99,  // ExpressionList (7x)
+		57410: 100, // on (7x)
+		57497: 101, // SelectStmt (7x)
+		57400: 102, // join (6x)
+		57443: 103, // Call (5x)
+		57376: 104, // drop (5x)
+		57476: 105, // Index (5x)
+		57506: 106, // Slice (5x)
+		57445: 107, // ColumnDef (4x)
+		57379: 108, // exists (4x)
+		57389: 109, // ifKwd (4x)
+		57391: 110, // index (4x)
+		57414: 111, // outer (4x)
+		57422: 112, // tableKwd (4x)
+		57434: 113, // values (4x)
+		57353: 114, // alter (3x)
+		57438: 115, // AlterTableStmt (3x)
+		57359: 116, // begin (3x)
+		57442: 117, // BeginTransactionStmt (3x)
+		57368: 118, // commit (3x)
+		57450: 119, // CommitStmt (3x)
+		57371: 120, // create (3x)
+		57455: 121, // CreateIndexStmt (3x)
+		57457: 122, // CreateTableStmt (3x)
+		57461: 123, // DeleteFromStmt (3x)
+		57373: 124, // deleteKwd (3x)
+		57463: 125, // DropIndexStmt (3x)
+		57464: 126, // DropTableStmt (3x)
+		57465: 127, // EmptyStmt (3x)
+		57380: 128, // explain (3x)
+		57466: 129, // ExplainStmt (3x)
+		57392: 130, // insert (3x)
+		57477: 131, // InsertIntoStmt (3x)
+		57492: 132, // RecordSet (3x)
+		57493: 133, // RecordSet1 (3x)
+		57416: 134, // rollback (3x)
+		57496: 135, // RollbackStmt (3x)
+		57520: 136, // semiOpt (3x)
+		57508: 137, // Statement (3x)
+		57426: 138, // truncate (3x)
+		57512: 139, // TruncateTableStmt (3x)
+		57433: 140, // update (3x)
+		57515: 141, // UpdateStmt (3x)
+		57517: 142, // WhereClause (3x)
+		61:    143, // '=' (2x)
+		57352: 144, // add (2x)
+		57439: 145, // Assignment (2x)
+		57365: 146, // by (2x)
+		57447: 147, // ColumnNameList (2x)
+		57458: 148, // CreateTableStmt1 (2x)
+		57472: 149, // Field (2x)
+		57518: 150, // logAnd (2x)
+		57420: 151, // set (2x)
+		46:    152, // '.' (1x)
+		57440: 153, // AssignmentList (1x)
+		57441: 154, // AssignmentList1 (1x)
+		57444: 155, // Call1 (1x)
+		57367: 156, // column (1x)
+		57448: 157, // ColumnNameList1 (1x)
+		57451: 158, // Constraint (1x)
+		57452: 159, // ConstraintOpt (1x)
+		57454: 160, // CreateIndexIfNotExists (1x)
+		57456: 161, // CreateIndexStmtUnique (1x)
+		57459: 162, // Default (1x)
+		57460: 163, // DefaultOpt (1x)
+		57375: 164, // distinct (1x)
+		57462: 165, // DropIndexIfExists (1x)
+		57469: 166, // ExpressionList1 (1x)
+		57473: 167, // Field1 (1x)
+		57474: 168, // FieldList (1x)
+		57475: 169, // GroupByClause (1x)
+		57478: 170, // InsertIntoStmt1 (1x)
+		57479: 171, // InsertIntoStmt2 (1x)
+		57398: 172, // into (1x)
+		57480: 173, // JoinClause (1x)
+		57481: 174, // JoinClauseOpt (1x)
+		57482: 175, // JoinType (1x)
+		57485: 176, // OrderBy (1x)
+		57486: 177, // OrderBy1 (1x)
+		57487: 178, // OuterOpt (1x)
+		57436: 179, // parseExpression (1x)
+		57494: 180, // RecordSet2 (1x)
+		57495: 181, // RecordSetList (1x)
+		57498: 182, // SelectStmtDistinct (1x)
+		57499: 183, // SelectStmtFieldList (1x)
+		57500: 184, // SelectStmtGroup (1x)
+		57501: 185, // SelectStmtLimit (1x)
+		57502: 186, // SelectStmtOffset (1x)
+		57503: 187, // SelectStmtOrder (1x)
+		57504: 188, // SelectStmtWhere (1x)
+		57505: 189, // SetOpt (1x)
+		57507: 190, // Start (1x)
+		57509: 191, // StatementList (1x)
+		57424: 192, // transaction (1x)
+		57432: 193, // unique (1x)
+		57516: 194, // UpdateStmt1 (1x)
+		57437: 195, // $default (0x)
+		57345: 196, // error (0x)
 	}
 
 	yySymNames = []string{
 		"';'",
 		"$end",
 		"')'",
-		"','",
-		"'('",
 		"'+'",
 		"'-'",
 		"'^'",
+		"','",
+		"'('",
+		"identifier",
 		"offset",
 		"limit",
-		"identifier",
+		"defaultKwd",
 		"order",
 		"where",
-		"group",
-		"or",
-		"oror",
-		"from",
-		"asc",
-		"desc",
-		"']'",
-		"as",
-		"':'",
-		"and",
-		"andand",
-		"'|'",
-		"not",
+		"null",
 		"bigIntType",
 		"bigRatType",
 		"blobType",
@@ -356,7 +366,6 @@ var (
 		"int64Type",
 		"int8Type",
 		"intType",
-		"null",
 		"runeType",
 		"stringType",
 		"timeType",
@@ -365,38 +374,51 @@ var (
 		"uint64Type",
 		"uint8Type",
 		"uintType",
+		"falseKwd",
+		"floatLit",
+		"group",
+		"imaginaryLit",
+		"intLit",
+		"not",
+		"or",
+		"oror",
+		"qlParam",
+		"stringLit",
+		"trueKwd",
+		"'!'",
+		"from",
+		"asc",
+		"desc",
+		"']'",
+		"as",
+		"':'",
+		"and",
+		"andand",
+		"'|'",
 		"between",
 		"in",
 		"'<'",
 		"'>'",
 		"eq",
-		"falseKwd",
-		"floatLit",
 		"ge",
-		"imaginaryLit",
-		"intLit",
 		"is",
 		"le",
 		"like",
 		"neq",
-		"qlParam",
-		"stringLit",
-		"trueKwd",
-		"'!'",
 		"Type",
-		"'*'",
 		"Conversion",
 		"Literal",
 		"Operand",
 		"PrimaryExpression",
 		"QualifiedIdent",
+		"'*'",
+		"UnaryExpr",
 		"'%'",
 		"'&'",
 		"'/'",
 		"andnot",
 		"lsh",
 		"rsh",
-		"UnaryExpr",
 		"PrimaryTerm",
 		"PrimaryFactor",
 		"'['",
@@ -406,91 +428,104 @@ var (
 		"Expression",
 		"logOr",
 		"ColumnName",
+		"full",
+		"left",
+		"right",
 		"selectKwd",
 		"TableName",
+		"CommaOpt",
 		"ExpressionList",
+		"on",
 		"SelectStmt",
+		"join",
 		"Call",
+		"drop",
 		"Index",
 		"Slice",
 		"ColumnDef",
-		"drop",
 		"exists",
 		"ifKwd",
 		"index",
+		"outer",
 		"tableKwd",
 		"values",
-		"WhereClause",
-		"'='",
-		"add",
 		"alter",
 		"AlterTableStmt",
-		"Assignment",
 		"begin",
 		"BeginTransactionStmt",
-		"by",
-		"ColumnNameList",
 		"commit",
 		"CommitStmt",
 		"create",
 		"CreateIndexStmt",
 		"CreateTableStmt",
-		"CreateTableStmt1",
-		"CreateTableStmt2",
 		"DeleteFromStmt",
 		"deleteKwd",
 		"DropIndexStmt",
 		"DropTableStmt",
 		"EmptyStmt",
-		"Field",
-		"GroupByClause",
+		"explain",
+		"ExplainStmt",
 		"insert",
 		"InsertIntoStmt",
-		"logAnd",
-		"OrderBy",
 		"RecordSet",
 		"RecordSet1",
 		"rollback",
 		"RollbackStmt",
-		"SelectStmtGroup",
-		"SelectStmtLimit",
-		"SelectStmtOffset",
-		"SelectStmtOrder",
-		"SelectStmtWhere",
-		"set",
+		"semiOpt",
 		"Statement",
 		"truncate",
 		"TruncateTableStmt",
 		"update",
 		"UpdateStmt",
+		"WhereClause",
+		"'='",
+		"add",
+		"Assignment",
+		"by",
+		"ColumnNameList",
+		"CreateTableStmt1",
+		"Field",
+		"logAnd",
+		"set",
 		"'.'",
 		"AssignmentList",
 		"AssignmentList1",
-		"AssignmentList2",
 		"Call1",
 		"column",
 		"ColumnNameList1",
-		"ColumnNameList2",
+		"Constraint",
+		"ConstraintOpt",
 		"CreateIndexIfNotExists",
 		"CreateIndexStmtUnique",
+		"Default",
+		"DefaultOpt",
 		"distinct",
 		"DropIndexIfExists",
 		"ExpressionList1",
-		"ExpressionList2",
 		"Field1",
 		"FieldList",
+		"GroupByClause",
 		"InsertIntoStmt1",
 		"InsertIntoStmt2",
-		"InsertIntoStmt3",
 		"into",
-		"on",
+		"JoinClause",
+		"JoinClauseOpt",
+		"JoinType",
+		"OrderBy",
 		"OrderBy1",
-		"oSet",
-		"RecordSet11",
+		"OuterOpt",
+		"parseExpression",
 		"RecordSet2",
 		"RecordSetList",
 		"SelectStmtDistinct",
 		"SelectStmtFieldList",
+		"SelectStmtGroup",
+		"SelectStmtLimit",
+		"SelectStmtOffset",
+		"SelectStmtOrder",
+		"SelectStmtWhere",
+		"SetOpt",
+		"Start",
 		"StatementList",
 		"transaction",
 		"unique",
@@ -501,88 +536,88 @@ var (
 
 	yyReductions = map[int]struct{ xsym, components int }{
 		0:   {0, 1},
-		1:   {110, 5},
-		2:   {110, 6},
-		3:   {111, 3},
-		4:   {150, 3},
-		5:   {151, 0},
-		6:   {151, 3},
-		7:   {152, 0},
-		8:   {152, 1},
-		9:   {113, 2},
-		10:  {96, 3},
-		11:  {153, 0},
-		12:  {153, 1},
-		13:  {99, 2},
-		14:  {91, 1},
-		15:  {115, 3},
-		16:  {155, 0},
-		17:  {155, 3},
-		18:  {156, 0},
-		19:  {156, 1},
-		20:  {117, 1},
-		21:  {71, 4},
-		22:  {119, 10},
-		23:  {119, 12},
-		24:  {157, 0},
-		25:  {157, 3},
-		26:  {158, 0},
-		27:  {158, 1},
-		28:  {120, 8},
-		29:  {120, 11},
-		30:  {121, 0},
-		31:  {121, 3},
-		32:  {122, 0},
-		33:  {122, 1},
-		34:  {123, 3},
-		35:  {123, 4},
-		36:  {125, 4},
-		37:  {160, 0},
-		38:  {160, 2},
-		39:  {126, 3},
-		40:  {126, 5},
-		41:  {127, 0},
-		42:  {89, 1},
-		43:  {89, 3},
-		44:  {90, 1},
-		45:  {90, 1},
-		46:  {94, 3},
-		47:  {161, 0},
-		48:  {161, 3},
-		49:  {162, 0},
-		50:  {162, 1},
-		51:  {86, 1},
-		52:  {86, 5},
-		53:  {86, 6},
-		54:  {86, 5},
-		55:  {86, 6},
-		56:  {86, 5},
-		57:  {86, 6},
-		58:  {86, 3},
-		59:  {86, 4},
-		60:  {87, 1},
-		61:  {87, 3},
-		62:  {87, 3},
-		63:  {87, 3},
-		64:  {87, 3},
-		65:  {87, 3},
-		66:  {87, 3},
-		67:  {87, 3},
-		68:  {128, 2},
-		69:  {163, 0},
-		70:  {163, 2},
-		71:  {164, 1},
-		72:  {164, 3},
-		73:  {129, 3},
-		74:  {97, 3},
-		75:  {131, 10},
-		76:  {131, 5},
-		77:  {165, 0},
-		78:  {165, 3},
-		79:  {166, 0},
-		80:  {166, 5},
-		81:  {167, 0},
-		82:  {167, 1},
+		1:   {190, 1},
+		2:   {190, 2},
+		3:   {115, 5},
+		4:   {115, 6},
+		5:   {145, 3},
+		6:   {153, 3},
+		7:   {154, 0},
+		8:   {154, 3},
+		9:   {117, 2},
+		10:  {103, 3},
+		11:  {103, 3},
+		12:  {155, 0},
+		13:  {155, 1},
+		14:  {107, 4},
+		15:  {92, 1},
+		16:  {147, 3},
+		17:  {157, 0},
+		18:  {157, 3},
+		19:  {119, 1},
+		20:  {158, 2},
+		21:  {158, 1},
+		22:  {159, 0},
+		23:  {159, 1},
+		24:  {71, 4},
+		25:  {121, 10},
+		26:  {160, 0},
+		27:  {160, 3},
+		28:  {161, 0},
+		29:  {161, 1},
+		30:  {122, 8},
+		31:  {122, 11},
+		32:  {148, 0},
+		33:  {148, 3},
+		34:  {162, 2},
+		35:  {163, 0},
+		36:  {163, 1},
+		37:  {123, 3},
+		38:  {123, 4},
+		39:  {125, 4},
+		40:  {165, 0},
+		41:  {165, 2},
+		42:  {126, 3},
+		43:  {126, 5},
+		44:  {127, 0},
+		45:  {129, 2},
+		46:  {90, 1},
+		47:  {90, 3},
+		48:  {91, 1},
+		49:  {91, 1},
+		50:  {99, 3},
+		51:  {166, 0},
+		52:  {166, 3},
+		53:  {87, 1},
+		54:  {87, 5},
+		55:  {87, 6},
+		56:  {87, 6},
+		57:  {87, 7},
+		58:  {87, 5},
+		59:  {87, 6},
+		60:  {87, 3},
+		61:  {87, 4},
+		62:  {88, 1},
+		63:  {88, 3},
+		64:  {88, 3},
+		65:  {88, 3},
+		66:  {88, 3},
+		67:  {88, 3},
+		68:  {88, 3},
+		69:  {88, 3},
+		70:  {149, 2},
+		71:  {167, 0},
+		72:  {167, 2},
+		73:  {168, 1},
+		74:  {168, 3},
+		75:  {169, 3},
+		76:  {105, 3},
+		77:  {131, 10},
+		78:  {131, 5},
+		79:  {170, 0},
+		80:  {170, 3},
+		81:  {171, 0},
+		82:  {171, 5},
 		83:  {72, 1},
 		84:  {72, 1},
 		85:  {72, 1},
@@ -594,525 +629,924 @@ var (
 		91:  {73, 1},
 		92:  {73, 1},
 		93:  {73, 3},
-		94:  {133, 4},
-		95:  {170, 0},
-		96:  {170, 1},
-		97:  {170, 1},
+		94:  {176, 4},
+		95:  {177, 0},
+		96:  {177, 1},
+		97:  {177, 1},
 		98:  {74, 1},
 		99:  {74, 1},
 		100: {74, 2},
 		101: {74, 2},
 		102: {74, 2},
-		103: {84, 1},
-		104: {84, 3},
-		105: {84, 3},
-		106: {84, 3},
-		107: {84, 3},
-		108: {83, 1},
-		109: {83, 3},
-		110: {83, 3},
-		111: {83, 3},
-		112: {83, 3},
-		113: {83, 3},
-		114: {83, 3},
-		115: {83, 3},
+		103: {85, 1},
+		104: {85, 3},
+		105: {85, 3},
+		106: {85, 3},
+		107: {85, 3},
+		108: {84, 1},
+		109: {84, 3},
+		110: {84, 3},
+		111: {84, 3},
+		112: {84, 3},
+		113: {84, 3},
+		114: {84, 3},
+		115: {84, 3},
 		116: {75, 1},
 		117: {75, 3},
-		118: {134, 2},
-		119: {135, 1},
-		120: {135, 4},
-		121: {172, 0},
-		122: {172, 1},
-		123: {173, 0},
-		124: {173, 2},
-		125: {174, 1},
-		126: {174, 3},
-		127: {137, 1},
-		128: {95, 10},
-		129: {95, 11},
-		130: {139, 0},
-		131: {139, 2},
-		132: {140, 0},
-		133: {140, 2},
-		134: {175, 0},
-		135: {175, 1},
-		136: {176, 1},
-		137: {176, 1},
-		138: {176, 2},
-		139: {142, 0},
-		140: {142, 1},
-		141: {138, 0},
-		142: {138, 1},
-		143: {141, 0},
-		144: {141, 1},
-		145: {98, 3},
-		146: {98, 4},
-		147: {98, 4},
-		148: {98, 5},
-		149: {144, 1},
-		150: {144, 1},
-		151: {144, 1},
-		152: {144, 1},
-		153: {144, 1},
-		154: {144, 1},
-		155: {144, 1},
-		156: {144, 1},
-		157: {144, 1},
-		158: {144, 1},
-		159: {144, 1},
-		160: {144, 1},
-		161: {144, 1},
-		162: {144, 1},
-		163: {177, 1},
-		164: {177, 3},
-		165: {93, 1},
-		166: {88, 1},
-		167: {88, 3},
-		168: {132, 1},
-		169: {132, 1},
-		170: {146, 3},
-		171: {69, 1},
-		172: {69, 1},
-		173: {69, 1},
-		174: {69, 1},
-		175: {69, 1},
-		176: {69, 1},
-		177: {69, 1},
-		178: {69, 1},
-		179: {69, 1},
-		180: {69, 1},
-		181: {69, 1},
-		182: {69, 1},
-		183: {69, 1},
-		184: {69, 1},
-		185: {69, 1},
-		186: {69, 1},
-		187: {69, 1},
-		188: {69, 1},
-		189: {69, 1},
-		190: {69, 1},
-		191: {69, 1},
-		192: {69, 1},
-		193: {69, 1},
-		194: {69, 1},
-		195: {148, 5},
-		196: {180, 0},
-		197: {180, 1},
-		198: {82, 1},
-		199: {82, 2},
-		200: {82, 2},
-		201: {82, 2},
-		202: {82, 2},
-		203: {106, 2},
-		204: {171, 0},
-		205: {171, 1},
+		118: {132, 2},
+		119: {133, 1},
+		120: {133, 4},
+		121: {136, 0},
+		122: {136, 1},
+		123: {180, 0},
+		124: {180, 2},
+		125: {181, 1},
+		126: {181, 3},
+		127: {135, 1},
+		128: {175, 1},
+		129: {175, 1},
+		130: {175, 1},
+		131: {178, 0},
+		132: {178, 1},
+		133: {173, 6},
+		134: {174, 0},
+		135: {174, 1},
+		136: {101, 12},
+		137: {185, 0},
+		138: {185, 2},
+		139: {186, 0},
+		140: {186, 2},
+		141: {182, 0},
+		142: {182, 1},
+		143: {183, 1},
+		144: {183, 1},
+		145: {183, 2},
+		146: {188, 0},
+		147: {188, 1},
+		148: {184, 0},
+		149: {184, 1},
+		150: {187, 0},
+		151: {187, 1},
+		152: {106, 3},
+		153: {106, 4},
+		154: {106, 4},
+		155: {106, 5},
+		156: {137, 1},
+		157: {137, 1},
+		158: {137, 1},
+		159: {137, 1},
+		160: {137, 1},
+		161: {137, 1},
+		162: {137, 1},
+		163: {137, 1},
+		164: {137, 1},
+		165: {137, 1},
+		166: {137, 1},
+		167: {137, 1},
+		168: {137, 1},
+		169: {137, 1},
+		170: {137, 1},
+		171: {191, 1},
+		172: {191, 3},
+		173: {97, 1},
+		174: {89, 1},
+		175: {89, 3},
+		176: {150, 1},
+		177: {150, 1},
+		178: {139, 3},
+		179: {70, 1},
+		180: {70, 1},
+		181: {70, 1},
+		182: {70, 1},
+		183: {70, 1},
+		184: {70, 1},
+		185: {70, 1},
+		186: {70, 1},
+		187: {70, 1},
+		188: {70, 1},
+		189: {70, 1},
+		190: {70, 1},
+		191: {70, 1},
+		192: {70, 1},
+		193: {70, 1},
+		194: {70, 1},
+		195: {70, 1},
+		196: {70, 1},
+		197: {70, 1},
+		198: {70, 1},
+		199: {70, 1},
+		200: {70, 1},
+		201: {70, 1},
+		202: {70, 1},
+		203: {141, 5},
+		204: {194, 0},
+		205: {194, 1},
+		206: {77, 1},
+		207: {77, 2},
+		208: {77, 2},
+		209: {77, 2},
+		210: {77, 2},
+		211: {142, 2},
+		212: {189, 0},
+		213: {189, 1},
+		214: {98, 0},
+		215: {98, 1},
 	}
 
-	yyXErrors = map[yyXError]string{}
+	yyXErrors = map[yyXError]string{
+		yyXError{1, -1}:   "expected $end",
+		yyXError{43, -1}:  "expected '('",
+		yyXError{157, -1}: "expected '('",
+		yyXError{181, -1}: "expected '('",
+		yyXError{281, -1}: "expected '('",
+		yyXError{309, -1}: "expected '('",
+		yyXError{313, -1}: "expected '('",
+		yyXError{344, -1}: "expected '('",
+		yyXError{118, -1}: "expected ')'",
+		yyXError{119, -1}: "expected ')'",
+		yyXError{120, -1}: "expected ')'",
+		yyXError{187, -1}: "expected ')'",
+		yyXError{189, -1}: "expected ')'",
+		yyXError{190, -1}: "expected ')'",
+		yyXError{194, -1}: "expected ')'",
+		yyXError{196, -1}: "expected ')'",
+		yyXError{265, -1}: "expected ')'",
+		yyXError{279, -1}: "expected ')'",
+		yyXError{284, -1}: "expected ')'",
+		yyXError{290, -1}: "expected ')'",
+		yyXError{318, -1}: "expected ')'",
+		yyXError{335, -1}: "expected ')'",
+		yyXError{346, -1}: "expected ')'",
+		yyXError{36, -1}:  "expected '='",
+		yyXError{233, -1}: "expected BY",
+		yyXError{236, -1}: "expected BY",
+		yyXError{352, -1}: "expected COLUMN",
+		yyXError{7, -1}:   "expected CREATE INDEX optional UNIQUE clause or one of [INDEX, TABLE, UNIQUE]",
+		yyXError{337, -1}: "expected CREATE INDEX statement optional IF NOT EXISTS cluse or one of [IF, identifier]",
+		yyXError{316, -1}: "expected CREATE TABLE statement colum definition list or optional comma or one of [')', ',']",
+		yyXError{333, -1}: "expected CREATE TABLE statement colum definition list or optional comma or one of [')', ',']",
+		yyXError{293, -1}: "expected DROP INDEX statement optional IF EXISTS clause or one of [IF, identifier]",
+		yyXError{296, -1}: "expected EXISTS",
+		yyXError{300, -1}: "expected EXISTS",
+		yyXError{311, -1}: "expected EXISTS",
+		yyXError{340, -1}: "expected EXISTS",
+		yyXError{8, -1}:   "expected FROM",
+		yyXError{215, -1}: "expected FROM",
+		yyXError{216, -1}: "expected FROM",
+		yyXError{306, -1}: "expected INDEX",
+		yyXError{307, -1}: "expected INDEX",
+		yyXError{276, -1}: "expected INSERT INTO statement optional column list clause or SELECT statement or one of ['(', SELECT, VALUES]",
+		yyXError{285, -1}: "expected INSERT INTO statement optional values list or optional comma or one of [$end, ',', ';']",
+		yyXError{11, -1}:  "expected INTO",
+		yyXError{257, -1}: "expected JOIN",
+		yyXError{258, -1}: "expected JOIN",
+		yyXError{310, -1}: "expected NOT",
+		yyXError{339, -1}: "expected NOT",
+		yyXError{176, -1}: "expected NULL",
+		yyXError{324, -1}: "expected NULL",
+		yyXError{260, -1}: "expected ON",
+		yyXError{342, -1}: "expected ON",
+		yyXError{246, -1}: "expected ORDER BY clause optional collation specification or one of [$end, ')', ';', ASC, DESC, LIMIT, OFFSET]",
+		yyXError{217, -1}: "expected RecordSetList or one of ['(', identifier]",
+		yyXError{13, -1}:  "expected SELECT statement field list or SELECT statement optional DISTINCT clause or one of ['!', '(', '*', '+', '-', '^', DISTINCT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{210, -1}: "expected SELECT statement field list or one of ['!', '(', '*', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{224, -1}: "expected SELECT statement optional GROUP BY clause or SELECT statement optional JOIN clause or SELECT statement optional LIMIT clause or SELECT statement optional OFFSET clause or SELECT statement optional ORDER BY clause or SELECT statement optional WHERE clause or one of [$end, ')', ';', FULL, GROUP, LEFT, LIMIT, OFFSET, ORDER, RIGHT, WHERE]",
+		yyXError{222, -1}: "expected SELECT statement optional GROUP BY clause or SELECT statement optional JOIN clause or SELECT statement optional LIMIT clause or SELECT statement optional OFFSET clause or SELECT statement optional ORDER BY clause or SELECT statement optional WHERE clause or optional comma or one of [$end, ')', ',', ';', FULL, GROUP, LEFT, LIMIT, OFFSET, ORDER, RIGHT, WHERE]",
+		yyXError{230, -1}: "expected SELECT statement optional GROUP BY clause or SELECT statement optional LIMIT clause or SELECT statement optional OFFSET clause or SELECT statement optional ORDER BY clause or SELECT statement optional WHERE clause or one of [$end, ')', ';', GROUP, LIMIT, OFFSET, ORDER, WHERE]",
+		yyXError{231, -1}: "expected SELECT statement optional GROUP BY clause or SELECT statement optional LIMIT clause or SELECT statement optional OFFSET clause or SELECT statement optional ORDER BY clause or one of [$end, ')', ';', GROUP, LIMIT, OFFSET, ORDER]",
+		yyXError{234, -1}: "expected SELECT statement optional LIMIT clause or SELECT statement optional OFFSET clause or SELECT statement optional ORDER BY clause or one of [$end, ')', ';', LIMIT, OFFSET, ORDER]",
+		yyXError{237, -1}: "expected SELECT statement optional LIMIT clause or SELECT statement optional OFFSET clause or one of [$end, ')', ';', LIMIT, OFFSET]",
+		yyXError{239, -1}: "expected SELECT statement optional OFFSET clause or one of [$end, ')', ';', OFFSET]",
+		yyXError{220, -1}: "expected SELECT statement or SELECT",
+		yyXError{186, -1}: "expected SELECT statement or expression list or one of ['!', '(', '+', '-', '^', NULL, QL parameter, SELECT, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{193, -1}: "expected SELECT statement or expression list or one of ['!', '(', '+', '-', '^', NULL, QL parameter, SELECT, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{277, -1}: "expected SELECT statement or one of [SELECT, VALUES]",
+		yyXError{33, -1}:  "expected SetOpt or assignment list or one of [SET, identifier]",
+		yyXError{0, -1}:   "expected Start or one of [$end, ';', ALTER, BEGIN, COMMIT, CREATE, DELETE, DROP, EXPLAIN, INSERT, ROLLBACK, SELECT, TRUNCATE, UPDATE, parse expression prefix]",
+		yyXError{4, -1}:   "expected TABLE",
+		yyXError{30, -1}:  "expected TABLE",
+		yyXError{5, -1}:   "expected TRANSACTION",
+		yyXError{39, -1}:  "expected UPDATE statement optional WHERE clause or one of [$end, ';', WHERE]",
+		yyXError{304, -1}: "expected WHERE clause or one of [$end, ';', WHERE]",
+		yyXError{37, -1}:  "expected assignment list optional trailing comma or optional comma or one of [$end, ',', ';', WHERE]",
+		yyXError{34, -1}:  "expected assignment list or identifier",
+		yyXError{204, -1}: "expected assignment or one of [$end, ';', WHERE, identifier]",
+		yyXError{250, -1}: "expected column name list or identifier",
+		yyXError{278, -1}: "expected column name list or identifier",
+		yyXError{251, -1}: "expected column name list with optional trailing comma or optional comma or one of [$end, ')', ',', ';', LIMIT, OFFSET, ORDER]",
+		yyXError{353, -1}: "expected column name or identifier",
+		yyXError{255, -1}: "expected column name or one of [$end, ')', ';', LIMIT, OFFSET, ORDER, identifier]",
+		yyXError{109, -1}: "expected expression factor or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{121, -1}: "expected expression list expression or logical or operator or optional comma or one of [$end, ')', ',', ';', ASC, DESC, LIMIT, OFFSET, OR, ||]",
+		yyXError{245, -1}: "expected expression list or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{283, -1}: "expected expression list or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{289, -1}: "expected expression list or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{345, -1}: "expected expression list or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{124, -1}: "expected expression or one of [$end, '!', '(', ')', '+', '-', ';', '^', ASC, DESC, LIMIT, NULL, OFFSET, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{96, -1}:  "expected expression or one of ['!', '(', '+', '-', ':', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{101, -1}: "expected expression or one of ['!', '(', '+', '-', ']', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{114, -1}: "expected expression or one of ['!', '(', '+', '-', ']', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{3, -1}:   "expected expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{42, -1}:  "expected expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{58, -1}:  "expected expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{199, -1}: "expected expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{206, -1}: "expected expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{240, -1}: "expected expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{243, -1}: "expected expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{261, -1}: "expected expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{329, -1}: "expected expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{104, -1}: "expected expression term or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{212, -1}: "expected field expression optional AS clause or logical or operator or one of [',', AS, FROM, OR, ||]",
+		yyXError{270, -1}: "expected field expression or one of ['!', '(', '+', '-', '^', FROM, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{95, -1}:  "expected function call optional argument list or one of ['!', '(', ')', '*', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{61, -1}:  "expected function call or string index or string slice or one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{94, -1}:  "expected function call or string index or string slice or one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{128, -1}: "expected function call or string index or string slice or one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{129, -1}: "expected function call or string index or string slice or one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{130, -1}: "expected function call or string index or string slice or one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{35, -1}:  "expected identifier",
+		yyXError{131, -1}: "expected identifier",
+		yyXError{268, -1}: "expected identifier",
+		yyXError{273, -1}: "expected identifier",
+		yyXError{299, -1}: "expected identifier",
+		yyXError{301, -1}: "expected identifier",
+		yyXError{338, -1}: "expected identifier",
+		yyXError{341, -1}: "expected identifier",
+		yyXError{343, -1}: "expected identifier",
+		yyXError{44, -1}:  "expected logical and operator or one of [$end, &&, ')', ',', ':', ';', ']', AND, AS, ASC, DEFAULT, DESC, FROM, GROUP, LIMIT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{108, -1}: "expected logical and operator or one of [$end, &&, ')', ',', ':', ';', ']', AND, AS, ASC, DEFAULT, DESC, FROM, GROUP, LIMIT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{125, -1}: "expected logical or operator or one of [$end, ')', ',', ';', ASC, DESC, LIMIT, OFFSET, OR, ||]",
+		yyXError{325, -1}: "expected logical or operator or one of [$end, ')', ',', ';', DEFAULT, OR, ||]",
+		yyXError{331, -1}: "expected logical or operator or one of [$end, ')', ',', ';', OR, ||]",
+		yyXError{262, -1}: "expected logical or operator or one of [$end, ')', ';', GROUP, LIMIT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{45, -1}:  "expected logical or operator or one of [$end, ')', ';', GROUP, LIMIT, OFFSET, OR, ORDER, ||]",
+		yyXError{241, -1}: "expected logical or operator or one of [$end, ')', ';', OFFSET, OR, ||]",
+		yyXError{244, -1}: "expected logical or operator or one of [$end, ')', ';', OR, ||]",
+		yyXError{207, -1}: "expected logical or operator or one of [$end, ',', ';', OR, WHERE, ||]",
+		yyXError{356, -1}: "expected logical or operator or one of [$end, OR, ||]",
+		yyXError{147, -1}: "expected logical or operator or one of [')', OR, ||]",
+		yyXError{200, -1}: "expected logical or operator or one of [')', OR, ||]",
+		yyXError{100, -1}: "expected logical or operator or one of [':', ']', OR, ||]",
+		yyXError{102, -1}: "expected logical or operator or one of [']', OR, ||]",
+		yyXError{115, -1}: "expected logical or operator or one of [']', OR, ||]",
+		yyXError{64, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{48, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{49, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{50, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{51, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{52, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{53, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{54, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{55, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{56, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{57, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{59, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{60, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{97, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{98, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{99, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{103, -1}: "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{107, -1}: "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{113, -1}: "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{116, -1}: "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{117, -1}: "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{126, -1}: "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{127, -1}: "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{132, -1}: "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{148, -1}: "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{201, -1}: "expected one of [!=, $end, &&, &^, '%', '&', '(', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', '[', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{62, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{63, -1}:  "expected one of [!=, $end, &&, &^, '%', '&', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{140, -1}: "expected one of [!=, $end, &&, &^, '%', '&', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{141, -1}: "expected one of [!=, $end, &&, &^, '%', '&', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{142, -1}: "expected one of [!=, $end, &&, &^, '%', '&', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{143, -1}: "expected one of [!=, $end, &&, &^, '%', '&', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{144, -1}: "expected one of [!=, $end, &&, &^, '%', '&', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{145, -1}: "expected one of [!=, $end, &&, &^, '%', '&', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{146, -1}: "expected one of [!=, $end, &&, &^, '%', '&', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{153, -1}: "expected one of [!=, $end, &&, &^, '%', '&', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{154, -1}: "expected one of [!=, $end, &&, &^, '%', '&', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{155, -1}: "expected one of [!=, $end, &&, &^, '%', '&', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{156, -1}: "expected one of [!=, $end, &&, &^, '%', '&', ')', '*', '+', ',', '-', '/', ':', ';', '<', '>', ']', '^', '|', <<, <=, ==, >=, >>, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{47, -1}:  "expected one of [!=, $end, &&, ')', '+', ',', '-', ':', ';', '<', '>', ']', '^', '|', <=, ==, >=, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{168, -1}: "expected one of [!=, $end, &&, ')', '+', ',', '-', ':', ';', '<', '>', ']', '^', '|', <=, ==, >=, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{169, -1}: "expected one of [!=, $end, &&, ')', '+', ',', '-', ':', ';', '<', '>', ']', '^', '|', <=, ==, >=, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{170, -1}: "expected one of [!=, $end, &&, ')', '+', ',', '-', ':', ';', '<', '>', ']', '^', '|', <=, ==, >=, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{171, -1}: "expected one of [!=, $end, &&, ')', '+', ',', '-', ':', ';', '<', '>', ']', '^', '|', <=, ==, >=, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{172, -1}: "expected one of [!=, $end, &&, ')', '+', ',', '-', ':', ';', '<', '>', ']', '^', '|', <=, ==, >=, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{173, -1}: "expected one of [!=, $end, &&, ')', '+', ',', '-', ':', ';', '<', '>', ']', '^', '|', <=, ==, >=, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{174, -1}: "expected one of [!=, $end, &&, ')', '+', ',', '-', ':', ';', '<', '>', ']', '^', '|', <=, ==, >=, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{46, -1}:  "expected one of [!=, $end, &&, ')', ',', ':', ';', '<', '>', ']', <=, ==, >=, AND, AS, ASC, BETWEEN, DEFAULT, DESC, FROM, GROUP, IN, IS, LIKE, LIMIT, NOT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{180, -1}: "expected one of [$end, &&, ')', '+', ',', '-', ':', ';', ']', '^', '|', AND, AS, ASC, DEFAULT, DESC, FROM, GROUP, LIMIT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{185, -1}: "expected one of [$end, &&, ')', '+', ',', '-', ':', ';', ']', '^', '|', AND, AS, ASC, DEFAULT, DESC, FROM, GROUP, LIMIT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{65, -1}:  "expected one of [$end, &&, ')', ',', ':', ';', ']', AND, AS, ASC, DEFAULT, DESC, FROM, GROUP, LIMIT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{112, -1}: "expected one of [$end, &&, ')', ',', ':', ';', ']', AND, AS, ASC, DEFAULT, DESC, FROM, GROUP, LIMIT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{175, -1}: "expected one of [$end, &&, ')', ',', ':', ';', ']', AND, AS, ASC, DEFAULT, DESC, FROM, GROUP, LIMIT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{177, -1}: "expected one of [$end, &&, ')', ',', ':', ';', ']', AND, AS, ASC, DEFAULT, DESC, FROM, GROUP, LIMIT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{191, -1}: "expected one of [$end, &&, ')', ',', ':', ';', ']', AND, AS, ASC, DEFAULT, DESC, FROM, GROUP, LIMIT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{192, -1}: "expected one of [$end, &&, ')', ',', ':', ';', ']', AND, AS, ASC, DEFAULT, DESC, FROM, GROUP, LIMIT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{197, -1}: "expected one of [$end, &&, ')', ',', ':', ';', ']', AND, AS, ASC, DEFAULT, DESC, FROM, GROUP, LIMIT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{198, -1}: "expected one of [$end, &&, ')', ',', ':', ';', ']', AND, AS, ASC, DEFAULT, DESC, FROM, GROUP, LIMIT, OFFSET, OR, ORDER, WHERE, ||]",
+		yyXError{66, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{67, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{68, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{69, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{70, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{71, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{72, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{73, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{74, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{75, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{76, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{77, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{78, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{79, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{80, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{81, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{82, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{83, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{84, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{85, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{86, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{87, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{88, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{89, -1}:  "expected one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{32, -1}:  "expected one of [$end, '(', ';', ADD, DROP, SELECT, SET, VALUES, WHERE, identifier]",
+		yyXError{288, -1}: "expected one of [$end, '(', ';']",
+		yyXError{38, -1}:  "expected one of [$end, ')', ',', ';', '=', LIMIT, OFFSET, ORDER, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, float, float32, float64, int, int16, int32, int64, int8, rune, string, time, uint, uint16, uint32, uint64, uint8]",
+		yyXError{219, -1}: "expected one of [$end, ')', ',', ';', AS, FULL, GROUP, LEFT, LIMIT, OFFSET, ON, ORDER, RIGHT, WHERE]",
+		yyXError{266, -1}: "expected one of [$end, ')', ',', ';', AS, FULL, GROUP, LEFT, LIMIT, OFFSET, ON, ORDER, RIGHT, WHERE]",
+		yyXError{326, -1}: "expected one of [$end, ')', ',', ';', DEFAULT]",
+		yyXError{327, -1}: "expected one of [$end, ')', ',', ';', DEFAULT]",
+		yyXError{267, -1}: "expected one of [$end, ')', ',', ';', FULL, GROUP, LEFT, LIMIT, OFFSET, ON, ORDER, RIGHT, WHERE]",
+		yyXError{269, -1}: "expected one of [$end, ')', ',', ';', FULL, GROUP, LEFT, LIMIT, OFFSET, ON, ORDER, RIGHT, WHERE]",
+		yyXError{221, -1}: "expected one of [$end, ')', ',', ';', FULL, GROUP, LEFT, LIMIT, OFFSET, ORDER, RIGHT, WHERE]",
+		yyXError{263, -1}: "expected one of [$end, ')', ',', ';', FULL, GROUP, LEFT, LIMIT, OFFSET, ORDER, RIGHT, WHERE]",
+		yyXError{256, -1}: "expected one of [$end, ')', ',', ';', LIMIT, OFFSET, ORDER]",
+		yyXError{328, -1}: "expected one of [$end, ')', ',', ';']",
+		yyXError{330, -1}: "expected one of [$end, ')', ',', ';']",
+		yyXError{123, -1}: "expected one of [$end, ')', ';', ASC, DESC, LIMIT, OFFSET]",
+		yyXError{229, -1}: "expected one of [$end, ')', ';', GROUP, LIMIT, OFFSET, ORDER, WHERE]",
+		yyXError{232, -1}: "expected one of [$end, ')', ';', GROUP, LIMIT, OFFSET, ORDER]",
+		yyXError{235, -1}: "expected one of [$end, ')', ';', LIMIT, OFFSET, ORDER]",
+		yyXError{252, -1}: "expected one of [$end, ')', ';', LIMIT, OFFSET, ORDER]",
+		yyXError{254, -1}: "expected one of [$end, ')', ';', LIMIT, OFFSET, ORDER]",
+		yyXError{238, -1}: "expected one of [$end, ')', ';', LIMIT, OFFSET]",
+		yyXError{247, -1}: "expected one of [$end, ')', ';', LIMIT, OFFSET]",
+		yyXError{248, -1}: "expected one of [$end, ')', ';', LIMIT, OFFSET]",
+		yyXError{249, -1}: "expected one of [$end, ')', ';', LIMIT, OFFSET]",
+		yyXError{242, -1}: "expected one of [$end, ')', ';']",
+		yyXError{205, -1}: "expected one of [$end, ',', ';', WHERE]",
+		yyXError{291, -1}: "expected one of [$end, ',', ';']",
+		yyXError{203, -1}: "expected one of [$end, ';', WHERE]",
+		yyXError{2, -1}:   "expected one of [$end, ';']",
+		yyXError{6, -1}:   "expected one of [$end, ';']",
+		yyXError{12, -1}:  "expected one of [$end, ';']",
+		yyXError{14, -1}:  "expected one of [$end, ';']",
+		yyXError{15, -1}:  "expected one of [$end, ';']",
+		yyXError{16, -1}:  "expected one of [$end, ';']",
+		yyXError{17, -1}:  "expected one of [$end, ';']",
+		yyXError{18, -1}:  "expected one of [$end, ';']",
+		yyXError{19, -1}:  "expected one of [$end, ';']",
+		yyXError{20, -1}:  "expected one of [$end, ';']",
+		yyXError{21, -1}:  "expected one of [$end, ';']",
+		yyXError{22, -1}:  "expected one of [$end, ';']",
+		yyXError{23, -1}:  "expected one of [$end, ';']",
+		yyXError{24, -1}:  "expected one of [$end, ';']",
+		yyXError{25, -1}:  "expected one of [$end, ';']",
+		yyXError{26, -1}:  "expected one of [$end, ';']",
+		yyXError{27, -1}:  "expected one of [$end, ';']",
+		yyXError{28, -1}:  "expected one of [$end, ';']",
+		yyXError{29, -1}:  "expected one of [$end, ';']",
+		yyXError{40, -1}:  "expected one of [$end, ';']",
+		yyXError{41, -1}:  "expected one of [$end, ';']",
+		yyXError{209, -1}: "expected one of [$end, ';']",
+		yyXError{282, -1}: "expected one of [$end, ';']",
+		yyXError{287, -1}: "expected one of [$end, ';']",
+		yyXError{292, -1}: "expected one of [$end, ';']",
+		yyXError{295, -1}: "expected one of [$end, ';']",
+		yyXError{298, -1}: "expected one of [$end, ';']",
+		yyXError{302, -1}: "expected one of [$end, ';']",
+		yyXError{305, -1}: "expected one of [$end, ';']",
+		yyXError{321, -1}: "expected one of [$end, ';']",
+		yyXError{336, -1}: "expected one of [$end, ';']",
+		yyXError{347, -1}: "expected one of [$end, ';']",
+		yyXError{348, -1}: "expected one of [$end, ';']",
+		yyXError{354, -1}: "expected one of [$end, ';']",
+		yyXError{355, -1}: "expected one of [$end, ';']",
+		yyXError{358, -1}: "expected one of [$end, ';']",
+		yyXError{211, -1}: "expected one of ['!', '(', '*', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{105, -1}: "expected one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{106, -1}: "expected one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{110, -1}: "expected one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{111, -1}: "expected one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{320, -1}: "expected one of [')', ',']",
+		yyXError{178, -1}: "expected one of ['+', '-', '^', '|', AND]",
+		yyXError{183, -1}: "expected one of ['+', '-', '^', '|', AND]",
+		yyXError{213, -1}: "expected one of [',', FROM]",
+		yyXError{214, -1}: "expected one of [',', FROM]",
+		yyXError{271, -1}: "expected one of [',', FROM]",
+		yyXError{272, -1}: "expected one of [',', FROM]",
+		yyXError{274, -1}: "expected one of [',', FROM]",
+		yyXError{350, -1}: "expected one of [ADD, DROP]",
+		yyXError{158, -1}: "expected one of [BETWEEN, IN]",
+		yyXError{9, -1}:   "expected one of [INDEX, TABLE]",
+		yyXError{225, -1}: "expected one of [JOIN, OUTER]",
+		yyXError{226, -1}: "expected one of [JOIN, OUTER]",
+		yyXError{227, -1}: "expected one of [JOIN, OUTER]",
+		yyXError{160, -1}: "expected one of [NOT, NULL]",
+		yyXError{280, -1}: "expected one of [SELECT, VALUES]",
+		yyXError{323, -1}: "expected optional DEFAULT clause or one of [$end, ')', ',', ';', DEFAULT]",
+		yyXError{322, -1}: "expected optional DEFAULT clause or optional column value constraint or one of [$end, '!', '(', ')', '+', ',', '-', ';', '^', DEFAULT, NOT, NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{228, -1}: "expected optional OUTER clause or one of [JOIN, OUTER]",
+		yyXError{122, -1}: "expected optional comma or one of [$end, ')', ',', ';', ASC, DESC, LIMIT, OFFSET]",
+		yyXError{253, -1}: "expected optional comma or one of [$end, ')', ',', ';', LIMIT, OFFSET, ORDER]",
+		yyXError{202, -1}: "expected optional comma or one of [$end, ',', ';', WHERE]",
+		yyXError{286, -1}: "expected optional comma or one of [$end, ',', ';']",
+		yyXError{317, -1}: "expected optional comma or one of [')', ',']",
+		yyXError{334, -1}: "expected optional comma or one of [')', ',']",
+		yyXError{159, -1}: "expected primary expression factor or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{161, -1}: "expected primary expression factor or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{162, -1}: "expected primary expression factor or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{163, -1}: "expected primary expression factor or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{164, -1}: "expected primary expression factor or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{165, -1}: "expected primary expression factor or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{166, -1}: "expected primary expression factor or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{167, -1}: "expected primary expression factor or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{179, -1}: "expected primary expression factor or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{182, -1}: "expected primary expression factor or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{184, -1}: "expected primary expression factor or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{90, -1}:  "expected primary expression or one of ['(', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{91, -1}:  "expected primary expression or one of ['(', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{92, -1}:  "expected primary expression or one of ['(', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{93, -1}:  "expected primary expression or one of ['(', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{149, -1}: "expected primary expression term or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{150, -1}: "expected primary expression term or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{151, -1}: "expected primary expression term or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{152, -1}: "expected primary expression term or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{218, -1}: "expected record set optional AS clause or one of [$end, ')', ',', ';', AS, FULL, GROUP, LEFT, LIMIT, OFFSET, ON, ORDER, RIGHT, WHERE]",
+		yyXError{223, -1}: "expected record set or one of [$end, '(', ')', ';', FULL, GROUP, LEFT, LIMIT, OFFSET, ORDER, RIGHT, WHERE, identifier]",
+		yyXError{259, -1}: "expected record set or one of ['(', identifier]",
+		yyXError{188, -1}: "expected semiOpt or one of [')', ';']",
+		yyXError{195, -1}: "expected semiOpt or one of [')', ';']",
+		yyXError{264, -1}: "expected semiOpt or one of [')', ';']",
+		yyXError{10, -1}:  "expected statement or one of [$end, ';', ALTER, BEGIN, COMMIT, CREATE, DELETE, DROP, EXPLAIN, INSERT, ROLLBACK, SELECT, TRUNCATE, UPDATE]",
+		yyXError{357, -1}: "expected statement or one of [$end, ';', ALTER, BEGIN, COMMIT, CREATE, DELETE, DROP, EXPLAIN, INSERT, ROLLBACK, SELECT, TRUNCATE, UPDATE]",
+		yyXError{314, -1}: "expected table column definition or identifier",
+		yyXError{332, -1}: "expected table column definition or identifier",
+		yyXError{351, -1}: "expected table column definition or identifier",
+		yyXError{319, -1}: "expected table column definition or one of [')', identifier]",
+		yyXError{31, -1}:  "expected table name or identifier",
+		yyXError{208, -1}: "expected table name or identifier",
+		yyXError{275, -1}: "expected table name or identifier",
+		yyXError{297, -1}: "expected table name or identifier",
+		yyXError{303, -1}: "expected table name or identifier",
+		yyXError{312, -1}: "expected table name or identifier",
+		yyXError{349, -1}: "expected table name or identifier",
+		yyXError{294, -1}: "expected table name or one of [IF, identifier]",
+		yyXError{308, -1}: "expected table name or one of [IF, identifier]",
+		yyXError{315, -1}: "expected type or one of [bigint, bigrat, blob, bool, byte, complex128, complex64, duration, float, float32, float64, int, int16, int32, int64, int8, rune, string, time, uint, uint16, uint32, uint64, uint8]",
+		yyXError{133, -1}: "expected unary expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{134, -1}: "expected unary expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{135, -1}: "expected unary expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{136, -1}: "expected unary expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{137, -1}: "expected unary expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{138, -1}: "expected unary expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+		yyXError{139, -1}: "expected unary expression or one of ['!', '(', '+', '-', '^', NULL, QL parameter, bigint, bigrat, blob, bool, byte, complex128, complex64, duration, false, float, float32, float64, floating-point literal, identifier, imaginary literal, int, int16, int32, int64, int8, integer literal, rune, string, string literal, time, true, uint, uint16, uint32, uint64, uint8]",
+	}
 
-	yyParseTab = [335][]uint16{
+	yyParseTab = [359][]uint16{
 		// 0
-		{165, 165, 92: 216, 95: 228, 100: 213, 109: 208, 218, 112: 209, 219, 116: 210, 220, 211, 221, 222, 123: 223, 212, 224, 225, 217, 130: 214, 226, 136: 215, 227, 144: 231, 232, 229, 233, 230, 177: 207},
-		{539, 206},
-		{104: 532},
-		{178: 531},
-		{186, 186},
+		{172, 172, 96: 229, 101: 242, 104: 225, 114: 220, 231, 221, 232, 222, 233, 223, 234, 235, 236, 224, 237, 238, 230, 226, 239, 227, 240, 134: 228, 241, 137: 245, 246, 243, 247, 244, 179: 219, 190: 217, 218},
+		{1: 216},
+		{573, 215},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 572},
+		{112: 565},
 		// 5
-		{103: 180, 497, 158: 495, 179: 496},
-		{16: 492},
-		{103: 482, 483},
-		{168: 465},
-		{79, 79},
+		{192: 564},
+		{197, 197},
+		{110: 188, 112: 524, 161: 522, 193: 523},
+		{51: 519},
+		{110: 509, 112: 510},
 		// 10
-		{4: 72, 72, 72, 72, 10: 72, 26: 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 56: 72, 72, 59: 72, 72, 65: 72, 72, 72, 72, 70: 72, 159: 408, 175: 407},
+		{172, 172, 96: 229, 101: 242, 104: 225, 114: 220, 231, 221, 232, 222, 233, 223, 234, 235, 236, 224, 237, 238, 230, 226, 239, 227, 240, 134: 228, 241, 137: 508, 246, 243, 247, 244},
+		{172: 491},
+		{89, 89},
+		{3: 75, 75, 75, 7: 75, 75, 14: 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 42: 75, 75, 47: 75, 75, 75, 75, 76: 75, 164: 427, 182: 426},
+		{60, 60},
+		// 15
+		{59, 59},
+		{58, 58},
 		{57, 57},
 		{56, 56},
 		{55, 55},
+		// 20
 		{54, 54},
-		// 15
 		{53, 53},
 		{52, 52},
 		{51, 51},
 		{50, 50},
+		// 25
 		{49, 49},
-		// 20
 		{48, 48},
 		{47, 47},
 		{46, 46},
 		{45, 45},
-		{44, 44},
-		// 25
-		{43, 43},
-		{104: 405},
-		{10: 234, 93: 235},
-		{41, 41, 4: 41, 10: 41, 12: 41, 92: 41, 100: 41, 105: 41, 108: 41, 143: 41},
-		{10: 2, 143: 237, 171: 236},
 		// 30
-		{10: 240, 91: 238, 111: 239, 150: 241},
-		{10: 1},
-		{107: 403},
-		{201, 201, 3: 201, 12: 201, 151: 399},
-		{192, 192, 192, 192, 8: 192, 192, 11: 192, 26: 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 43: 192, 192, 192, 192, 192, 192, 192, 192, 107: 192},
+		{112: 424},
+		{8: 248, 97: 249},
+		{43, 43, 7: 43, 43, 13: 43, 96: 43, 104: 43, 113: 43, 144: 43, 151: 43},
+		{8: 4, 151: 251, 189: 250},
+		{8: 254, 92: 252, 145: 253, 153: 255},
 		// 35
-		{10, 10, 12: 244, 106: 243, 180: 242},
-		{11, 11},
-		{9, 9},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 247},
-		{4: 396},
+		{8: 3},
+		{143: 422},
+		{209, 209, 6: 209, 13: 209, 154: 418},
+		{201, 201, 201, 6: 201, 9: 201, 201, 12: 201, 15: 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 143: 201},
+		{12, 12, 13: 258, 142: 257, 194: 256},
 		// 40
-		{164, 164, 164, 164, 8: 164, 164, 11: 164, 164, 164, 164, 164, 164, 164, 164, 164, 164, 164, 313, 312, 132: 311},
-		{3, 3, 3, 8: 3, 3, 11: 3, 13: 3, 308, 307, 90: 306},
-		{155, 155, 155, 155, 8: 155, 155, 11: 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 25: 358, 51: 359, 357, 364, 362, 366, 58: 361, 61: 360, 363, 367, 365},
-		{146, 146, 146, 146, 5: 352, 351, 349, 146, 146, 11: 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 350, 146, 51: 146, 146, 146, 146, 146, 58: 146, 61: 146, 146, 146, 146},
-		{123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 11: 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 51: 123, 123, 123, 123, 123, 58: 123, 61: 123, 123, 123, 123, 70: 123, 76: 123, 123, 123, 123, 123, 123, 85: 123},
+		{13, 13},
+		{11, 11},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 261},
+		{7: 415},
+		{170, 170, 170, 6: 170, 9: 170, 170, 170, 170, 170, 41: 170, 45: 170, 170, 51: 170, 170, 170, 170, 170, 170, 327, 326, 150: 325},
 		// 45
-		{122, 122, 122, 122, 122, 122, 122, 122, 122, 122, 11: 122, 122, 122, 122, 122, 122, 122, 122, 122, 122, 122, 122, 122, 122, 122, 51: 122, 122, 122, 122, 122, 58: 122, 61: 122, 122, 122, 122, 70: 122, 76: 122, 122, 122, 122, 122, 122, 85: 122},
-		{121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 11: 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 51: 121, 121, 121, 121, 121, 58: 121, 61: 121, 121, 121, 121, 70: 121, 76: 121, 121, 121, 121, 121, 121, 85: 121},
-		{120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 11: 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 51: 120, 120, 120, 120, 120, 58: 120, 61: 120, 120, 120, 120, 70: 120, 76: 120, 120, 120, 120, 120, 120, 85: 120},
-		{119, 119, 119, 119, 119, 119, 119, 119, 119, 119, 11: 119, 119, 119, 119, 119, 119, 119, 119, 119, 119, 119, 119, 119, 119, 119, 51: 119, 119, 119, 119, 119, 58: 119, 61: 119, 119, 119, 119, 70: 119, 76: 119, 119, 119, 119, 119, 119, 85: 119},
-		{118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 11: 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 51: 118, 118, 118, 118, 118, 58: 118, 61: 118, 118, 118, 118, 70: 118, 76: 118, 118, 118, 118, 118, 118, 85: 118},
+		{5, 5, 5, 9: 5, 5, 12: 5, 41: 5, 45: 322, 321, 91: 320},
+		{163, 163, 163, 6: 163, 9: 163, 163, 163, 163, 163, 41: 163, 44: 374, 163, 163, 51: 163, 163, 163, 163, 163, 163, 163, 163, 60: 375, 373, 380, 378, 382, 377, 376, 379, 383, 381},
+		{154, 154, 154, 368, 367, 365, 154, 9: 154, 154, 154, 154, 154, 41: 154, 44: 154, 154, 154, 51: 154, 154, 154, 154, 154, 154, 154, 154, 366, 154, 154, 154, 154, 154, 154, 154, 154, 154, 154},
+		{133, 133, 133, 133, 133, 133, 133, 133, 9: 133, 133, 133, 133, 133, 41: 133, 44: 133, 133, 133, 51: 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 76: 133, 78: 133, 133, 133, 133, 133, 133, 86: 133},
+		{132, 132, 132, 132, 132, 132, 132, 132, 9: 132, 132, 132, 132, 132, 41: 132, 44: 132, 132, 132, 51: 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 76: 132, 78: 132, 132, 132, 132, 132, 132, 86: 132},
 		// 50
-		{117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 11: 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 51: 117, 117, 117, 117, 117, 58: 117, 61: 117, 117, 117, 117, 70: 117, 76: 117, 117, 117, 117, 117, 117, 85: 117},
-		{116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 11: 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 51: 116, 116, 116, 116, 116, 58: 116, 61: 116, 116, 116, 116, 70: 116, 76: 116, 116, 116, 116, 116, 116, 85: 116},
-		{115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 11: 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 51: 115, 115, 115, 115, 115, 58: 115, 61: 115, 115, 115, 115, 70: 115, 76: 115, 115, 115, 115, 115, 115, 85: 115},
-		{114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 11: 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 51: 114, 114, 114, 114, 114, 58: 114, 61: 114, 114, 114, 114, 70: 114, 76: 114, 114, 114, 114, 114, 114, 85: 114},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 347},
+		{131, 131, 131, 131, 131, 131, 131, 131, 9: 131, 131, 131, 131, 131, 41: 131, 44: 131, 131, 131, 51: 131, 131, 131, 131, 131, 131, 131, 131, 131, 131, 131, 131, 131, 131, 131, 131, 131, 131, 131, 76: 131, 78: 131, 131, 131, 131, 131, 131, 86: 131},
+		{130, 130, 130, 130, 130, 130, 130, 130, 9: 130, 130, 130, 130, 130, 41: 130, 44: 130, 130, 130, 51: 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 76: 130, 78: 130, 130, 130, 130, 130, 130, 86: 130},
+		{129, 129, 129, 129, 129, 129, 129, 129, 9: 129, 129, 129, 129, 129, 41: 129, 44: 129, 129, 129, 51: 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 76: 129, 78: 129, 129, 129, 129, 129, 129, 86: 129},
+		{128, 128, 128, 128, 128, 128, 128, 128, 9: 128, 128, 128, 128, 128, 41: 128, 44: 128, 128, 128, 51: 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 76: 128, 78: 128, 128, 128, 128, 128, 128, 86: 128},
+		{127, 127, 127, 127, 127, 127, 127, 127, 9: 127, 127, 127, 127, 127, 41: 127, 44: 127, 127, 127, 51: 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 76: 127, 78: 127, 127, 127, 127, 127, 127, 86: 127},
 		// 55
-		{108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 11: 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 51: 108, 108, 108, 108, 108, 58: 108, 61: 108, 108, 108, 108, 70: 108, 76: 108, 108, 108, 108, 108, 108, 85: 108},
-		{107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 11: 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 51: 107, 107, 107, 107, 107, 58: 107, 61: 107, 107, 107, 107, 70: 107, 76: 107, 107, 107, 107, 107, 107, 85: 107},
-		{8, 8, 8, 8, 297, 8, 8, 8, 8, 8, 11: 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 51: 8, 8, 8, 8, 8, 58: 8, 61: 8, 8, 8, 8, 70: 8, 76: 8, 8, 8, 8, 8, 8, 85: 298, 96: 301, 299, 300},
-		{103, 103, 103, 103, 5: 103, 103, 103, 103, 103, 11: 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 51: 103, 103, 103, 103, 103, 58: 103, 61: 103, 103, 103, 103, 70: 339, 76: 337, 334, 338, 333, 335, 336},
-		{98, 98, 98, 98, 5: 98, 98, 98, 98, 98, 11: 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 51: 98, 98, 98, 98, 98, 58: 98, 61: 98, 98, 98, 98, 70: 98, 76: 98, 98, 98, 98, 98, 98},
+		{126, 126, 126, 126, 126, 126, 126, 126, 9: 126, 126, 126, 126, 126, 41: 126, 44: 126, 126, 126, 51: 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 76: 126, 78: 126, 126, 126, 126, 126, 126, 86: 126},
+		{125, 125, 125, 125, 125, 125, 125, 125, 9: 125, 125, 125, 125, 125, 41: 125, 44: 125, 125, 125, 51: 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 76: 125, 78: 125, 125, 125, 125, 125, 125, 86: 125},
+		{124, 124, 124, 124, 124, 124, 124, 124, 9: 124, 124, 124, 124, 124, 41: 124, 44: 124, 124, 124, 51: 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 124, 76: 124, 78: 124, 124, 124, 124, 124, 124, 86: 124},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 363},
+		{118, 118, 118, 118, 118, 118, 118, 118, 9: 118, 118, 118, 118, 118, 41: 118, 44: 118, 118, 118, 51: 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 118, 76: 118, 78: 118, 118, 118, 118, 118, 118, 86: 118},
 		// 60
-		{90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 11: 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 51: 90, 90, 90, 90, 90, 58: 90, 61: 90, 90, 90, 90, 70: 90, 76: 90, 90, 90, 90, 90, 90, 85: 90, 149: 331},
-		{40, 40, 40, 40, 8: 40, 40, 11: 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40},
-		{35, 35, 35, 35, 35},
-		{34, 34, 34, 34, 34},
-		{33, 33, 33, 33, 33},
+		{117, 117, 117, 117, 117, 117, 117, 117, 9: 117, 117, 117, 117, 117, 41: 117, 44: 117, 117, 117, 51: 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117, 76: 117, 78: 117, 117, 117, 117, 117, 117, 86: 117},
+		{10, 10, 10, 10, 10, 10, 10, 311, 9: 10, 10, 10, 10, 10, 41: 10, 44: 10, 10, 10, 51: 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 76: 10, 78: 10, 10, 10, 10, 10, 10, 86: 312, 103: 315, 105: 313, 314},
+		{113, 113, 113, 113, 113, 113, 113, 9: 113, 113, 113, 113, 113, 41: 113, 44: 113, 113, 113, 51: 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 76: 355, 78: 353, 350, 354, 349, 351, 352},
+		{108, 108, 108, 108, 108, 108, 108, 9: 108, 108, 108, 108, 108, 41: 108, 44: 108, 108, 108, 51: 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 108, 76: 108, 78: 108, 108, 108, 108, 108, 108},
+		{100, 100, 100, 100, 100, 100, 100, 100, 9: 100, 100, 100, 100, 100, 41: 100, 44: 100, 100, 100, 51: 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 76: 100, 78: 100, 100, 100, 100, 100, 100, 86: 100, 152: 347},
 		// 65
-		{32, 32, 32, 32, 32},
-		{31, 31, 31, 31, 31},
-		{30, 30, 30, 30, 30},
-		{29, 29, 29, 29, 29},
-		{28, 28, 28, 28, 28},
+		{42, 42, 42, 6: 42, 9: 42, 42, 42, 42, 42, 41: 42, 45: 42, 42, 51: 42, 42, 42, 42, 42, 42, 42, 42},
+		{37, 37, 37, 37, 37, 37, 37, 37, 37, 11: 37, 14: 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 42: 37, 37, 37, 47: 37, 37, 37, 37},
+		{36, 36, 36, 36, 36, 36, 36, 36, 36, 11: 36, 14: 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 42: 36, 36, 36, 47: 36, 36, 36, 36},
+		{35, 35, 35, 35, 35, 35, 35, 35, 35, 11: 35, 14: 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 42: 35, 35, 35, 47: 35, 35, 35, 35},
+		{34, 34, 34, 34, 34, 34, 34, 34, 34, 11: 34, 14: 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 42: 34, 34, 34, 47: 34, 34, 34, 34},
 		// 70
-		{27, 27, 27, 27, 27},
-		{26, 26, 26, 26, 26},
-		{25, 25, 25, 25, 25},
-		{24, 24, 24, 24, 24},
-		{23, 23, 23, 23, 23},
+		{33, 33, 33, 33, 33, 33, 33, 33, 33, 11: 33, 14: 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 42: 33, 33, 33, 47: 33, 33, 33, 33},
+		{32, 32, 32, 32, 32, 32, 32, 32, 32, 11: 32, 14: 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 42: 32, 32, 32, 47: 32, 32, 32, 32},
+		{31, 31, 31, 31, 31, 31, 31, 31, 31, 11: 31, 14: 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 42: 31, 31, 31, 47: 31, 31, 31, 31},
+		{30, 30, 30, 30, 30, 30, 30, 30, 30, 11: 30, 14: 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 42: 30, 30, 30, 47: 30, 30, 30, 30},
+		{29, 29, 29, 29, 29, 29, 29, 29, 29, 11: 29, 14: 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 42: 29, 29, 29, 47: 29, 29, 29, 29},
 		// 75
-		{22, 22, 22, 22, 22},
-		{21, 21, 21, 21, 21},
-		{20, 20, 20, 20, 20},
-		{19, 19, 19, 19, 19},
-		{18, 18, 18, 18, 18},
+		{28, 28, 28, 28, 28, 28, 28, 28, 28, 11: 28, 14: 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 42: 28, 28, 28, 47: 28, 28, 28, 28},
+		{27, 27, 27, 27, 27, 27, 27, 27, 27, 11: 27, 14: 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 42: 27, 27, 27, 47: 27, 27, 27, 27},
+		{26, 26, 26, 26, 26, 26, 26, 26, 26, 11: 26, 14: 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 42: 26, 26, 26, 47: 26, 26, 26, 26},
+		{25, 25, 25, 25, 25, 25, 25, 25, 25, 11: 25, 14: 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 42: 25, 25, 25, 47: 25, 25, 25, 25},
+		{24, 24, 24, 24, 24, 24, 24, 24, 24, 11: 24, 14: 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 42: 24, 24, 24, 47: 24, 24, 24, 24},
 		// 80
-		{17, 17, 17, 17, 17},
-		{16, 16, 16, 16, 16},
-		{15, 15, 15, 15, 15},
-		{14, 14, 14, 14, 14},
-		{13, 13, 13, 13, 13},
+		{23, 23, 23, 23, 23, 23, 23, 23, 23, 11: 23, 14: 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 42: 23, 23, 23, 47: 23, 23, 23, 23},
+		{22, 22, 22, 22, 22, 22, 22, 22, 22, 11: 22, 14: 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 42: 22, 22, 22, 47: 22, 22, 22, 22},
+		{21, 21, 21, 21, 21, 21, 21, 21, 21, 11: 21, 14: 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 42: 21, 21, 21, 47: 21, 21, 21, 21},
+		{20, 20, 20, 20, 20, 20, 20, 20, 20, 11: 20, 14: 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 42: 20, 20, 20, 47: 20, 20, 20, 20},
+		{19, 19, 19, 19, 19, 19, 19, 19, 19, 11: 19, 14: 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 42: 19, 19, 19, 47: 19, 19, 19, 19},
 		// 85
-		{12, 12, 12, 12, 12},
-		{4: 260, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 69: 245, 71: 262, 257, 261, 330, 259},
-		{4: 260, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 69: 245, 71: 262, 257, 261, 329, 259},
-		{4: 260, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 69: 245, 71: 262, 257, 261, 328, 259},
-		{4: 260, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 69: 245, 71: 262, 257, 261, 296, 259},
+		{18, 18, 18, 18, 18, 18, 18, 18, 18, 11: 18, 14: 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 42: 18, 18, 18, 47: 18, 18, 18, 18},
+		{17, 17, 17, 17, 17, 17, 17, 17, 17, 11: 17, 14: 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 42: 17, 17, 17, 47: 17, 17, 17, 17},
+		{16, 16, 16, 16, 16, 16, 16, 16, 16, 11: 16, 14: 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 42: 16, 16, 16, 47: 16, 16, 16, 16},
+		{15, 15, 15, 15, 15, 15, 15, 15, 15, 11: 15, 14: 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 42: 15, 15, 15, 47: 15, 15, 15, 15},
+		{14, 14, 14, 14, 14, 14, 14, 14, 14, 11: 14, 14: 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 42: 14, 14, 14, 47: 14, 14, 14, 14},
 		// 90
-		{4, 4, 4, 4, 297, 4, 4, 4, 4, 4, 11: 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 51: 4, 4, 4, 4, 4, 58: 4, 61: 4, 4, 4, 4, 70: 4, 76: 4, 4, 4, 4, 4, 4, 85: 298, 96: 301, 299, 300},
-		{2: 195, 4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 322, 94: 321, 153: 320},
-		{4: 260, 295, 294, 292, 10: 266, 21: 303, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 302},
-		{106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 11: 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 51: 106, 106, 106, 106, 106, 58: 106, 61: 106, 106, 106, 106, 70: 106, 76: 106, 106, 106, 106, 106, 106, 85: 106},
-		{105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 11: 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 51: 105, 105, 105, 105, 105, 58: 105, 61: 105, 105, 105, 105, 70: 105, 76: 105, 105, 105, 105, 105, 105, 85: 105},
+		{7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 70: 259, 276, 271, 275, 346, 273},
+		{7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 70: 259, 276, 271, 275, 345, 273},
+		{7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 70: 259, 276, 271, 275, 344, 273},
+		{7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 70: 259, 276, 271, 275, 310, 273},
+		{6, 6, 6, 6, 6, 6, 6, 311, 9: 6, 6, 6, 6, 6, 41: 6, 44: 6, 6, 6, 51: 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 76: 6, 78: 6, 6, 6, 6, 6, 6, 86: 312, 103: 315, 105: 313, 314},
 		// 95
-		{104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 11: 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 51: 104, 104, 104, 104, 104, 58: 104, 61: 104, 104, 104, 104, 70: 104, 76: 104, 104, 104, 104, 104, 104, 85: 104},
-		{14: 308, 307, 19: 315, 21: 316, 90: 306},
-		{4: 260, 295, 294, 292, 10: 266, 19: 305, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 304},
-		{14: 308, 307, 19: 309, 90: 306},
-		{61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 11: 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 51: 61, 61, 61, 61, 61, 58: 61, 61: 61, 61, 61, 61, 70: 61, 76: 61, 61, 61, 61, 61, 61, 85: 61},
+		{2: 204, 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 335, 279, 84: 278, 263, 87: 281, 262, 260, 337, 99: 336, 155: 334},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 56: 317, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 316},
+		{116, 116, 116, 116, 116, 116, 116, 116, 9: 116, 116, 116, 116, 116, 41: 116, 44: 116, 116, 116, 51: 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 116, 76: 116, 78: 116, 116, 116, 116, 116, 116, 86: 116},
+		{115, 115, 115, 115, 115, 115, 115, 115, 9: 115, 115, 115, 115, 115, 41: 115, 44: 115, 115, 115, 51: 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 76: 115, 78: 115, 115, 115, 115, 115, 115, 86: 115},
+		{114, 114, 114, 114, 114, 114, 114, 114, 9: 114, 114, 114, 114, 114, 41: 114, 44: 114, 114, 114, 51: 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 114, 76: 114, 78: 114, 114, 114, 114, 114, 114, 86: 114},
 		// 100
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 310},
-		{4: 162, 162, 162, 162, 10: 162, 26: 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 162, 56: 162, 162, 59: 162, 162, 65: 162, 162, 162, 162},
-		{4: 161, 161, 161, 161, 10: 161, 26: 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 161, 56: 161, 161, 59: 161, 161, 65: 161, 161, 161, 161},
-		{60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 11: 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 51: 60, 60, 60, 60, 60, 58: 60, 61: 60, 60, 60, 60, 70: 60, 76: 60, 60, 60, 60, 60, 60, 85: 60},
-		{163, 163, 163, 163, 8: 163, 163, 11: 163, 163, 163, 163, 163, 163, 163, 163, 163, 163, 163, 313, 312, 132: 311},
+		{45: 322, 321, 54: 329, 56: 330, 91: 320},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 54: 319, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 318},
+		{45: 322, 321, 54: 323, 91: 320},
+		{64, 64, 64, 64, 64, 64, 64, 64, 9: 64, 64, 64, 64, 64, 41: 64, 44: 64, 64, 64, 51: 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 76: 64, 78: 64, 64, 64, 64, 64, 64, 86: 64},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 324},
 		// 105
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 314, 248},
-		{4: 38, 38, 38, 38, 10: 38, 26: 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 56: 38, 38, 59: 38, 38, 65: 38, 38, 38, 38},
-		{4: 37, 37, 37, 37, 10: 37, 26: 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 56: 37, 37, 59: 37, 37, 65: 37, 37, 37, 37},
-		{39, 39, 39, 39, 8: 39, 39, 11: 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39},
-		{132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 11: 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 132, 51: 132, 132, 132, 132, 132, 58: 132, 61: 132, 132, 132, 132, 70: 132, 76: 132, 132, 132, 132, 132, 132, 85: 132},
+		{3: 168, 168, 168, 7: 168, 168, 14: 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 168, 42: 168, 168, 47: 168, 168, 168, 168},
+		{3: 167, 167, 167, 7: 167, 167, 14: 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 42: 167, 167, 47: 167, 167, 167, 167},
+		{63, 63, 63, 63, 63, 63, 63, 63, 9: 63, 63, 63, 63, 63, 41: 63, 44: 63, 63, 63, 51: 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 76: 63, 78: 63, 63, 63, 63, 63, 63, 86: 63},
+		{169, 169, 169, 6: 169, 9: 169, 169, 169, 169, 169, 41: 169, 45: 169, 169, 51: 169, 169, 169, 169, 169, 169, 327, 326, 150: 325},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 328, 262},
 		// 110
-		{4: 260, 295, 294, 292, 10: 266, 19: 318, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 317},
-		{14: 308, 307, 19: 319, 90: 306},
-		{59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 11: 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 59, 51: 59, 59, 59, 59, 59, 58: 59, 61: 59, 59, 59, 59, 70: 59, 76: 59, 59, 59, 59, 59, 59, 85: 59},
-		{58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 11: 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 51: 58, 58, 58, 58, 58, 58: 58, 61: 58, 58, 58, 58, 70: 58, 76: 58, 58, 58, 58, 58, 58, 85: 58},
-		{2: 327},
+		{3: 40, 40, 40, 7: 40, 40, 14: 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 42: 40, 40, 47: 40, 40, 40, 40},
+		{3: 39, 39, 39, 7: 39, 39, 14: 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 42: 39, 39, 47: 39, 39, 39, 39},
+		{41, 41, 41, 6: 41, 9: 41, 41, 41, 41, 41, 41: 41, 45: 41, 41, 51: 41, 41, 41, 41, 41, 41, 41, 41},
+		{140, 140, 140, 140, 140, 140, 140, 140, 9: 140, 140, 140, 140, 140, 41: 140, 44: 140, 140, 140, 51: 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 76: 140, 78: 140, 140, 140, 140, 140, 140, 86: 140},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 54: 332, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 331},
 		// 115
-		{2: 194},
-		{159, 159, 159, 159, 8: 159, 159, 14: 308, 307, 17: 159, 159, 90: 306, 161: 323},
-		{157, 157, 157, 325, 8: 157, 157, 17: 157, 157, 162: 324},
-		{160, 160, 160, 8: 160, 160, 17: 160, 160},
-		{156, 156, 156, 4: 260, 295, 294, 292, 156, 156, 266, 17: 156, 156, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 326},
+		{45: 322, 321, 54: 333, 91: 320},
+		{62, 62, 62, 62, 62, 62, 62, 62, 9: 62, 62, 62, 62, 62, 41: 62, 44: 62, 62, 62, 51: 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 76: 62, 78: 62, 62, 62, 62, 62, 62, 86: 62},
+		{61, 61, 61, 61, 61, 61, 61, 61, 9: 61, 61, 61, 61, 61, 41: 61, 44: 61, 61, 61, 51: 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 76: 61, 78: 61, 61, 61, 61, 61, 61, 86: 61},
+		{2: 343},
+		{2: 342},
 		// 120
-		{158, 158, 158, 158, 8: 158, 158, 14: 308, 307, 17: 158, 158, 90: 306},
-		{196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 11: 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 51: 196, 196, 196, 196, 196, 58: 196, 61: 196, 196, 196, 196, 70: 196, 76: 196, 196, 196, 196, 196, 196, 85: 196},
-		{5, 5, 5, 5, 297, 5, 5, 5, 5, 5, 11: 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 51: 5, 5, 5, 5, 5, 58: 5, 61: 5, 5, 5, 5, 70: 5, 76: 5, 5, 5, 5, 5, 5, 85: 298, 96: 301, 299, 300},
-		{6, 6, 6, 6, 297, 6, 6, 6, 6, 6, 11: 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 51: 6, 6, 6, 6, 6, 58: 6, 61: 6, 6, 6, 6, 70: 6, 76: 6, 6, 6, 6, 6, 6, 85: 298, 96: 301, 299, 300},
-		{7, 7, 7, 7, 297, 7, 7, 7, 7, 7, 11: 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 51: 7, 7, 7, 7, 7, 58: 7, 61: 7, 7, 7, 7, 70: 7, 76: 7, 7, 7, 7, 7, 7, 85: 298, 96: 301, 299, 300},
+		{2: 203},
+		{165, 165, 165, 6: 165, 9: 165, 165, 45: 322, 321, 52: 165, 165, 91: 320, 166: 338},
+		{2, 2, 2, 6: 340, 9: 2, 2, 52: 2, 2, 98: 339},
+		{166, 166, 166, 9: 166, 166, 52: 166, 166},
+		{1, 1, 1, 309, 308, 306, 7: 274, 280, 1, 1, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 52: 1, 1, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 341},
 		// 125
-		{10: 332},
-		{89, 89, 89, 89, 89, 89, 89, 89, 89, 89, 11: 89, 89, 89, 89, 89, 89, 89, 89, 89, 89, 89, 89, 89, 89, 89, 51: 89, 89, 89, 89, 89, 58: 89, 61: 89, 89, 89, 89, 70: 89, 76: 89, 89, 89, 89, 89, 89, 85: 89},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 346},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 345},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 344},
+		{164, 164, 164, 6: 164, 9: 164, 164, 45: 322, 321, 52: 164, 164, 91: 320},
+		{205, 205, 205, 205, 205, 205, 205, 205, 9: 205, 205, 205, 205, 205, 41: 205, 44: 205, 205, 205, 51: 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 76: 205, 78: 205, 205, 205, 205, 205, 205, 86: 205},
+		{206, 206, 206, 206, 206, 206, 206, 206, 9: 206, 206, 206, 206, 206, 41: 206, 44: 206, 206, 206, 51: 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 76: 206, 78: 206, 206, 206, 206, 206, 206, 86: 206},
+		{7, 7, 7, 7, 7, 7, 7, 311, 9: 7, 7, 7, 7, 7, 41: 7, 44: 7, 7, 7, 51: 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 76: 7, 78: 7, 7, 7, 7, 7, 7, 86: 312, 103: 315, 105: 313, 314},
+		{8, 8, 8, 8, 8, 8, 8, 311, 9: 8, 8, 8, 8, 8, 41: 8, 44: 8, 8, 8, 51: 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 76: 8, 78: 8, 8, 8, 8, 8, 8, 86: 312, 103: 315, 105: 313, 314},
 		// 130
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 343},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 342},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 341},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 340},
-		{91, 91, 91, 91, 5: 91, 91, 91, 91, 91, 11: 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 51: 91, 91, 91, 91, 91, 58: 91, 61: 91, 91, 91, 91, 70: 91, 76: 91, 91, 91, 91, 91, 91},
+		{9, 9, 9, 9, 9, 9, 9, 311, 9: 9, 9, 9, 9, 9, 41: 9, 44: 9, 9, 9, 51: 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 76: 9, 78: 9, 9, 9, 9, 9, 9, 86: 312, 103: 315, 105: 313, 314},
+		{8: 348},
+		{99, 99, 99, 99, 99, 99, 99, 99, 9: 99, 99, 99, 99, 99, 41: 99, 44: 99, 99, 99, 51: 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 76: 99, 78: 99, 99, 99, 99, 99, 99, 86: 99},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 362},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 361},
 		// 135
-		{92, 92, 92, 92, 5: 92, 92, 92, 92, 92, 11: 92, 92, 92, 92, 92, 92, 92, 92, 92, 92, 92, 92, 92, 92, 92, 51: 92, 92, 92, 92, 92, 58: 92, 61: 92, 92, 92, 92, 70: 92, 76: 92, 92, 92, 92, 92, 92},
-		{93, 93, 93, 93, 5: 93, 93, 93, 93, 93, 11: 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 51: 93, 93, 93, 93, 93, 58: 93, 61: 93, 93, 93, 93, 70: 93, 76: 93, 93, 93, 93, 93, 93},
-		{94, 94, 94, 94, 5: 94, 94, 94, 94, 94, 11: 94, 94, 94, 94, 94, 94, 94, 94, 94, 94, 94, 94, 94, 94, 94, 51: 94, 94, 94, 94, 94, 58: 94, 61: 94, 94, 94, 94, 70: 94, 76: 94, 94, 94, 94, 94, 94},
-		{95, 95, 95, 95, 5: 95, 95, 95, 95, 95, 11: 95, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95, 51: 95, 95, 95, 95, 95, 58: 95, 61: 95, 95, 95, 95, 70: 95, 76: 95, 95, 95, 95, 95, 95},
-		{96, 96, 96, 96, 5: 96, 96, 96, 96, 96, 11: 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 51: 96, 96, 96, 96, 96, 58: 96, 61: 96, 96, 96, 96, 70: 96, 76: 96, 96, 96, 96, 96, 96},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 360},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 359},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 358},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 357},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 356},
 		// 140
-		{97, 97, 97, 97, 5: 97, 97, 97, 97, 97, 11: 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 51: 97, 97, 97, 97, 97, 58: 97, 61: 97, 97, 97, 97, 70: 97, 76: 97, 97, 97, 97, 97, 97},
-		{2: 348, 14: 308, 307, 90: 306},
-		{113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 11: 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 113, 51: 113, 113, 113, 113, 113, 58: 113, 61: 113, 113, 113, 113, 70: 113, 76: 113, 113, 113, 113, 113, 113, 85: 113},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 356},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 355},
+		{101, 101, 101, 101, 101, 101, 101, 9: 101, 101, 101, 101, 101, 41: 101, 44: 101, 101, 101, 51: 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 76: 101, 78: 101, 101, 101, 101, 101, 101},
+		{102, 102, 102, 102, 102, 102, 102, 9: 102, 102, 102, 102, 102, 41: 102, 44: 102, 102, 102, 51: 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 76: 102, 78: 102, 102, 102, 102, 102, 102},
+		{103, 103, 103, 103, 103, 103, 103, 9: 103, 103, 103, 103, 103, 41: 103, 44: 103, 103, 103, 51: 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 103, 76: 103, 78: 103, 103, 103, 103, 103, 103},
+		{104, 104, 104, 104, 104, 104, 104, 9: 104, 104, 104, 104, 104, 41: 104, 44: 104, 104, 104, 51: 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 76: 104, 78: 104, 104, 104, 104, 104, 104},
+		{105, 105, 105, 105, 105, 105, 105, 9: 105, 105, 105, 105, 105, 41: 105, 44: 105, 105, 105, 51: 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 76: 105, 78: 105, 105, 105, 105, 105, 105},
 		// 145
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 354},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 353},
-		{99, 99, 99, 99, 5: 99, 99, 99, 99, 99, 11: 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 51: 99, 99, 99, 99, 99, 58: 99, 61: 99, 99, 99, 99, 70: 339, 76: 337, 334, 338, 333, 335, 336},
-		{100, 100, 100, 100, 5: 100, 100, 100, 100, 100, 11: 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 51: 100, 100, 100, 100, 100, 58: 100, 61: 100, 100, 100, 100, 70: 339, 76: 337, 334, 338, 333, 335, 336},
-		{101, 101, 101, 101, 5: 101, 101, 101, 101, 101, 11: 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 101, 51: 101, 101, 101, 101, 101, 58: 101, 61: 101, 101, 101, 101, 70: 339, 76: 337, 334, 338, 333, 335, 336},
+		{106, 106, 106, 106, 106, 106, 106, 9: 106, 106, 106, 106, 106, 41: 106, 44: 106, 106, 106, 51: 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 106, 76: 106, 78: 106, 106, 106, 106, 106, 106},
+		{107, 107, 107, 107, 107, 107, 107, 9: 107, 107, 107, 107, 107, 41: 107, 44: 107, 107, 107, 51: 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 76: 107, 78: 107, 107, 107, 107, 107, 107},
+		{2: 364, 45: 322, 321, 91: 320},
+		{123, 123, 123, 123, 123, 123, 123, 123, 9: 123, 123, 123, 123, 123, 41: 123, 44: 123, 123, 123, 51: 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 123, 76: 123, 78: 123, 123, 123, 123, 123, 123, 86: 123},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 372},
 		// 150
-		{102, 102, 102, 102, 5: 102, 102, 102, 102, 102, 11: 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 102, 51: 102, 102, 102, 102, 102, 58: 102, 61: 102, 102, 102, 102, 70: 339, 76: 337, 334, 338, 333, 335, 336},
-		{4: 391},
-		{51: 382, 381},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 378},
-		{25: 376, 42: 375},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 371},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 370},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 369},
+		{109, 109, 109, 109, 109, 109, 109, 9: 109, 109, 109, 109, 109, 41: 109, 44: 109, 109, 109, 51: 109, 109, 109, 109, 109, 109, 109, 109, 109, 109, 109, 109, 109, 109, 109, 109, 109, 109, 109, 76: 355, 78: 353, 350, 354, 349, 351, 352},
+		{110, 110, 110, 110, 110, 110, 110, 9: 110, 110, 110, 110, 110, 41: 110, 44: 110, 110, 110, 51: 110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 76: 355, 78: 353, 350, 354, 349, 351, 352},
 		// 155
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 374},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 373},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 372},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 371},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 370},
+		{111, 111, 111, 111, 111, 111, 111, 9: 111, 111, 111, 111, 111, 41: 111, 44: 111, 111, 111, 51: 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 76: 355, 78: 353, 350, 354, 349, 351, 352},
+		{112, 112, 112, 112, 112, 112, 112, 9: 112, 112, 112, 112, 112, 41: 112, 44: 112, 112, 112, 51: 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 112, 76: 355, 78: 353, 350, 354, 349, 351, 352},
+		{7: 409},
+		{60: 398, 397},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 394},
 		// 160
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 369},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 368},
-		{139, 139, 139, 139, 5: 352, 351, 349, 139, 139, 11: 139, 139, 139, 139, 139, 139, 139, 139, 139, 139, 139, 139, 139, 350, 139, 51: 139, 139, 139, 139, 139, 58: 139, 61: 139, 139, 139, 139},
-		{140, 140, 140, 140, 5: 352, 351, 349, 140, 140, 11: 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 350, 140, 51: 140, 140, 140, 140, 140, 58: 140, 61: 140, 140, 140, 140},
-		{141, 141, 141, 141, 5: 352, 351, 349, 141, 141, 11: 141, 141, 141, 141, 141, 141, 141, 141, 141, 141, 141, 141, 141, 350, 141, 51: 141, 141, 141, 141, 141, 58: 141, 61: 141, 141, 141, 141},
+		{14: 391, 44: 392},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 390},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 389},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 388},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 387},
 		// 165
-		{142, 142, 142, 142, 5: 352, 351, 349, 142, 142, 11: 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 350, 142, 51: 142, 142, 142, 142, 142, 58: 142, 61: 142, 142, 142, 142},
-		{143, 143, 143, 143, 5: 352, 351, 349, 143, 143, 11: 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 350, 143, 51: 143, 143, 143, 143, 143, 58: 143, 61: 143, 143, 143, 143},
-		{144, 144, 144, 144, 5: 352, 351, 349, 144, 144, 11: 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 350, 144, 51: 144, 144, 144, 144, 144, 58: 144, 61: 144, 144, 144, 144},
-		{145, 145, 145, 145, 5: 352, 351, 349, 145, 145, 11: 145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 350, 145, 51: 145, 145, 145, 145, 145, 58: 145, 61: 145, 145, 145, 145},
-		{148, 148, 148, 148, 8: 148, 148, 11: 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 386},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 385},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 384},
+		{147, 147, 147, 368, 367, 365, 147, 9: 147, 147, 147, 147, 147, 41: 147, 44: 147, 147, 147, 51: 147, 147, 147, 147, 147, 147, 147, 147, 366, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147},
+		{148, 148, 148, 368, 367, 365, 148, 9: 148, 148, 148, 148, 148, 41: 148, 44: 148, 148, 148, 51: 148, 148, 148, 148, 148, 148, 148, 148, 366, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148},
 		// 170
-		{42: 377},
-		{147, 147, 147, 147, 8: 147, 147, 11: 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147},
-		{5: 352, 351, 349, 22: 379, 24: 350},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 380},
-		{150, 150, 150, 150, 5: 352, 351, 349, 150, 150, 11: 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 350},
+		{149, 149, 149, 368, 367, 365, 149, 9: 149, 149, 149, 149, 149, 41: 149, 44: 149, 149, 149, 51: 149, 149, 149, 149, 149, 149, 149, 149, 366, 149, 149, 149, 149, 149, 149, 149, 149, 149, 149},
+		{150, 150, 150, 368, 367, 365, 150, 9: 150, 150, 150, 150, 150, 41: 150, 44: 150, 150, 150, 51: 150, 150, 150, 150, 150, 150, 150, 150, 366, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150},
+		{151, 151, 151, 368, 367, 365, 151, 9: 151, 151, 151, 151, 151, 41: 151, 44: 151, 151, 151, 51: 151, 151, 151, 151, 151, 151, 151, 151, 366, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151},
+		{152, 152, 152, 368, 367, 365, 152, 9: 152, 152, 152, 152, 152, 41: 152, 44: 152, 152, 152, 51: 152, 152, 152, 152, 152, 152, 152, 152, 366, 152, 152, 152, 152, 152, 152, 152, 152, 152, 152},
+		{153, 153, 153, 368, 367, 365, 153, 9: 153, 153, 153, 153, 153, 41: 153, 44: 153, 153, 153, 51: 153, 153, 153, 153, 153, 153, 153, 153, 366, 153, 153, 153, 153, 153, 153, 153, 153, 153, 153},
 		// 175
-		{4: 386},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 383},
-		{5: 352, 351, 349, 22: 384, 24: 350},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 385},
-		{149, 149, 149, 149, 5: 352, 351, 349, 149, 149, 11: 149, 149, 149, 149, 149, 149, 149, 149, 149, 149, 149, 149, 149, 350},
+		{156, 156, 156, 6: 156, 9: 156, 156, 156, 156, 156, 41: 156, 45: 156, 156, 51: 156, 156, 156, 156, 156, 156, 156, 156},
+		{14: 393},
+		{155, 155, 155, 6: 155, 9: 155, 155, 155, 155, 155, 41: 155, 45: 155, 155, 51: 155, 155, 155, 155, 155, 155, 155, 155},
+		{3: 368, 367, 365, 57: 395, 59: 366},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 396},
 		// 180
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 322, 92: 216, 94: 387, 388},
-		{2: 390},
-		{2: 389},
-		{151, 151, 151, 151, 8: 151, 151, 11: 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151, 151},
-		{153, 153, 153, 153, 8: 153, 153, 11: 153, 153, 153, 153, 153, 153, 153, 153, 153, 153, 153, 153, 153},
+		{158, 158, 158, 368, 367, 365, 158, 9: 158, 158, 158, 158, 158, 41: 158, 45: 158, 158, 51: 158, 158, 158, 158, 158, 158, 158, 158, 366},
+		{7: 402},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 399},
+		{3: 368, 367, 365, 57: 400, 59: 366},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 401},
 		// 185
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 322, 92: 216, 94: 392, 393},
-		{2: 395},
-		{2: 394},
-		{152, 152, 152, 152, 8: 152, 152, 11: 152, 152, 152, 152, 152, 152, 152, 152, 152, 152, 152, 152, 152},
-		{154, 154, 154, 154, 8: 154, 154, 11: 154, 154, 154, 154, 154, 154, 154, 154, 154, 154, 154, 154, 154},
+		{157, 157, 157, 368, 367, 365, 157, 9: 157, 157, 157, 157, 157, 41: 157, 45: 157, 157, 51: 157, 157, 157, 157, 157, 157, 157, 157, 366},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 337, 96: 229, 99: 403, 101: 404},
+		{2: 408},
+		{406, 2: 95, 136: 405},
+		{2: 407},
 		// 190
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 397},
-		{2: 398, 14: 308, 307, 90: 306},
-		{185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 11: 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 51: 185, 185, 185, 185, 185, 58: 185, 61: 185, 185, 185, 185, 70: 185, 76: 185, 185, 185, 185, 185, 185, 85: 185},
-		{199, 199, 3: 401, 12: 199, 152: 400},
-		{202, 202, 12: 202},
+		{2: 94},
+		{159, 159, 159, 6: 159, 9: 159, 159, 159, 159, 159, 41: 159, 45: 159, 159, 51: 159, 159, 159, 159, 159, 159, 159, 159},
+		{161, 161, 161, 6: 161, 9: 161, 161, 161, 161, 161, 41: 161, 45: 161, 161, 51: 161, 161, 161, 161, 161, 161, 161, 161},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 337, 96: 229, 99: 410, 101: 411},
+		{2: 414},
 		// 195
-		{198, 198, 10: 240, 12: 198, 91: 238, 111: 402},
-		{200, 200, 3: 200, 12: 200},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 404},
-		{203, 203, 3: 203, 12: 203, 14: 308, 307, 90: 306},
-		{10: 234, 93: 406},
+		{406, 2: 95, 136: 412},
+		{2: 413},
+		{160, 160, 160, 6: 160, 9: 160, 160, 160, 160, 160, 41: 160, 45: 160, 160, 51: 160, 160, 160, 160, 160, 160, 160, 160},
+		{162, 162, 162, 6: 162, 9: 162, 162, 162, 162, 162, 41: 162, 45: 162, 162, 51: 162, 162, 162, 162, 162, 162, 162, 162},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 416},
 		// 200
-		{36, 36},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 413, 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 409, 128: 410, 164: 411, 176: 412},
-		{4: 71, 71, 71, 71, 10: 71, 26: 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 71, 56: 71, 71, 59: 71, 71, 65: 71, 71, 71, 71, 70: 71},
-		{3: 137, 14: 308, 307, 137, 20: 463, 90: 306, 163: 462},
-		{3: 135, 16: 135},
+		{2: 417, 45: 322, 321, 91: 320},
+		{192, 192, 192, 192, 192, 192, 192, 192, 9: 192, 192, 192, 192, 192, 41: 192, 44: 192, 192, 192, 51: 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 76: 192, 78: 192, 192, 192, 192, 192, 192, 86: 192},
+		{2, 2, 6: 420, 13: 2, 98: 419},
+		{210, 210, 13: 210},
+		{1, 1, 8: 254, 13: 1, 92: 252, 145: 421},
 		// 205
-		{3: 460, 16: 69},
-		{16: 414},
-		{16: 70},
-		{4: 417, 10: 416, 134: 418, 415, 174: 419},
-		{83, 83, 83, 83, 8: 83, 83, 11: 83, 83, 83, 20: 458, 173: 457},
+		{208, 208, 6: 208, 13: 208},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 423},
+		{211, 211, 6: 211, 13: 211, 45: 322, 321, 91: 320},
+		{8: 248, 97: 425},
+		{38, 38},
 		// 210
-		{87, 87, 87, 87, 8: 87, 87, 11: 87, 87, 87, 20: 87},
-		{92: 216, 95: 453},
-		{81, 81, 81, 81, 8: 81, 81, 11: 81, 81, 81},
-		{67, 67, 67, 420, 8: 67, 67, 11: 67, 244, 67, 106: 422, 142: 421},
-		{67, 67, 67, 4: 417, 8: 67, 67, 416, 67, 244, 67, 106: 422, 134: 447, 415, 142: 448},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 432, 279, 84: 278, 263, 87: 281, 262, 260, 428, 149: 429, 168: 430, 183: 431},
+		{3: 74, 74, 74, 7: 74, 74, 14: 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 42: 74, 74, 47: 74, 74, 74, 74, 76: 74},
+		{6: 145, 45: 322, 321, 51: 145, 55: 489, 91: 320, 167: 488},
+		{6: 143, 51: 143},
+		{6: 486, 51: 72},
 		// 215
-		{65, 65, 65, 8: 65, 65, 11: 65, 13: 423, 129: 425, 138: 424},
-		{66, 66, 66, 8: 66, 66, 11: 66, 13: 66},
-		{114: 440},
-		{63, 63, 63, 8: 63, 63, 11: 426, 133: 428, 141: 427},
-		{64, 64, 64, 8: 64, 64, 11: 64},
+		{51: 433},
+		{51: 73},
+		{7: 436, 435, 132: 437, 434, 181: 438},
+		{93, 93, 93, 6: 93, 9: 93, 93, 12: 93, 93, 41: 93, 55: 484, 93: 93, 93, 93, 100: 93, 180: 483},
+		{97, 97, 97, 6: 97, 9: 97, 97, 12: 97, 97, 41: 97, 55: 97, 93: 97, 97, 97, 100: 97},
 		// 220
-		{114: 435},
-		{76, 76, 76, 8: 76, 430, 139: 429},
-		{62, 62, 62, 8: 62, 62},
-		{74, 74, 74, 8: 433, 140: 432},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 431},
+		{96: 229, 101: 480},
+		{91, 91, 91, 6: 91, 9: 91, 91, 12: 91, 91, 41: 91, 93: 91, 91, 91},
+		{2, 2, 2, 6: 439, 9: 2, 2, 12: 2, 2, 41: 2, 93: 2, 2, 2, 98: 440},
+		{1, 1, 1, 7: 436, 435, 1, 1, 12: 1, 1, 41: 1, 93: 1, 1, 1, 132: 479, 434},
+		{82, 82, 82, 9: 82, 82, 12: 82, 82, 41: 82, 93: 443, 441, 442, 173: 445, 446, 444},
 		// 225
-		{75, 75, 75, 8: 75, 14: 308, 307, 90: 306},
-		{78, 78, 78},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 434},
-		{73, 73, 73, 14: 308, 307, 90: 306},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 322, 94: 436},
+		{102: 88, 111: 88},
+		{102: 87, 111: 87},
+		{102: 86, 111: 86},
+		{102: 85, 111: 473, 178: 474},
+		{81, 81, 81, 9: 81, 81, 12: 81, 81, 41: 81},
 		// 230
-		{111, 111, 111, 8: 111, 111, 17: 438, 439, 170: 437},
-		{112, 112, 112, 8: 112, 112},
-		{110, 110, 110, 8: 110, 110},
-		{109, 109, 109, 8: 109, 109},
-		{10: 240, 91: 441, 115: 442},
+		{70, 70, 70, 9: 70, 70, 12: 70, 258, 41: 70, 142: 448, 188: 447},
+		{68, 68, 68, 9: 68, 68, 12: 68, 41: 449, 169: 451, 184: 450},
+		{69, 69, 69, 9: 69, 69, 12: 69, 41: 69},
+		{146: 466},
+		{66, 66, 66, 9: 66, 66, 12: 452, 176: 454, 187: 453},
 		// 235
-		{190, 190, 190, 190, 8: 190, 190, 11: 190, 155: 443},
-		{133, 133, 133, 8: 133, 133, 11: 133},
-		{188, 188, 188, 445, 8: 188, 188, 11: 188, 156: 444},
-		{191, 191, 191, 8: 191, 191, 11: 191},
-		{187, 187, 187, 8: 187, 187, 240, 187, 91: 446},
+		{67, 67, 67, 9: 67, 67, 12: 67},
+		{146: 461},
+		{79, 79, 79, 9: 79, 456, 185: 455},
+		{65, 65, 65, 9: 65, 65},
+		{77, 77, 77, 9: 459, 186: 458},
 		// 240
-		{189, 189, 189, 189, 8: 189, 189, 11: 189},
-		{80, 80, 80, 80, 8: 80, 80, 11: 80, 80, 80},
-		{65, 65, 65, 8: 65, 65, 11: 65, 13: 423, 129: 425, 138: 449},
-		{63, 63, 63, 8: 63, 63, 11: 426, 133: 428, 141: 450},
-		{76, 76, 76, 8: 76, 430, 139: 451},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 457},
+		{78, 78, 78, 9: 78, 45: 322, 321, 91: 320},
+		{80, 80, 80},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 460},
+		{76, 76, 76, 45: 322, 321, 91: 320},
 		// 245
-		{74, 74, 74, 8: 433, 140: 452},
-		{77, 77, 77},
-		{455, 2: 85, 172: 454},
-		{2: 456},
-		{2: 84},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 337, 99: 462},
+		{121, 121, 121, 9: 121, 121, 52: 464, 465, 177: 463},
+		{122, 122, 122, 9: 122, 122},
+		{120, 120, 120, 9: 120, 120},
+		{119, 119, 119, 9: 119, 119},
 		// 250
-		{86, 86, 86, 86, 8: 86, 86, 11: 86, 86, 86, 20: 86},
-		{88, 88, 88, 88, 8: 88, 88, 11: 88, 88, 88},
-		{10: 459},
-		{82, 82, 82, 82, 8: 82, 82, 11: 82, 82, 82},
-		{4: 260, 295, 294, 292, 10: 266, 16: 68, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 409, 128: 461},
+		{8: 254, 92: 467, 147: 468},
+		{199, 199, 199, 6: 199, 9: 199, 199, 12: 199, 157: 469},
+		{141, 141, 141, 9: 141, 141, 12: 141},
+		{2, 2, 2, 6: 471, 9: 2, 2, 12: 2, 98: 470},
+		{200, 200, 200, 9: 200, 200, 12: 200},
 		// 255
-		{3: 134, 16: 134},
-		{3: 138, 16: 138},
-		{10: 464},
-		{3: 136, 16: 136},
-		{10: 234, 93: 466},
+		{1, 1, 1, 8: 254, 1, 1, 12: 1, 92: 472},
+		{198, 198, 198, 6: 198, 9: 198, 198, 12: 198},
+		{102: 84},
+		{102: 475},
+		{7: 436, 435, 132: 476, 434},
 		// 260
-		{4: 468, 92: 129, 105: 129, 165: 467},
-		{92: 216, 95: 472, 105: 471},
-		{10: 240, 91: 441, 115: 469},
-		{2: 470},
-		{92: 128, 105: 128},
+		{100: 477},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 478},
+		{83, 83, 83, 9: 83, 83, 12: 83, 83, 41: 83, 45: 322, 321, 91: 320},
+		{90, 90, 90, 6: 90, 9: 90, 90, 12: 90, 90, 41: 90, 93: 90, 90, 90},
+		{406, 2: 95, 136: 481},
 		// 265
-		{4: 473},
-		{130, 130},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 322, 94: 474},
-		{2: 475},
-		{127, 127, 3: 127, 166: 476},
+		{2: 482},
+		{96, 96, 96, 6: 96, 9: 96, 96, 12: 96, 96, 41: 96, 55: 96, 93: 96, 96, 96, 100: 96},
+		{98, 98, 98, 6: 98, 9: 98, 98, 12: 98, 98, 41: 98, 93: 98, 98, 98, 100: 98},
+		{8: 485},
+		{92, 92, 92, 6: 92, 9: 92, 92, 12: 92, 92, 41: 92, 93: 92, 92, 92, 100: 92},
 		// 270
-		{125, 125, 3: 478, 167: 477},
-		{131, 131},
-		{124, 124, 4: 479},
-		{4: 260, 295, 294, 292, 10: 266, 26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 251, 284, 285, 286, 288, 289, 290, 291, 287, 56: 250, 253, 59: 254, 255, 65: 258, 256, 252, 293, 245, 71: 262, 257, 261, 263, 259, 82: 265, 264, 249, 86: 267, 248, 246, 322, 94: 480},
-		{2: 481},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 71, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 428, 149: 487},
+		{6: 142, 51: 142},
+		{6: 146, 51: 146},
+		{8: 490},
+		{6: 144, 51: 144},
 		// 275
-		{126, 126, 3: 126},
-		{10: 169, 102: 489, 160: 488},
-		{10: 234, 93: 484, 102: 485},
-		{167, 167},
-		{101: 486},
+		{8: 248, 97: 492},
+		{7: 494, 96: 137, 113: 137, 170: 493},
+		{96: 229, 101: 498, 113: 497},
+		{8: 254, 92: 467, 147: 495},
+		{2: 496},
 		// 280
-		{10: 234, 93: 487},
-		{166, 166},
-		{10: 491},
-		{101: 490},
-		{10: 168},
+		{96: 136, 113: 136},
+		{7: 499},
+		{138, 138},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 337, 99: 500},
+		{2: 501},
 		// 285
-		{170, 170},
-		{10: 234, 93: 493},
-		{172, 172, 12: 244, 106: 494},
-		{171, 171},
-		{103: 517},
+		{135, 135, 6: 135, 171: 502},
+		{2, 2, 6: 504, 98: 503},
+		{139, 139},
+		{1, 1, 7: 505},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 337, 99: 506},
 		// 290
-		{103: 179},
-		{10: 234, 93: 498, 102: 499},
-		{4: 512},
-		{25: 500},
-		{101: 501},
+		{2: 507},
+		{134, 134, 6: 134},
+		{171, 171},
+		{8: 176, 109: 516, 165: 515},
+		{8: 248, 97: 511, 109: 512},
 		// 295
-		{10: 234, 93: 502},
-		{4: 503},
-		{10: 240, 91: 504, 99: 505},
-		{26: 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 276, 280, 281, 282, 283, 279, 43: 284, 285, 286, 288, 289, 290, 291, 287, 69: 511},
-		{2: 176, 176, 121: 506},
+		{174, 174},
+		{108: 513},
+		{8: 248, 97: 514},
+		{173, 173},
+		{8: 518},
 		// 300
-		{2: 174, 508, 122: 507},
-		{2: 510},
-		{2: 173, 10: 240, 91: 504, 99: 509},
-		{2: 175, 175},
+		{108: 517},
+		{8: 175},
 		{177, 177},
+		{8: 248, 97: 520},
+		{179, 179, 13: 258, 142: 521},
 		// 305
-		{193, 193, 193, 193},
-		{10: 240, 91: 504, 99: 513},
-		{2: 176, 176, 121: 514},
-		{2: 174, 508, 122: 515},
-		{2: 516},
-		// 310
 		{178, 178},
-		{10: 182, 102: 519, 157: 518},
-		{10: 522},
-		{25: 520},
-		{101: 521},
+		{110: 553},
+		{110: 187},
+		{8: 248, 97: 525, 109: 526},
+		{7: 548},
+		// 310
+		{44: 527},
+		{108: 528},
+		{8: 248, 97: 529},
+		{7: 530},
+		{8: 254, 92: 531, 107: 532},
 		// 315
-		{10: 181},
-		{169: 523},
-		{10: 524},
-		{4: 525},
-		{10: 526},
+		{15: 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 70: 538},
+		{2: 184, 6: 184, 148: 533},
+		{2: 2, 6: 535, 98: 534},
+		{2: 537},
+		{2: 1, 8: 254, 92: 531, 107: 536},
 		// 320
-		{2: 527, 4: 528},
-		{184, 184},
-		{2: 529},
-		{2: 530},
-		{183, 183},
+		{2: 183, 6: 183},
+		{185, 185},
+		{194, 194, 194, 309, 308, 306, 194, 274, 280, 11: 194, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 540, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 541, 158: 542, 539},
+		{181, 181, 181, 6: 181, 11: 545, 162: 546, 544},
+		{14: 543},
 		// 325
-		{197, 197},
-		{10: 234, 93: 533},
-		{100: 535, 108: 534},
-		{10: 240, 91: 504, 99: 538},
-		{154: 536},
+		{195, 195, 195, 6: 195, 11: 195, 45: 322, 321, 91: 320},
+		{193, 193, 193, 6: 193, 11: 193},
+		{196, 196, 196, 6: 196, 11: 196},
+		{202, 202, 202, 6: 202},
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 547},
 		// 330
-		{10: 240, 91: 537},
-		{204, 204},
-		{205, 205},
-		{165, 165, 92: 216, 95: 228, 100: 213, 109: 208, 218, 112: 209, 219, 116: 210, 220, 211, 221, 222, 123: 223, 212, 224, 225, 217, 130: 214, 226, 136: 215, 227, 144: 540, 232, 229, 233, 230},
-		{42, 42},
+		{180, 180, 180, 6: 180},
+		{182, 182, 182, 6: 182, 45: 322, 321, 91: 320},
+		{8: 254, 92: 531, 107: 549},
+		{2: 184, 6: 184, 148: 550},
+		{2: 2, 6: 535, 98: 551},
+		// 335
+		{2: 552},
+		{186, 186},
+		{8: 190, 109: 555, 160: 554},
+		{8: 558},
+		{44: 556},
+		// 340
+		{108: 557},
+		{8: 189},
+		{100: 559},
+		{8: 560},
+		{7: 561},
+		// 345
+		{3: 309, 308, 306, 7: 274, 280, 14: 265, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 290, 294, 295, 296, 297, 293, 298, 299, 300, 302, 303, 304, 305, 301, 264, 267, 42: 268, 269, 47: 272, 270, 266, 307, 70: 259, 276, 271, 275, 277, 273, 77: 279, 84: 278, 263, 87: 281, 262, 260, 337, 99: 562},
+		{2: 563},
+		{191, 191},
+		{207, 207},
+		{8: 248, 97: 566},
+		// 350
+		{104: 568, 144: 567},
+		{8: 254, 92: 531, 107: 571},
+		{156: 569},
+		{8: 254, 92: 570},
+		{212, 212},
+		// 355
+		{213, 213},
+		{1: 214, 45: 322, 321, 91: 320},
+		{172, 172, 96: 229, 101: 242, 104: 225, 114: 220, 231, 221, 232, 222, 233, 223, 234, 235, 236, 224, 237, 238, 230, 226, 239, 227, 240, 134: 228, 241, 137: 574, 246, 243, 247, 244},
+		{44, 44},
 	}
 )
 
@@ -1149,7 +1583,7 @@ func yylex1(yylex yyLexer, lval *yySymType) (n int) {
 }
 
 func yyParse(yylex yyLexer) int {
-	const yyError = 182
+	const yyError = 196
 
 	yyEx, _ := yylex.(yyLexerEx)
 	var yyn int
@@ -1169,6 +1603,7 @@ func yyParse(yylex yyLexer) int {
 	yystate := 0
 	yychar := -1
 	var yyxchar int
+	var yyshift int
 	yyp := -1
 	goto yystack
 
@@ -1216,6 +1651,7 @@ yynewstate:
 		yychar = -1
 		yyVAL = yylval
 		yystate = yyn
+		yyshift = yyn
 		if yyDebug >= 2 {
 			__yyfmt__.Printf("shift, and goto state %d\n", yystate)
 		}
@@ -1238,18 +1674,20 @@ yynewstate:
 			if yyDebug >= 1 {
 				__yyfmt__.Printf("no action for %s in state %d\n", yySymName(yychar), yystate)
 			}
-			k := yyXError{yystate, yyxchar}
-			msg, ok := yyXErrors[k]
+			msg, ok := yyXErrors[yyXError{yystate, yyxchar}]
 			if !ok {
-				k.xsym = -1
-				msg, ok = yyXErrors[k]
+				msg, ok = yyXErrors[yyXError{yystate, -1}]
+			}
+			if !ok && yyshift != 0 {
+				msg, ok = yyXErrors[yyXError{yyshift, yyxchar}]
 			}
 			if !ok {
+				msg, ok = yyXErrors[yyXError{yyshift, -1}]
+			}
+			if !ok || msg == "" {
 				msg = "syntax error"
 			}
-			if msg != "" {
-				yylex.Error(msg)
-			}
+			yylex.Error(msg)
 			Nerrs++
 			fallthrough
 
@@ -1318,27 +1756,31 @@ yynewstate:
 	}
 
 	switch r {
-	case 1:
-		{
-			yyVAL.item = &alterTableAddStmt{tableName: yyS[yypt-2].item.(string), c: yyS[yypt-0].item.(*col)}
-		}
 	case 2:
 		{
-			yyVAL.item = &alterTableDropColumnStmt{tableName: yyS[yypt-3].item.(string), colName: yyS[yypt-0].item.(string)}
+			yylex.(*lexer).expr = expr(yyS[yypt-0].item)
 		}
 	case 3:
 		{
-			yyVAL.item = assignment{colName: yyS[yypt-2].item.(string), expr: yyS[yypt-0].item.(expression)}
+			yyVAL.item = &alterTableAddStmt{tableName: yyS[yypt-2].item.(string), c: yyS[yypt-0].item.(*col)}
 		}
 	case 4:
 		{
-			yyVAL.item = append([]assignment{yyS[yypt-2].item.(assignment)}, yyS[yypt-1].item.([]assignment)...)
+			yyVAL.item = &alterTableDropColumnStmt{tableName: yyS[yypt-3].item.(string), colName: yyS[yypt-0].item.(string)}
 		}
 	case 5:
 		{
-			yyVAL.item = []assignment{}
+			yyVAL.item = assignment{colName: yyS[yypt-2].item.(string), expr: expr(yyS[yypt-0].item)}
 		}
 	case 6:
+		{
+			yyVAL.item = append([]assignment{yyS[yypt-2].item.(assignment)}, yyS[yypt-1].item.([]assignment)...)
+		}
+	case 7:
+		{
+			yyVAL.item = []assignment{}
+		}
+	case 8:
 		{
 			yyVAL.item = append(yyS[yypt-2].item.([]assignment), yyS[yypt-0].item.(assignment))
 		}
@@ -1352,72 +1794,92 @@ yynewstate:
 		}
 	case 11:
 		{
+			yyVAL.item = '*'
+		}
+	case 12:
+		{
 			yyVAL.item = []expression{}
 		}
-	case 13:
+	case 14:
 		{
-			yyVAL.item = &col{name: yyS[yypt-1].item.(string), typ: yyS[yypt-0].item.(int)}
-		}
-	case 15:
-		{
-			yyVAL.item = append([]string{yyS[yypt-2].item.(string)}, yyS[yypt-1].item.([]string)...)
+			x := &col{name: yyS[yypt-3].item.(string), typ: yyS[yypt-2].item.(int), constraint: yyS[yypt-1].item.(*constraint)}
+			if yyS[yypt-0].item != nil {
+				x.dflt = expr(yyS[yypt-0].item)
+			}
+			yyVAL.item = x
 		}
 	case 16:
 		{
-			yyVAL.item = []string{}
+			yyVAL.item = append([]string{yyS[yypt-2].item.(string)}, yyS[yypt-1].item.([]string)...)
 		}
 	case 17:
 		{
+			yyVAL.item = []string{}
+		}
+	case 18:
+		{
 			yyVAL.item = append(yyS[yypt-2].item.([]string), yyS[yypt-0].item.(string))
 		}
-	case 20:
+	case 19:
 		{
 			yyVAL.item = commitStmt{}
 		}
+	case 20:
+		{
+			yyVAL.item = &constraint{}
+		}
 	case 21:
 		{
-			yyVAL.item = &conversion{typ: yyS[yypt-3].item.(int), val: yyS[yypt-1].item.(expression)}
+			yyVAL.item = &constraint{expr(yyS[yypt-0].item)}
 		}
 	case 22:
 		{
-			indexName, tableName, columnName := yyS[yypt-5].item.(string), yyS[yypt-3].item.(string), yyS[yypt-1].item.(string)
-			yyVAL.item = &createIndexStmt{unique: yyS[yypt-8].item.(bool), ifNotExists: yyS[yypt-6].item.(bool), indexName: indexName, tableName: tableName, colName: columnName}
+			yyVAL.item = (*constraint)(nil)
+		}
+	case 24:
+		{
+			yyVAL.item = &conversion{typ: yyS[yypt-3].item.(int), val: expr(yyS[yypt-1].item)}
+		}
+	case 25:
+		{
+			indexName, tableName, exprList := yyS[yypt-5].item.(string), yyS[yypt-3].item.(string), yyS[yypt-1].item.([]expression)
+			simpleIndex := len(exprList) == 1
+			var columnName string
+			if simpleIndex {
+				expr := exprList[0]
+				switch x := expr.(type) {
+				case *ident:
+					columnName = x.s
+				case *call:
+					if x.f == "id" && len(x.arg) == 0 {
+						columnName = "id()"
+						break
+					}
+
+					simpleIndex = false
+				default:
+					simpleIndex = false
+				}
+			}
+
+			if !simpleIndex {
+				columnName = ""
+			}
+			yyVAL.item = &createIndexStmt{unique: yyS[yypt-8].item.(bool), ifNotExists: yyS[yypt-6].item.(bool), indexName: indexName, tableName: tableName, colName: columnName, exprList: exprList}
+
 			if indexName == tableName || indexName == columnName {
 				yylex.(*lexer).err("index name collision: %s", indexName)
 				return 1
 			}
 
-			if isSystemName[indexName] || isSystemName[tableName] {
-				yylex.(*lexer).err("name is used for system tables: %s", indexName)
-				return 1
-			}
-		}
-	case 23:
-		{
-			indexName, tableName, columnName := yyS[yypt-7].item.(string), yyS[yypt-5].item.(string), yyS[yypt-3].item.(string)
-			yyVAL.item = &createIndexStmt{unique: yyS[yypt-10].item.(bool), ifNotExists: yyS[yypt-8].item.(bool), indexName: indexName, tableName: tableName, colName: "id()"}
-			if yyS[yypt-3].item.(string) != "id" {
-				yylex.(*lexer).err("only the built-in function id() can be used in index: %s()", columnName)
-				return 1
-			}
-
-			if indexName == tableName {
-				yylex.(*lexer).err("index name collision: %s", indexName)
-				return 1
+			if yylex.(*lexer).root {
+				break
 			}
 
 			if isSystemName[indexName] || isSystemName[tableName] {
 				yylex.(*lexer).err("name is used for system tables: %s", indexName)
 				return 1
 			}
-		}
-	case 24:
-		{
-			yyVAL.item = false
-		}
-	case 25:
-		{
-			yyVAL.item = true
 		}
 	case 26:
 		{
@@ -1429,73 +1891,131 @@ yynewstate:
 		}
 	case 28:
 		{
-			nm := yyS[yypt-5].item.(string)
-			yyVAL.item = &createTableStmt{tableName: nm, cols: append([]*col{yyS[yypt-3].item.(*col)}, yyS[yypt-2].item.([]*col)...)}
-			if isSystemName[nm] {
-				yylex.(*lexer).err("name is used for system tables: %s", nm)
-				return 1
-			}
+			yyVAL.item = false
 		}
 	case 29:
 		{
+			yyVAL.item = true
+		}
+	case 30:
+		{
 			nm := yyS[yypt-5].item.(string)
-			yyVAL.item = &createTableStmt{ifNotExists: true, tableName: nm, cols: append([]*col{yyS[yypt-3].item.(*col)}, yyS[yypt-2].item.([]*col)...)}
+			yyVAL.item = &createTableStmt{tableName: nm, cols: append([]*col{yyS[yypt-3].item.(*col)}, yyS[yypt-2].item.([]*col)...)}
+
+			if yylex.(*lexer).root {
+				break
+			}
+
 			if isSystemName[nm] {
 				yylex.(*lexer).err("name is used for system tables: %s", nm)
 				return 1
 			}
 		}
-	case 30:
+	case 31:
+		{
+			nm := yyS[yypt-5].item.(string)
+			yyVAL.item = &createTableStmt{ifNotExists: true, tableName: nm, cols: append([]*col{yyS[yypt-3].item.(*col)}, yyS[yypt-2].item.([]*col)...)}
+
+			if yylex.(*lexer).root {
+				break
+			}
+
+			if isSystemName[nm] {
+				yylex.(*lexer).err("name is used for system tables: %s", nm)
+				return 1
+			}
+		}
+	case 32:
 		{
 			yyVAL.item = []*col{}
 		}
-	case 31:
+	case 33:
 		{
 			yyVAL.item = append(yyS[yypt-2].item.([]*col), yyS[yypt-0].item.(*col))
 		}
 	case 34:
 		{
-			yyVAL.item = &truncateTableStmt{yyS[yypt-0].item.(string)}
+			yyVAL.item = yyS[yypt-0].item
 		}
 	case 35:
 		{
-			yyVAL.item = &deleteStmt{tableName: yyS[yypt-1].item.(string), where: yyS[yypt-0].item.(*whereRset).expr}
-		}
-	case 36:
-		{
-			yyVAL.item = &dropIndexStmt{ifExists: yyS[yypt-1].item.(bool), indexName: yyS[yypt-0].item.(string)}
+			yyVAL.item = nil
 		}
 	case 37:
 		{
-			yyVAL.item = false
+			yyVAL.item = &truncateTableStmt{yyS[yypt-0].item.(string)}
+
+			if yylex.(*lexer).root {
+				break
+			}
+
+			if isSystemName[yyS[yypt-0].item.(string)] {
+				yylex.(*lexer).err("name is used for system tables: %s", yyS[yypt-0].item.(string))
+				return 1
+			}
 		}
 	case 38:
 		{
-			yyVAL.item = true
+			yyVAL.item = &deleteStmt{tableName: yyS[yypt-1].item.(string), where: yyS[yypt-0].item.(*whereRset).expr}
+
+			if yylex.(*lexer).root {
+				break
+			}
+
+			if isSystemName[yyS[yypt-1].item.(string)] {
+				yylex.(*lexer).err("name is used for system tables: %s", yyS[yypt-1].item.(string))
+				return 1
+			}
 		}
 	case 39:
 		{
-			nm := yyS[yypt-0].item.(string)
-			yyVAL.item = &dropTableStmt{tableName: nm}
-			if isSystemName[nm] {
-				yylex.(*lexer).err("name is used for system tables: %s", nm)
-				return 1
-			}
+			yyVAL.item = &dropIndexStmt{ifExists: yyS[yypt-1].item.(bool), indexName: yyS[yypt-0].item.(string)}
 		}
 	case 40:
 		{
+			yyVAL.item = false
+		}
+	case 41:
+		{
+			yyVAL.item = true
+		}
+	case 42:
+		{
 			nm := yyS[yypt-0].item.(string)
-			yyVAL.item = &dropTableStmt{ifExists: true, tableName: nm}
+			yyVAL.item = &dropTableStmt{tableName: nm}
+
+			if yylex.(*lexer).root {
+				break
+			}
+
 			if isSystemName[nm] {
 				yylex.(*lexer).err("name is used for system tables: %s", nm)
 				return 1
 			}
 		}
-	case 41:
+	case 43:
+		{
+			nm := yyS[yypt-0].item.(string)
+			yyVAL.item = &dropTableStmt{ifExists: true, tableName: nm}
+
+			if yylex.(*lexer).root {
+				break
+			}
+
+			if isSystemName[nm] {
+				yylex.(*lexer).err("name is used for system tables: %s", nm)
+				return 1
+			}
+		}
+	case 44:
 		{
 			yyVAL.item = nil
 		}
-	case 43:
+	case 45:
+		{
+			yyVAL.item = &explainStmt{yyS[yypt-0].item.(stmt)}
+		}
+	case 47:
 		{
 			var err error
 			if yyVAL.item, err = newBinaryOperation(oror, yyS[yypt-2].item, yyS[yypt-0].item); err != nil {
@@ -1503,35 +2023,35 @@ yynewstate:
 				return 1
 			}
 		}
-	case 46:
+	case 50:
 		{
-			yyVAL.item = append([]expression{yyS[yypt-2].item.(expression)}, yyS[yypt-1].item.([]expression)...)
+			yyVAL.item = append([]expression{expr(yyS[yypt-2].item)}, yyS[yypt-1].item.([]expression)...)
 		}
-	case 47:
+	case 51:
 		{
 			yyVAL.item = []expression(nil)
 		}
-	case 48:
-		{
-			yyVAL.item = append(yyS[yypt-2].item.([]expression), yyS[yypt-0].item.(expression))
-		}
 	case 52:
 		{
-			yyVAL.item = &pIn{expr: yyS[yypt-4].item.(expression), list: yyS[yypt-1].item.([]expression)}
-		}
-	case 53:
-		{
-			yyVAL.item = &pIn{expr: yyS[yypt-5].item.(expression), not: true, list: yyS[yypt-1].item.([]expression)}
+			yyVAL.item = append(yyS[yypt-2].item.([]expression), expr(yyS[yypt-0].item))
 		}
 	case 54:
 		{
-			yyVAL.item = &pIn{expr: yyS[yypt-4].item.(expression), sel: yyS[yypt-1].item.(*selectStmt)}
+			yyVAL.item = &pIn{expr: yyS[yypt-4].item.(expression), list: yyS[yypt-1].item.([]expression)}
 		}
 	case 55:
 		{
-			yyVAL.item = &pIn{expr: yyS[yypt-5].item.(expression), not: true, sel: yyS[yypt-1].item.(*selectStmt)}
+			yyVAL.item = &pIn{expr: yyS[yypt-5].item.(expression), not: true, list: yyS[yypt-1].item.([]expression)}
 		}
 	case 56:
+		{
+			yyVAL.item = &pIn{expr: yyS[yypt-5].item.(expression), sel: yyS[yypt-2].item.(*selectStmt)}
+		}
+	case 57:
+		{
+			yyVAL.item = &pIn{expr: yyS[yypt-6].item.(expression), not: true, sel: yyS[yypt-2].item.(*selectStmt)}
+		}
+	case 58:
 		{
 			var err error
 			if yyVAL.item, err = newBetween(yyS[yypt-4].item, yyS[yypt-2].item, yyS[yypt-0].item, false); err != nil {
@@ -1539,7 +2059,7 @@ yynewstate:
 				return 1
 			}
 		}
-	case 57:
+	case 59:
 		{
 			var err error
 			if yyVAL.item, err = newBetween(yyS[yypt-5].item, yyS[yypt-2].item, yyS[yypt-0].item, true); err != nil {
@@ -1547,15 +2067,15 @@ yynewstate:
 				return 1
 			}
 		}
-	case 58:
+	case 60:
 		{
 			yyVAL.item = &isNull{expr: yyS[yypt-2].item.(expression)}
 		}
-	case 59:
+	case 61:
 		{
 			yyVAL.item = &isNull{expr: yyS[yypt-3].item.(expression), not: true}
 		}
-	case 61:
+	case 63:
 		{
 			var err error
 			if yyVAL.item, err = newBinaryOperation(ge, yyS[yypt-2].item, yyS[yypt-0].item); err != nil {
@@ -1563,7 +2083,7 @@ yynewstate:
 				return 1
 			}
 		}
-	case 62:
+	case 64:
 		{
 			var err error
 			if yyVAL.item, err = newBinaryOperation('>', yyS[yypt-2].item, yyS[yypt-0].item); err != nil {
@@ -1571,7 +2091,7 @@ yynewstate:
 				return 1
 			}
 		}
-	case 63:
+	case 65:
 		{
 			var err error
 			if yyVAL.item, err = newBinaryOperation(le, yyS[yypt-2].item, yyS[yypt-0].item); err != nil {
@@ -1579,7 +2099,7 @@ yynewstate:
 				return 1
 			}
 		}
-	case 64:
+	case 66:
 		{
 			var err error
 			if yyVAL.item, err = newBinaryOperation('<', yyS[yypt-2].item, yyS[yypt-0].item); err != nil {
@@ -1587,7 +2107,7 @@ yynewstate:
 				return 1
 			}
 		}
-	case 65:
+	case 67:
 		{
 			var err error
 			if yyVAL.item, err = newBinaryOperation(neq, yyS[yypt-2].item, yyS[yypt-0].item); err != nil {
@@ -1595,7 +2115,7 @@ yynewstate:
 				return 1
 			}
 		}
-	case 66:
+	case 68:
 		{
 			var err error
 			if yyVAL.item, err = newBinaryOperation(eq, yyS[yypt-2].item, yyS[yypt-0].item); err != nil {
@@ -1603,13 +2123,13 @@ yynewstate:
 				return 1
 			}
 		}
-	case 67:
+	case 69:
 		{
 			yyVAL.item = &pLike{expr: yyS[yypt-2].item.(expression), pattern: yyS[yypt-0].item.(expression)}
 		}
-	case 68:
+	case 70:
 		{
-			expr, name := yyS[yypt-1].item.(expression), yyS[yypt-0].item.(string)
+			expr, name := expr(yyS[yypt-1].item), yyS[yypt-0].item.(string)
 			if name == "" {
 				s, ok := expr.(*ident)
 				if ok {
@@ -1618,19 +2138,19 @@ yynewstate:
 			}
 			yyVAL.item = &fld{expr: expr, name: name}
 		}
-	case 69:
+	case 71:
 		{
 			yyVAL.item = ""
 		}
-	case 70:
+	case 72:
 		{
 			yyVAL.item = yyS[yypt-0].item
 		}
-	case 71:
+	case 73:
 		{
 			yyVAL.item = []*fld{yyS[yypt-0].item.(*fld)}
 		}
-	case 72:
+	case 74:
 		{
 			l, f := yyS[yypt-2].item.([]*fld), yyS[yypt-0].item.(*fld)
 			if f.name != "" {
@@ -1642,35 +2162,44 @@ yynewstate:
 
 			yyVAL.item = append(yyS[yypt-2].item.([]*fld), yyS[yypt-0].item.(*fld))
 		}
-	case 73:
+	case 75:
 		{
 			yyVAL.item = &groupByRset{colNames: yyS[yypt-0].item.([]string)}
 		}
-	case 74:
-		{
-			yyVAL.item = yyS[yypt-1].item
-		}
-	case 75:
-		{
-			yyVAL.item = &insertIntoStmt{tableName: yyS[yypt-7].item.(string), colNames: yyS[yypt-6].item.([]string), lists: append([][]expression{yyS[yypt-3].item.([]expression)}, yyS[yypt-1].item.([][]expression)...)}
-		}
 	case 76:
 		{
-			yyVAL.item = &insertIntoStmt{tableName: yyS[yypt-2].item.(string), colNames: yyS[yypt-1].item.([]string), sel: yyS[yypt-0].item.(*selectStmt)}
+			yyVAL.item = yyS[yypt-1].item
 		}
 	case 77:
 		{
-			yyVAL.item = []string{}
+			yyVAL.item = &insertIntoStmt{tableName: yyS[yypt-7].item.(string), colNames: yyS[yypt-6].item.([]string), lists: append([][]expression{yyS[yypt-3].item.([]expression)}, yyS[yypt-1].item.([][]expression)...)}
+
+			if yylex.(*lexer).root {
+				break
+			}
+
+			if isSystemName[yyS[yypt-7].item.(string)] {
+				yylex.(*lexer).err("name is used for system tables: %s", yyS[yypt-7].item.(string))
+				return 1
+			}
 		}
 	case 78:
 		{
-			yyVAL.item = yyS[yypt-1].item
+			yyVAL.item = &insertIntoStmt{tableName: yyS[yypt-2].item.(string), colNames: yyS[yypt-1].item.([]string), sel: yyS[yypt-0].item.(*selectStmt)}
 		}
 	case 79:
 		{
-			yyVAL.item = [][]expression{}
+			yyVAL.item = []string{}
 		}
 	case 80:
+		{
+			yyVAL.item = yyS[yypt-1].item
+		}
+	case 81:
+		{
+			yyVAL.item = [][]expression{}
+		}
+	case 82:
 		{
 			yyVAL.item = append(yyS[yypt-4].item.([][]expression), yyS[yypt-1].item.([]expression))
 		}
@@ -1695,7 +2224,7 @@ yynewstate:
 		}
 	case 93:
 		{
-			yyVAL.item = &pexpr{expr: yyS[yypt-1].item.(expression)}
+			yyVAL.item = &pexpr{expr: expr(yyS[yypt-1].item)}
 		}
 	case 94:
 		{
@@ -1716,7 +2245,7 @@ yynewstate:
 	case 100:
 		{
 			var err error
-			if yyVAL.item, err = newIndex(yyS[yypt-1].item.(expression), yyS[yypt-0].item.(expression)); err != nil {
+			if yyVAL.item, err = newIndex(yyS[yypt-1].item.(expression), expr(yyS[yypt-0].item)); err != nil {
 				yylex.(*lexer).err("%v", err)
 				return 1
 			}
@@ -1737,6 +2266,15 @@ yynewstate:
 			if !ok {
 				x.err("expected identifier or qualified identifier")
 				return 1
+			}
+
+			if r, ok := yyS[yypt-0].item.(rune); ok {
+				if f.isQualified() || f.s != "count" || r != '*' {
+					x.err(fmt.Sprintf("invalid expression %s(%c)", f, r))
+					return 1
+				}
+
+				yyS[yypt-0].item = []expression(nil)
 			}
 
 			var err error
@@ -1879,29 +2417,43 @@ yynewstate:
 		}
 	case 128:
 		{
-			x := yylex.(*lexer)
-			n := len(x.agg)
-			yyVAL.item = &selectStmt{
-				distinct:      yyS[yypt-8].item.(bool),
-				flds:          yyS[yypt-7].item.([]*fld),
-				from:          &crossJoinRset{sources: yyS[yypt-5].list},
-				hasAggregates: x.agg[n-1],
-				where:         yyS[yypt-4].item.(*whereRset),
-				group:         yyS[yypt-3].item.(*groupByRset),
-				order:         yyS[yypt-2].item.(*orderByRset),
-				limit:         yyS[yypt-1].item.(*limitRset),
-				offset:        yyS[yypt-0].item.(*offsetRset),
-			}
-			x.agg = x.agg[:n-1]
+			yyVAL.item = leftJoin
 		}
 	case 129:
 		{
+			yyVAL.item = rightJoin
+		}
+	case 130:
+		{
+			yyVAL.item = fullJoin
+		}
+	case 131:
+		{
+			yyVAL.item = nil
+		}
+	case 133:
+		{
+			yyVAL.item = []interface{}{yyS[yypt-5].item, yyS[yypt-2].item, yyS[yypt-0].item}
+		}
+	case 134:
+		{
+			yyVAL.item = nil
+		}
+	case 136:
+		{
 			x := yylex.(*lexer)
 			n := len(x.agg)
+			join := &joinRset{sources: yyS[yypt-7].list}
+			if o := yyS[yypt-5].item; o != nil {
+				o := o.([]interface{})
+				join.typ = o[0].(int)
+				join.sources = append(join.sources, o[1].([]interface{}))
+				join.on = o[2].(expression)
+			}
 			yyVAL.item = &selectStmt{
-				distinct:      yyS[yypt-9].item.(bool),
-				flds:          yyS[yypt-8].item.([]*fld),
-				from:          &crossJoinRset{sources: yyS[yypt-6].list},
+				distinct:      yyS[yypt-10].item.(bool),
+				flds:          yyS[yypt-9].item.([]*fld),
+				from:          join,
 				hasAggregates: x.agg[n-1],
 				where:         yyS[yypt-4].item.(*whereRset),
 				group:         yyS[yypt-3].item.(*groupByRset),
@@ -1911,87 +2463,87 @@ yynewstate:
 			}
 			x.agg = x.agg[:n-1]
 		}
-	case 130:
+	case 137:
 		{
 			yyVAL.item = (*limitRset)(nil)
 		}
-	case 131:
-		{
-			yyVAL.item = &limitRset{expr: yyS[yypt-0].item.(expression)}
-		}
-	case 132:
-		{
-			yyVAL.item = (*offsetRset)(nil)
-		}
-	case 133:
-		{
-			yyVAL.item = &offsetRset{expr: yyS[yypt-0].item.(expression)}
-		}
-	case 134:
-		{
-			yyVAL.item = false
-		}
-	case 135:
-		{
-			yyVAL.item = true
-		}
-	case 136:
-		{
-			yyVAL.item = []*fld{}
-		}
-	case 137:
-		{
-			yyVAL.item = yyS[yypt-0].item
-		}
 	case 138:
 		{
-			yyVAL.item = yyS[yypt-1].item
+			yyVAL.item = &limitRset{expr: expr(yyS[yypt-0].item)}
 		}
 	case 139:
 		{
-			yyVAL.item = (*whereRset)(nil)
+			yyVAL.item = (*offsetRset)(nil)
+		}
+	case 140:
+		{
+			yyVAL.item = &offsetRset{expr: expr(yyS[yypt-0].item)}
 		}
 	case 141:
 		{
-			yyVAL.item = (*groupByRset)(nil)
+			yyVAL.item = false
+		}
+	case 142:
+		{
+			yyVAL.item = true
 		}
 	case 143:
 		{
-			yyVAL.item = (*orderByRset)(nil)
+			yyVAL.item = []*fld{}
+		}
+	case 144:
+		{
+			yyVAL.item = yyS[yypt-0].item
 		}
 	case 145:
 		{
-			yyVAL.item = [2]*expression{nil, nil}
+			yyVAL.item = yyS[yypt-1].item
 		}
 	case 146:
 		{
-			hi := yyS[yypt-1].item.(expression)
-			yyVAL.item = [2]*expression{nil, &hi}
-		}
-	case 147:
-		{
-			lo := yyS[yypt-2].item.(expression)
-			yyVAL.item = [2]*expression{&lo, nil}
+			yyVAL.item = (*whereRset)(nil)
 		}
 	case 148:
 		{
-			lo := yyS[yypt-3].item.(expression)
-			hi := yyS[yypt-1].item.(expression)
+			yyVAL.item = (*groupByRset)(nil)
+		}
+	case 150:
+		{
+			yyVAL.item = (*orderByRset)(nil)
+		}
+	case 152:
+		{
+			yyVAL.item = [2]*expression{nil, nil}
+		}
+	case 153:
+		{
+			hi := expr(yyS[yypt-1].item)
+			yyVAL.item = [2]*expression{nil, &hi}
+		}
+	case 154:
+		{
+			lo := expr(yyS[yypt-2].item)
+			yyVAL.item = [2]*expression{&lo, nil}
+		}
+	case 155:
+		{
+			lo := expr(yyS[yypt-3].item)
+			hi := expr(yyS[yypt-1].item)
 			yyVAL.item = [2]*expression{&lo, &hi}
 		}
-	case 163:
+	case 171:
 		{
 			if yyS[yypt-0].item != nil {
 				yylex.(*lexer).list = []stmt{yyS[yypt-0].item.(stmt)}
 			}
 		}
-	case 164:
+	case 172:
 		{
 			if yyS[yypt-0].item != nil {
 				yylex.(*lexer).list = append(yylex.(*lexer).list, yyS[yypt-0].item.(stmt))
 			}
 		}
-	case 167:
+	case 175:
 		{
 			var err error
 			if yyVAL.item, err = newBinaryOperation(andand, yyS[yypt-2].item, yyS[yypt-0].item); err != nil {
@@ -1999,19 +2551,32 @@ yynewstate:
 				return 1
 			}
 		}
-	case 170:
+	case 178:
 		{
 			yyVAL.item = &truncateTableStmt{tableName: yyS[yypt-0].item.(string)}
 		}
-	case 195:
+	case 203:
 		{
-			yyVAL.item = &updateStmt{tableName: yyS[yypt-3].item.(string), list: yyS[yypt-1].item.([]assignment), where: yyS[yypt-0].item.(*whereRset).expr}
+			var expr expression
+			if w := yyS[yypt-0].item; w != nil {
+				expr = w.(*whereRset).expr
+			}
+			yyVAL.item = &updateStmt{tableName: yyS[yypt-3].item.(string), list: yyS[yypt-1].item.([]assignment), where: expr}
+
+			if yylex.(*lexer).root {
+				break
+			}
+
+			if isSystemName[yyS[yypt-3].item.(string)] {
+				yylex.(*lexer).err("name is used for system tables: %s", yyS[yypt-3].item.(string))
+				return 1
+			}
 		}
-	case 196:
+	case 204:
 		{
-			yyVAL.item = nowhere
+			yyVAL.item = nil
 		}
-	case 199:
+	case 207:
 		{
 			var err error
 			yyVAL.item, err = newUnaryOperation('^', yyS[yypt-0].item)
@@ -2020,7 +2585,7 @@ yynewstate:
 				return 1
 			}
 		}
-	case 200:
+	case 208:
 		{
 			var err error
 			yyVAL.item, err = newUnaryOperation('!', yyS[yypt-0].item)
@@ -2029,7 +2594,7 @@ yynewstate:
 				return 1
 			}
 		}
-	case 201:
+	case 209:
 		{
 			var err error
 			yyVAL.item, err = newUnaryOperation('-', yyS[yypt-0].item)
@@ -2038,7 +2603,7 @@ yynewstate:
 				return 1
 			}
 		}
-	case 202:
+	case 210:
 		{
 			var err error
 			yyVAL.item, err = newUnaryOperation('+', yyS[yypt-0].item)
@@ -2047,9 +2612,9 @@ yynewstate:
 				return 1
 			}
 		}
-	case 203:
+	case 211:
 		{
-			yyVAL.item = &whereRset{expr: yyS[yypt-0].item.(expression)}
+			yyVAL.item = &whereRset{expr: expr(yyS[yypt-0].item)}
 		}
 
 	}
@@ -2058,4 +2623,15 @@ yynewstate:
 		return -1
 	}
 	goto yystack /* stack new state and value */
+}
+
+func expr(v interface{}) expression {
+	e := v.(expression)
+	for {
+		x, ok := e.(*pexpr)
+		if !ok {
+			return e
+		}
+		e = x.expr
+	}
 }

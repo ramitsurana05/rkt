@@ -1,4 +1,4 @@
-// Copyright 2015 CoreOS, Inc.
+// Copyright 2015 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,9 +28,10 @@ import (
 const (
 	enterEntrypoint = "coreos.com/rkt/stage1/enter"
 	runEntrypoint   = "coreos.com/rkt/stage1/run"
+	gcEntrypoint    = "coreos.com/rkt/stage1/gc"
 )
 
-// getEntrypoint retrieves the named entrypoint from the stage1 manifest for a given pod
+// getStage1Entrypoint retrieves the named entrypoint from the stage1 manifest for a given pod
 func getStage1Entrypoint(cdir string, entrypoint string) (string, error) {
 	b, err := ioutil.ReadFile(common.Stage1ManifestPath(cdir))
 	if err != nil {

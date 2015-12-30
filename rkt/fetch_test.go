@@ -1,4 +1,4 @@
-// Copyright 2014 CoreOS, Inc.
+// Copyright 2014 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,102 +17,137 @@ package main
 import (
 	"archive/tar"
 	"bytes"
+	"encoding/base64"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"path/filepath"
-	"reflect"
+	"strings"
 	"testing"
 
-	"github.com/coreos/rkt/cas"
+	"github.com/coreos/rkt/common/apps"
 	"github.com/coreos/rkt/pkg/aci"
 	"github.com/coreos/rkt/pkg/keystore"
 	"github.com/coreos/rkt/pkg/keystore/keystoretest"
-
-	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/spec/discovery"
-	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/spec/schema/types"
+	"github.com/coreos/rkt/rkt/config"
+	rktflag "github.com/coreos/rkt/rkt/flag"
+	"github.com/coreos/rkt/rkt/image"
+	"github.com/coreos/rkt/store"
 )
 
-func TestNewDiscoveryApp(t *testing.T) {
-	tests := []struct {
-		in string
+type httpError struct {
+	code    int
+	message string
+}
 
-		w *discovery.App
-	}{
-		// not a valid AC name
-		{
-			"bad AC name",
-			nil,
-		},
-		// simple case - default arch, os should be substituted
-		{
-			"foo.com/bar",
-			&discovery.App{
-				Name: "foo.com/bar",
-				Labels: map[types.ACName]string{
-					"arch": defaultArch,
-					"os":   defaultOS,
-				},
-			},
-		},
-		// overriding arch, os should work
-		{
-			"www.abc.xyz/my/app,os=freebsd,arch=i386",
-			&discovery.App{
-				Name: "www.abc.xyz/my/app",
-				Labels: map[types.ACName]string{
-					"arch": "i386",
-					"os":   "freebsd",
-				},
-			},
-		},
-		// setting version should work
-		{
-			"yes.com/no:v1.2.3",
-			&discovery.App{
-				Name: "yes.com/no",
-				Labels: map[types.ACName]string{
-					"version": "v1.2.3",
-					"arch":    defaultArch,
-					"os":      defaultOS,
-				},
-			},
-		},
-		// arbitrary user-supplied labels
-		{
-			"example.com/foo/haha,val=one",
-			&discovery.App{
-				Name: "example.com/foo/haha",
-				Labels: map[types.ACName]string{
-					"val":  "one",
-					"arch": defaultArch,
-					"os":   defaultOS,
-				},
-			},
-		},
-		// combinations
-		{
-			"one.two/appname:three,os=four,foo=five,arch=six",
-			&discovery.App{
-				Name: "one.two/appname",
-				Labels: map[types.ACName]string{
-					"version": "three",
-					"os":      "four",
-					"foo":     "five",
-					"arch":    "six",
-				},
-			},
-		},
+func (e *httpError) Error() string {
+	return fmt.Sprintf("%d: %s", e.code, e.message)
+}
+
+type serverHandler struct {
+	body []byte
+	t    *testing.T
+	auth string
+}
+
+func getSecFlags(defOpts string) *rktflag.SecFlags {
+	sf, err := rktflag.NewSecFlags(defOpts)
+	if err != nil {
+		panic(fmt.Sprintf("fetch-test: problem initializing flags: %v", err))
 	}
-	for i, tt := range tests {
-		g := newDiscoveryApp(tt.in)
-		if !reflect.DeepEqual(g, tt.w) {
-			t.Errorf("#%d: got %v, want %v", i, g, tt.w)
+
+	return sf
+}
+
+var (
+	insecureFlags = getSecFlags("image,tls")
+	secureFlags   = getSecFlags("none")
+)
+
+func (h *serverHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	switch h.auth {
+	case "deny":
+		if _, ok := r.Header[http.CanonicalHeaderKey("Authorization")]; ok {
+			w.WriteHeader(http.StatusBadRequest)
+			return
 		}
+	case "none":
+		// no auth to do.
+	case "basic":
+		payload, httpErr := getAuthPayload(r, "Basic")
+		if httpErr != nil {
+			w.WriteHeader(httpErr.code)
+			return
+		}
+		creds, err := base64.StdEncoding.DecodeString(string(payload))
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		parts := strings.Split(string(creds), ":")
+		if len(parts) != 2 {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		user := parts[0]
+		password := parts[1]
+		if user != "bar" || password != "baz" {
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+	case "bearer":
+		payload, httpErr := getAuthPayload(r, "Bearer")
+		if httpErr != nil {
+			w.WriteHeader(httpErr.code)
+			return
+		}
+		if payload != "sometoken" {
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+	default:
+		panic("bug in test")
 	}
+	w.Write(h.body)
+}
+
+func getAuthPayload(r *http.Request, authType string) (string, *httpError) {
+	auth := r.Header.Get("Authorization")
+	if auth == "" {
+		err := &httpError{
+			code:    http.StatusUnauthorized,
+			message: "No auth",
+		}
+		return "", err
+	}
+	parts := strings.Split(auth, " ")
+	if len(parts) != 2 {
+		err := &httpError{
+			code:    http.StatusBadRequest,
+			message: "Malformed auth",
+		}
+		return "", err
+	}
+	if parts[0] != authType {
+		err := &httpError{
+			code:    http.StatusUnauthorized,
+			message: "Wrong auth",
+		}
+		return "", err
+	}
+	return parts[1], nil
+}
+
+type testHeaderer struct {
+	h http.Header
+}
+
+func (h *testHeaderer) Header() http.Header {
+	return h.h
 }
 
 func TestDownloading(t *testing.T) {
@@ -124,7 +159,7 @@ func TestDownloading(t *testing.T) {
 
 	imj := `{
 			"acKind": "ImageManifest",
-			"acVersion": "0.5.3",
+			"acVersion": "0.7.4",
 			"name": "example.com/test01"
 		}`
 
@@ -152,28 +187,74 @@ func TestDownloading(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write(body)
-	}))
-	defer ts.Close()
-
+	noauthServer := &serverHandler{
+		body: body,
+		t:    t,
+		auth: "none",
+	}
+	basicServer := &serverHandler{
+		body: body,
+		t:    t,
+		auth: "basic",
+	}
+	oauthServer := &serverHandler{
+		body: body,
+		t:    t,
+		auth: "bearer",
+	}
+	denyServer := &serverHandler{
+		body: body,
+		t:    t,
+		auth: "deny",
+	}
+	noAuthTS := httptest.NewTLSServer(noauthServer)
+	defer noAuthTS.Close()
+	basicTS := httptest.NewTLSServer(basicServer)
+	defer basicTS.Close()
+	oauthTS := httptest.NewTLSServer(oauthServer)
+	defer oauthTS.Close()
+	denyAuthTS := httptest.NewServer(denyServer)
+	noAuth := http.Header{}
+	// YmFyOmJheg== is base64(bar:baz)
+	basicAuth := http.Header{"Authorization": {"Basic YmFyOmJheg=="}}
+	bearerAuth := http.Header{"Authorization": {"Bearer sometoken"}}
+	urlToName := map[string]string{
+		noAuthTS.URL:   "no auth",
+		basicTS.URL:    "basic",
+		oauthTS.URL:    "oauth",
+		denyAuthTS.URL: "deny auth",
+	}
 	tests := []struct {
-		ACIURL string
-		SigURL string
-		body   []byte
-		hit    bool
+		ACIURL   string
+		hit      bool
+		options  http.Header
+		authFail bool
 	}{
-		{ts.URL, "", body, false},
-		{ts.URL, "", body, true},
+		{noAuthTS.URL, false, noAuth, false},
+		{noAuthTS.URL, true, noAuth, false},
+		{noAuthTS.URL, true, bearerAuth, false},
+		{noAuthTS.URL, true, basicAuth, false},
+
+		{basicTS.URL, false, noAuth, true},
+		{basicTS.URL, false, bearerAuth, true},
+		{basicTS.URL, false, basicAuth, false},
+
+		{oauthTS.URL, false, noAuth, true},
+		{oauthTS.URL, false, basicAuth, true},
+		{oauthTS.URL, false, bearerAuth, false},
+
+		{denyAuthTS.URL, false, basicAuth, false},
+		{denyAuthTS.URL, true, bearerAuth, false},
+		{denyAuthTS.URL, true, noAuth, false},
 	}
 
-	ds, err := cas.NewStore(dir)
+	s, err := store.NewStore(dir)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
 
 	for _, tt := range tests {
-		_, ok, err := ds.GetRemote(tt.ACIURL)
+		_, ok, err := s.GetRemote(tt.ACIURL)
 		if err != nil {
 			t.Fatalf("unexpected err: %v", err)
 		}
@@ -183,25 +264,28 @@ func TestDownloading(t *testing.T) {
 		if tt.hit == true && !ok {
 			t.Fatalf("expected a hit got a miss")
 		}
-		_, aciFile, err := fetch(tt.ACIURL, tt.SigURL, nil, ds, nil)
+		parsed, err := url.Parse(tt.ACIURL)
 		if err != nil {
-			t.Fatalf("error fetching aci: %v", err)
+			panic(fmt.Sprintf("Invalid url from test server: %s", tt.ACIURL))
 		}
-		defer os.Remove(aciFile.Name())
-
-		key, err := ds.WriteACI(aciFile, false)
-		if err != nil {
-			t.Fatalf("unexpected err: %v", err)
+		headers := map[string]config.Headerer{
+			parsed.Host: &testHeaderer{tt.options},
 		}
-		rem := cas.NewRemote(tt.ACIURL, tt.SigURL)
-		rem.BlobKey = key
-		err = ds.WriteRemote(rem)
-		if err != nil {
-			t.Fatalf("unexpected err: %v", err)
+		ft := &image.Fetcher{
+			S:             s,
+			Headers:       headers,
+			InsecureFlags: insecureFlags,
+		}
+		_, err = ft.FetchImage(tt.ACIURL, "", apps.AppImageURL)
+		if err != nil && !tt.authFail {
+			t.Fatalf("expected download to succeed, it failed: %v (server: %q, headers: `%v`)", err, urlToName[tt.ACIURL], tt.options)
+		}
+		if err == nil && tt.authFail {
+			t.Fatalf("expected download to fail, it succeeded (server: %q, headers: `%v`)", urlToName[tt.ACIURL], tt.options)
 		}
 	}
 
-	ds.Dump(false)
+	s.Dump(false)
 }
 
 func TestFetchImage(t *testing.T) {
@@ -210,11 +294,11 @@ func TestFetchImage(t *testing.T) {
 		t.Fatalf("error creating tempdir: %v", err)
 	}
 	defer os.RemoveAll(dir)
-	ds, err := cas.NewStore(dir)
+	s, err := store.NewStore(dir)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
-	defer ds.Dump(false)
+	defer s.Dump(false)
 
 	ks, ksPath, err := keystore.NewTestKeystore()
 	if err != nil {
@@ -260,25 +344,253 @@ func TestFetchImage(t *testing.T) {
 		}
 	}))
 	defer ts.Close()
-	_, err = fetchImage(fmt.Sprintf("%s/app.aci", ts.URL), "", ds, ks, true)
+	ft := &image.Fetcher{
+		S:             s,
+		Ks:            ks,
+		InsecureFlags: secureFlags,
+	}
+	_, err = ft.FetchImage(fmt.Sprintf("%s/app.aci", ts.URL), "", apps.AppImageURL)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 }
 
-func TestSigURLFromImgURL(t *testing.T) {
-	tests := []struct {
-		in, out string
-	}{
-		{
-			"http://localhost/aci-latest-linux-amd64.aci",
-			"http://localhost/aci-latest-linux-amd64.aci.asc",
-		},
+func TestGetStoreKeyFromApp(t *testing.T) {
+	dir, err := ioutil.TempDir("", "fetch-image")
+	if err != nil {
+		t.Fatalf("error creating tempdir: %v", err)
 	}
-	for i, tt := range tests {
-		out := ascURLFromImgURL(tt.in)
-		if out != tt.out {
-			t.Errorf("#%d: got %v, want %v", i, out, tt.out)
+	defer os.RemoveAll(dir)
+	s, err := store.NewStore(dir)
+	if err != nil {
+		t.Fatalf("unexpected error %v", err)
+	}
+	defer s.Dump(false)
+
+	// Test an aci without os and arch labels
+	a, err := aci.NewBasicACI(dir, "example.com/app")
+	defer a.Close()
+	if err != nil {
+		t.Fatalf("unexpected error %v", err)
+	}
+	// Rewind the ACI
+	if _, err := a.Seek(0, 0); err != nil {
+		t.Fatalf("unexpected error %v", err)
+	}
+	_, err = s.WriteACI(a, false)
+	if err != nil {
+		t.Fatalf("unexpected error %v", err)
+	}
+
+	_, err = getStoreKeyFromApp(s, "example.com/app")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+type redirectingServerHandler struct {
+	destServer string
+}
+
+func (h *redirectingServerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Location", fmt.Sprintf("%s/%s", h.destServer, r.URL.Path))
+	w.WriteHeader(http.StatusTemporaryRedirect)
+}
+
+type cachingServerHandler struct {
+	aciBody []byte
+	ascBody []byte
+	etag    string
+	maxAge  int
+	t       *testing.T
+}
+
+func (h *cachingServerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	switch filepath.Ext(r.URL.Path) {
+	case ".aci":
+		if h.maxAge > 0 {
+			w.Header().Set("Cache-Control", fmt.Sprintf("max-age=%d", h.maxAge))
+		}
+		if h.etag != "" {
+			w.Header().Set("ETag", h.etag)
+			if cc := r.Header.Get("If-None-Match"); cc == h.etag {
+				w.WriteHeader(http.StatusNotModified)
+				return
+			}
+		}
+		w.Write(h.aciBody)
+		return
+	case ".asc":
+		w.Write(h.ascBody)
+		return
+	}
+}
+
+func TestFetchImageCache(t *testing.T) {
+	dir, err := ioutil.TempDir("", "fetch-image-cache")
+	if err != nil {
+		t.Fatalf("error creating tempdir: %v", err)
+	}
+	defer os.RemoveAll(dir)
+	s, err := store.NewStore(dir)
+	if err != nil {
+		t.Fatalf("unexpected error %v", err)
+	}
+	defer s.Dump(false)
+
+	ks, ksPath, err := keystore.NewTestKeystore()
+	if err != nil {
+		t.Errorf("unexpected error %v", err)
+	}
+	defer os.RemoveAll(ksPath)
+
+	key := keystoretest.KeyMap["example.com/app"]
+	if _, err := ks.StoreTrustedKeyPrefix("example.com/app", bytes.NewBufferString(key.ArmoredPublicKey)); err != nil {
+		t.Fatalf("unexpected error %v", err)
+	}
+	a, err := aci.NewBasicACI(dir, "example.com/app")
+	defer a.Close()
+	if err != nil {
+		t.Fatalf("unexpected error %v", err)
+	}
+	// Rewind the ACI
+	if _, err := a.Seek(0, 0); err != nil {
+		t.Fatalf("unexpected error %v", err)
+	}
+	asc, err := aci.NewDetachedSignature(key.ArmoredPrivateKey, a)
+	if err != nil {
+		t.Fatalf("unexpected error %v", err)
+	}
+	// Rewind the ACI
+	if _, err := a.Seek(0, 0); err != nil {
+		t.Fatalf("unexpected error %v", err)
+	}
+	aciBody, err := ioutil.ReadAll(a)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	ascBody, err := ioutil.ReadAll(asc)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	nocacheServer := &cachingServerHandler{
+		aciBody: aciBody,
+		ascBody: ascBody,
+		etag:    "",
+		maxAge:  0,
+		t:       t,
+	}
+	etagServer := &cachingServerHandler{
+		aciBody: aciBody,
+		ascBody: ascBody,
+		etag:    "123456789",
+		maxAge:  0,
+		t:       t,
+	}
+	maxAgeServer := &cachingServerHandler{
+		aciBody: aciBody,
+		ascBody: ascBody,
+		etag:    "",
+		maxAge:  10,
+		t:       t,
+	}
+	etagMaxAgeServer := &cachingServerHandler{
+		aciBody: aciBody,
+		ascBody: ascBody,
+		etag:    "123456789",
+		maxAge:  10,
+		t:       t,
+	}
+
+	nocacheTS := httptest.NewServer(nocacheServer)
+	defer nocacheTS.Close()
+	etagTS := httptest.NewServer(etagServer)
+	defer etagTS.Close()
+	maxAgeTS := httptest.NewServer(maxAgeServer)
+	defer maxAgeTS.Close()
+	etagMaxAgeTS := httptest.NewServer(etagMaxAgeServer)
+	defer etagMaxAgeTS.Close()
+
+	type testData struct {
+		URL             string
+		etag            string
+		cacheMaxAge     int
+		shouldUseCached bool
+	}
+	tests := []testData{
+		{nocacheTS.URL, "", 0, false},
+		{etagTS.URL, "123456789", 0, true},
+		{maxAgeTS.URL, "", 10, true},
+		{etagMaxAgeTS.URL, "123456789", 10, true},
+	}
+	testFn := func(tt testData, useRedirect bool) {
+		aciURL := fmt.Sprintf("%s/app.aci", tt.URL)
+		if useRedirect {
+			redirectingTS := httptest.NewServer(&redirectingServerHandler{destServer: tt.URL})
+			defer redirectingTS.Close()
+			aciURL = fmt.Sprintf("%s/app.aci", redirectingTS.URL)
+		}
+		ft := &image.Fetcher{
+			S:             s,
+			Ks:            ks,
+			InsecureFlags: secureFlags,
+			// Skip local store
+			NoStore: true,
+		}
+		_, err = ft.FetchImage(aciURL, "", apps.AppImageURL)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		rem, _, err := s.GetRemote(aciURL)
+		if err != nil {
+			t.Fatalf("Error getting remote info: %v\n", err)
+		}
+		if rem.ETag != tt.etag {
+			t.Errorf("expected remote to have a ETag header argument")
+		}
+		if rem.CacheMaxAge != tt.cacheMaxAge {
+			t.Errorf("expected max-age header argument to be %q", tt.cacheMaxAge)
+		}
+
+		downloadTime := rem.DownloadTime
+		_, err = ft.FetchImage(aciURL, "", apps.AppImageURL)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		rem, _, err = s.GetRemote(aciURL)
+		if err != nil {
+			t.Fatalf("Error getting remote info: %v\n", err)
+		}
+		if rem.ETag != tt.etag {
+			t.Errorf("expected remote to have a ETag header argument")
+		}
+		if rem.CacheMaxAge != tt.cacheMaxAge {
+			t.Errorf("expected max-age header argument to be %q", tt.cacheMaxAge)
+		}
+		if tt.shouldUseCached {
+			if downloadTime != rem.DownloadTime {
+				t.Errorf("expected current download time to be the same as the previous one (no download) but they differ")
+			}
+		} else {
+			if downloadTime == rem.DownloadTime {
+				t.Errorf("expected current download time to be different from the previous one (new image download) but they are the same")
+			}
+		}
+
+		if err := s.RemoveACI(rem.BlobKey); err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+	}
+
+	// repeat the tests with and without a redirecting server
+	for i := 0; i <= 1; i++ {
+		useRedirect := false
+		if i == 1 {
+			useRedirect = true
+		}
+		for _, tt := range tests {
+			testFn(tt, useRedirect)
 		}
 	}
 }

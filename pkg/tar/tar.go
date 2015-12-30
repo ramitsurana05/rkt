@@ -1,4 +1,4 @@
-// Copyright 2014 CoreOS, Inc.
+// Copyright 2014 The rkt Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,14 +23,14 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"strings"
 	"syscall"
-	"time"
+
+	"github.com/coreos/rkt/Godeps/_workspace/src/github.com/appc/spec/pkg/device"
+	"github.com/coreos/rkt/pkg/fileutil"
+	"github.com/coreos/rkt/pkg/uid"
 )
 
 const DEFAULT_DIR_MODE os.FileMode = 0755
-
-type insecureLinkError error
 
 var ErrNotSupportedPlatform = errors.New("platform and architecture is not supported")
 
@@ -38,14 +38,46 @@ var ErrNotSupportedPlatform = errors.New("platform and architecture is not suppo
 // root of the tar file and should be cleaned (for example using filepath.Clean)
 type PathWhitelistMap map[string]struct{}
 
-// ExtractTar extracts a tarball (from a tar.Reader) into the given directory
-// if pwl is not nil, only the paths in the map are extracted.
-// If overwrite is true, existing files will be overwritten.
-func ExtractTar(tr *tar.Reader, dir string, overwrite bool, pwl PathWhitelistMap) error {
+type FilePermissionsEditor func(string, int, int, byte, os.FileInfo) error
+
+func NewUidShiftingFilePermEditor(uidRange *uid.UidRange) (FilePermissionsEditor, error) {
+	if os.Geteuid() != 0 {
+		return func(_ string, _, _ int, _ byte, _ os.FileInfo) error {
+			// The files are owned by the current user on creation.
+			// If we do nothing, they will remain so.
+			return nil
+		}, nil
+	}
+
+	return func(path string, uid, gid int, typ byte, fi os.FileInfo) error {
+		shiftedUid, shiftedGid, err := uidRange.ShiftRange(uint32(uid), uint32(gid))
+		if err != nil {
+			return err
+		}
+		if err := os.Lchown(path, int(shiftedUid), int(shiftedGid)); err != nil {
+			return err
+		}
+
+		// lchown(2) says that, depending on the linux kernel version, it
+		// can change the file's mode also if executed as root. So call
+		// os.Chmod after it.
+		if typ != tar.TypeSymlink {
+			if err := os.Chmod(path, fi.Mode()); err != nil {
+				return err
+			}
+		}
+		return nil
+	}, nil
+}
+
+// ExtractTarInsecure extracts a tarball (from a tar.Reader) into the target
+// directory. If pwl is not nil, only the paths in the map are extracted. If
+// overwrite is true, existing files will be overwritten.
+func ExtractTarInsecure(tr *tar.Reader, target string, overwrite bool, pwl PathWhitelistMap, editor FilePermissionsEditor) error {
 	um := syscall.Umask(0)
 	defer syscall.Umask(um)
 
-	dirhdrs := []*tar.Header{}
+	var dirhdrs []*tar.Header
 Tar:
 	for {
 		hdr, err := tr.Next()
@@ -59,7 +91,7 @@ Tar:
 					continue
 				}
 			}
-			err = ExtractFile(tr, hdr, dir, overwrite)
+			err = extractFile(tr, target, hdr, overwrite, editor)
 			if err != nil {
 				return fmt.Errorf("error extracting tarball: %v", err)
 			}
@@ -74,7 +106,7 @@ Tar:
 	// Restore dirs atime and mtime. This has to be done after extracting
 	// as a file extraction will change its parent directory's times.
 	for _, hdr := range dirhdrs {
-		p := filepath.Join(dir, hdr.Name)
+		p := filepath.Join(target, hdr.Name)
 		if err := syscall.UtimesNano(p, HdrToTimespec(hdr)); err != nil {
 			return err
 		}
@@ -82,11 +114,11 @@ Tar:
 	return nil
 }
 
-// ExtractFile extracts the file described by hdr from the given tarball into
-// the provided directory.
+// extractFile extracts the file described by hdr from the given tarball into
+// the target directory.
 // If overwrite is true, existing files will be overwritten.
-func ExtractFile(tr *tar.Reader, hdr *tar.Header, dir string, overwrite bool) error {
-	p := filepath.Join(dir, hdr.Name)
+func extractFile(tr *tar.Reader, target string, hdr *tar.Header, overwrite bool, editor FilePermissionsEditor) error {
+	p := filepath.Join(target, hdr.Name)
 	fi := hdr.FileInfo()
 	typ := hdr.Typeflag
 	if overwrite {
@@ -137,31 +169,24 @@ func ExtractFile(tr *tar.Reader, hdr *tar.Header, dir string, overwrite bool) er
 		}
 		dir.Close()
 	case typ == tar.TypeLink:
-		dest := filepath.Join(dir, hdr.Linkname)
-		if !strings.HasPrefix(dest, dir) {
-			return insecureLinkError(fmt.Errorf("insecure link %q -> %q", p, hdr.Linkname))
-		}
+		dest := filepath.Join(target, hdr.Linkname)
 		if err := os.Link(dest, p); err != nil {
 			return err
 		}
 	case typ == tar.TypeSymlink:
-		dest := filepath.Join(filepath.Dir(p), hdr.Linkname)
-		if !strings.HasPrefix(dest, dir) {
-			return insecureLinkError(fmt.Errorf("insecure symlink %q -> %q", p, hdr.Linkname))
-		}
 		if err := os.Symlink(hdr.Linkname, p); err != nil {
 			return err
 		}
 	case typ == tar.TypeChar:
-		dev := makedev(int(hdr.Devmajor), int(hdr.Devminor))
+		dev := device.Makedev(uint(hdr.Devmajor), uint(hdr.Devminor))
 		mode := uint32(fi.Mode()) | syscall.S_IFCHR
-		if err := syscall.Mknod(p, mode, dev); err != nil {
+		if err := syscall.Mknod(p, mode, int(dev)); err != nil {
 			return err
 		}
 	case typ == tar.TypeBlock:
-		dev := makedev(int(hdr.Devmajor), int(hdr.Devminor))
+		dev := device.Makedev(uint(hdr.Devmajor), uint(hdr.Devminor))
 		mode := uint32(fi.Mode()) | syscall.S_IFBLK
-		if err := syscall.Mknod(p, mode, dev); err != nil {
+		if err := syscall.Mknod(p, mode, int(dev)); err != nil {
 			return err
 		}
 	case typ == tar.TypeFifo:
@@ -173,15 +198,8 @@ func ExtractFile(tr *tar.Reader, hdr *tar.Header, dir string, overwrite bool) er
 		return fmt.Errorf("unsupported type: %v", typ)
 	}
 
-	if err := os.Lchown(p, hdr.Uid, hdr.Gid); err != nil {
-		return err
-	}
-
-	// lchown(2) says that, depending on the linux kernel version, it
-	// can change the file's mode also if executed as root. So call
-	// os.Chmod after it.
-	if typ != tar.TypeSymlink {
-		if err := os.Chmod(p, fi.Mode()); err != nil {
+	if editor != nil {
+		if err := editor(p, hdr.Uid, hdr.Gid, hdr.Typeflag, fi); err != nil {
 			return err
 		}
 	}
@@ -195,7 +213,7 @@ func ExtractFile(tr *tar.Reader, hdr *tar.Header, dir string, overwrite bool) er
 			return err
 		}
 	} else {
-		if err := LUtimesNano(p, ts); err != nil && err != ErrNotSupportedPlatform {
+		if err := fileutil.LUtimesNano(p, ts); err != nil && err != ErrNotSupportedPlatform {
 			return err
 		}
 	}
@@ -203,9 +221,9 @@ func ExtractFile(tr *tar.Reader, hdr *tar.Header, dir string, overwrite bool) er
 	return nil
 }
 
-// ExtractFileFromTar extracts a regular file from the given tar, returning its
+// extractFileFromTar extracts a regular file from the given tar, returning its
 // contents as a byte slice
-func ExtractFileFromTar(tr *tar.Reader, file string) ([]byte, error) {
+func extractFileFromTar(tr *tar.Reader, file string) ([]byte, error) {
 	for {
 		hdr, err := tr.Next()
 		switch err {
@@ -232,20 +250,6 @@ func ExtractFileFromTar(tr *tar.Reader, file string) ([]byte, error) {
 	}
 }
 
-// makedev mimics glib's gnu_dev_makedev
-func makedev(major, minor int) int {
-	return (minor & 0xff) | (major & 0xfff << 8) | int((uint64(minor & ^0xff) << 12)) | int(uint64(major & ^0xfff)<<32)
-}
-
 func HdrToTimespec(hdr *tar.Header) []syscall.Timespec {
-	return []syscall.Timespec{timeToTimespec(hdr.AccessTime), timeToTimespec(hdr.ModTime)}
-}
-
-// TODO(sgotti) use UTIMES_OMIT on linux if Time.IsZero ?
-func timeToTimespec(time time.Time) (ts syscall.Timespec) {
-	nsec := int64(0)
-	if !time.IsZero() {
-		nsec = time.UnixNano()
-	}
-	return syscall.NsecToTimespec(nsec)
+	return []syscall.Timespec{fileutil.TimeToTimespec(hdr.AccessTime), fileutil.TimeToTimespec(hdr.ModTime)}
 }
